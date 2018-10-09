@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import objects.ArmPart;
 import objects.Ball;
+import objects.Floor;
 import objects.Joint;
 
 public class Panel extends JPanel {
@@ -16,8 +17,9 @@ public class Panel extends JPanel {
 	private Joint joint1,joint2;
 	private ArmPart part1,part2,part3;
 	private Ball ball;
+	private Floor floor;
 	
-	public Panel(Joint joint1, Joint joint2, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball)
+	public Panel(Joint joint1, Joint joint2, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor)
 	{
 		this.joint1 = joint1;
 		this.joint2 = joint2;
@@ -25,6 +27,7 @@ public class Panel extends JPanel {
 		this.part1 = part1;
 		this.part2 = part2;
 		this.part3 = part3;
+		this.floor = floor;
 	}
 	
 	@Override
@@ -32,6 +35,7 @@ public class Panel extends JPanel {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.drawLine(0, floor.getY(), 0+floor.getLength(), floor.getY());
 		g2.setColor(Color.blue);
 		g2.drawLine(part1.getPosX1(), part1.getPosY1(), part1.getPosX2(), part1.getPosY2());
 		g2.setColor(Color.red);

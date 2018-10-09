@@ -65,10 +65,11 @@ public int getPosX2() {
 public void setPosX2(int armNumber) {
 	if(joint!=null)
 	{
-		if(armNumber == 2) {
+		if(armNumber == 2) 
+		{
 			this.posX2 = (int) (getPosX1() + (getLenght() * Math.sin(joint.get(0).getAngle()*Math.PI/180)));
-			System.out.println("ang " + joint.get(0).getAngle() + " X1 " + getPosX1() + " X2 " + getPosX2());
 		}
+		
 		else if(armNumber == 3)
 		{
 			this.posX2 = (int) (getPosX1() + (getLenght() * Math.sin((joint.get(0).getAngle()+joint.get(1).getAngle())*Math.PI/180)));
@@ -84,13 +85,11 @@ public int getPosY2() {
 public void setPosY2(int armNumber) {
 	if(joint!=null)
 	{
-		System.out.println(getLenght()+" loloolo");
 		if(armNumber == 2)
 		{
 			this.posY2 = (int) (getPosY1() - (getLenght() * Math.cos(joint.get(0).getAngle()*Math.PI/180)));
-		
-			System.out.println("ang " + joint.get(0).getAngle() + " Y1 " + getPosY1() + " Y2 " + getPosY2());
 		}
+		
 		else if(armNumber == 3)
 		{
 			this.posY2 = (int) (getPosY1() - (getLenght() * Math.cos((joint.get(0).getAngle()+joint.get(1).getAngle())*Math.PI/180)));
