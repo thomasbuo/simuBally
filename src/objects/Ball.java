@@ -8,8 +8,10 @@ public class Ball {
 	private int speedY = 0;
 	private int posX;
 	private int posY;
-	public Ball(int diameter, int weight)
+	public Ball(int diameter, int weight, int posX, int posY)
 	{
+		this.posX = posX;
+		this.posY = posY;
 		this.diameter = diameter;
 		this.weight = weight;
 	}

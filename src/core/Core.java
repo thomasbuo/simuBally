@@ -25,8 +25,9 @@ public class Core {
 		part3.setPosX2(3);
 		part3.setPosY2(3);
 		System.out.println("part3 "+ part3.getPosX1()+" "+part3.getPosY1());
-		Ball ball = new Ball(5, 10); //size in pixels weight in grams
+		Ball ball = new Ball(5, 10,part3.getPosX2(),part3.getPosY2()); //size in pixels weight in grams
 		Panel panel = new Panel(joints.get(0),joints.get(1),part1,part2,part3,ball);
+		Simulation simulation = new Simulation(joints,part1,part2,part3,ball);
 		Drawing mainFrame = new Drawing(panel);
 		mainFrame.show();
 		
