@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import objects.ArmPart;
 import objects.Ball;
 import objects.Joint;
-import util.Time;
+
 
 public class Simulation {
 	
@@ -54,39 +54,17 @@ public class Simulation {
 					// Wait for time step to be over
 					double ns_used = (System.nanoTime() - start_time);
 					total_calculation_time += ns_used;
-					if (!full_speed) {
-						double ns_to_wait = Time.secondsToNanoseconds(delta_t/simulated_seconds_per_real_second);
-						try {
-							TimeUnit.NANOSECONDS.sleep((int) Math.max(0, ns_to_wait - ns_used));
-						} catch (InterruptedException e) {
-							System.out.println("Simulation sleeping (" + ns_to_wait + "ns) got interrupted!");
-						}
-					}
+					
 	
 					this.current_time += delta_t;
 	
 					// update graphics and statistics
 					step++;
-					if (step % this.visualization_frequency == 0 && this.current_experiment.isVizualise()) {
-						gui.redraw();
-						((PopulationPanel) gui.getPopulationPanel()).updateCharts();
+					if (step % this.visualization_frequency == 0) {
+						
+						//do shit
 					}
-					if (this.current_time % this.measurement_interval_realistic_time_seconds < delta_t) this.calcStatistics(); // hacky, but avoids double inprecision porblems
-				}
-
-				// Finish this experiment
-				this.experiment_wrapper.finishExperiment(current_experiment);
-				((ExperimenterPanel) this.gui.experimenterPanel).updateList();
-				current_experiment = this.experiment_wrapper.currentExperiment();
-				stop();
-
-				if (!experiment_wrapper.isAllFinished() && !(current_experiment == null)) {
-					reset();
-					start();
-				} else {
-					this.experiment_wrapper.createFinalReport();
-					this.experiment_wrapper.saveAll();
-				}
+				}				
 			});
 	
 			th.start();
