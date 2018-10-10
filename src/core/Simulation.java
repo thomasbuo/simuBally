@@ -8,6 +8,9 @@ import objects.ArmPart;
 import objects.Ball;
 import objects.Joint;
 
+import java.sql.Time;
+import java.util.*;
+
 
 public class Simulation {
 	
@@ -21,6 +24,7 @@ public class Simulation {
 	private float simulated_seconds_per_real_second = 1;
 	private boolean full_speed = false;
 	private int visualization_frequency;
+	private double ns_used;
 	
 	private double realistic_time_in_seconds;
 	private int days_simulated;
@@ -42,8 +46,6 @@ public class Simulation {
 	
 			Thread th = new Thread(() -> {
 				// Initialize
-	
-	
 				double delta_t = 0.05; // in seconds
 				this.total_calculation_time = 0;
 				int step = 0;
@@ -57,6 +59,16 @@ public class Simulation {
 					
 	
 					this.current_time += delta_t;
+					ns_used = (System.nanoTime() - start_time);
+					total_calculation_time += ns_used;
+					if (!full_speed) {
+						double ns_to_wait = (delta_t);
+						try {
+							TimeUnit.NANOSECONDS.sleep((int) Math.max(0, ns_to_wait - ns_used));
+						} catch (InterruptedException e) {
+							System.out.println("Simulation sleeping (" + ns_to_wait + "ns) got interrupted!");
+						}
+					}
 	
 					// update graphics and statistics
 					step++;

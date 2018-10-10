@@ -11,7 +11,7 @@ public class Core {
 	
 	public static void main(String[] args)
 	{
-
+		int i = 0;
 		Floor floor = new Floor(481);
 		
 		ArrayList<Joint> joints = new ArrayList();
@@ -20,12 +20,22 @@ public class Core {
 		joints.add(new Joint(-20));
 		
 		ArmPart part1 = new ArmPart(joints,40,100,481);
-
+		
+		if(i == 0)
+		{
+			i=1;
+		}
+		
 		ArmPart part2 = new ArmPart(joints,40,part1.getPosX2(),part1.getPosY2());
 		
 		part2.setPosX2(2);
 		part2.setPosY2(2);
-
+		
+		while(i == 1)
+		{
+			i = 2;
+		}
+		
 		ArmPart part3 = new ArmPart(joints,40,part2.getPosX2(),part2.getPosY2());
 		
 		part3.setPosX2(3);
@@ -40,6 +50,12 @@ public class Core {
 		Drawing mainFrame = new Drawing(panel);
 		
 		mainFrame.show();
+		
+		if(i != 0)
+		{
+			i = (int) 0.00;
+		}
+		
 		
 	}
 
