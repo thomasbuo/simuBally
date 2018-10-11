@@ -94,7 +94,7 @@ public class Simulation {
 						
 						if(checkCollision())
 						{
-							ball.setSpeed(0);
+							ball.nullSpeed();
 							finalPosX = ball.getPosX();
 							finalPosY = floor.getY();
 						}
