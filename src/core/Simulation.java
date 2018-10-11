@@ -32,6 +32,8 @@ public class Simulation {
 	
 	private Ball ball;
 	private Floor floor;
+	private int finalPosX;
+	private int finalPosY;
 	
 	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor)
 	{
@@ -39,6 +41,16 @@ public class Simulation {
 		this.floor = floor;
 		
 	}
+	public boolean checkCollision() 
+	{ 
+		boolean collision = false;
+		if((ball.getPosY() + ball.getDiameter()) >= floor.getY()) 
+		{
+			collision = true;
+		}
+		return collision;
+	} 
+	
 	public void simulate()
 	{
 		
@@ -78,6 +90,13 @@ public class Simulation {
 					// update graphics and statistics
 					step++;
 					if (step % this.visualization_frequency == 0) {
+						
+						if(checkCollision())
+						{
+							ball.setSpeed(0);
+							finalPosX = ball.getPosX();
+							finalPosY = floor.getY();
+						}
 						
 					}
 				}				

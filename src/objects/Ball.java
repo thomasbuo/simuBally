@@ -32,9 +32,10 @@ public class Ball {
 	{
 		return speedY;
 	}
-	public void setSpeed()
+	public void setSpeed(int val)
 	{
-		
+		speedX = val;
+		speedY = val;
 	}
 	public int getPosY() {
 		return posY;
