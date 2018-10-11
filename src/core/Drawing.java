@@ -60,6 +60,7 @@ public class Drawing extends JFrame {
 				if(!angel1.equals("angel1") && !angel2.equals("angel2"))
 				{
 					panel.getJoint1().setTargetAngle(Integer.parseInt(angel1));
+					panel.getJoint2().setTargetANgle(Integer.parseInt(angel2));
 				}
 				
 			}
