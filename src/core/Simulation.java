@@ -87,17 +87,24 @@ public class Simulation {
 							System.out.println("Simulation sleeping (" + ns_to_wait + "ns) got interrupted!");
 						}
 					}
-	
+					
+					if(checkCollision())
+					{
+						ball.nullSpeed();
+						finalPosX = ball.getPosX();
+						finalPosY = floor.getY();
+						
+					}
+					
+					
+					
 					// update graphics and statistics
 					step++;
 					if (step % this.visualization_frequency == 0) {
 						
-						if(checkCollision())
-						{
-							ball.nullSpeed();
-							finalPosX = ball.getPosX();
-							finalPosY = floor.getY();
-						}
+						ball.setSpeedY();
+						
+
 						
 					}
 				}				

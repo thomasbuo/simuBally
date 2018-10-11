@@ -32,6 +32,10 @@ public class Ball {
 	{
 		return speedY;
 	}
+	public void setSpeedY()
+	{
+		speedY -= 10;
+	}
 	public void nullSpeed()
 	{
 		speedX = 0;
