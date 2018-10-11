@@ -47,4 +47,61 @@ public class Panel extends JPanel {
 		g2.fillOval(part1.getPosX2(), part1.getPosY2(), 5, 5);
 		g2.fillOval(part2.getPosX2(), part2.getPosY2(), 5, 5);
 	}
+	
+	public Joint getJoint1() {
+		return joint1;
+	}
+
+	public void setJoint1(Joint joint1) {
+		this.joint1 = joint1;
+	}
+
+	public Joint getJoint2() {
+		return joint2;
+	}
+
+	public void setJoint2(Joint joint2) {
+		this.joint2 = joint2;
+	}
+
+	public ArmPart getPart1() {
+		return part1;
+	}
+
+	public void setPart1(ArmPart part1) {
+		this.part1 = part1;
+	}
+
+	public ArmPart getPart2() {
+		return part2;
+	}
+
+	public void setPart2(ArmPart part2) {
+		this.part2 = part2;
+	}
+
+	public ArmPart getPart3() {
+		return part3;
+	}
+
+	public void setPart3(ArmPart part3) {
+		this.part3 = part3;
+	}
+
+	public Ball getBall() {
+		return ball;
+	}
+
+	public void setBall(Ball ball) {
+		this.ball = ball;
+	}
+
+	public Floor getFloor() {
+		return floor;
+	}
+
+	public void setFloor(Floor floor) {
+		this.floor = floor;
+	}
+
 }

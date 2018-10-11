@@ -12,14 +12,14 @@ public class Core {
 	public static void main(String[] args)
 	{
 		int i = 0;
-		Floor floor = new Floor(481);
+		Floor floor = new Floor(430);
 		
 		ArrayList<Joint> joints = new ArrayList();
 		
 		joints.add(new Joint(-90));
 		joints.add(new Joint(-20));
 		
-		ArmPart part1 = new ArmPart(joints,40,100,481);
+		ArmPart part1 = new ArmPart(joints,40,100,430);
 		
 		if(i == 0)
 		{
@@ -44,7 +44,7 @@ public class Core {
 		Ball ball = new Ball(5, 10,part3.getPosX2(),part3.getPosY2()); //size in pixels weight in grams
 		
 		Panel panel = new Panel(joints.get(0),joints.get(1),part1,part2,part3,ball,floor);
-		
+		panel.setBounds(10, 11, 834, 453);
 		Simulation simulation = new Simulation(joints,part1,part2,part3,ball);
 		
 		Drawing mainFrame = new Drawing(panel);
