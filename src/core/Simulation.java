@@ -97,7 +97,9 @@ public class Simulation {
 							ball.nullSpeed();
 							finalPosX = ball.getPosX();
 							finalPosY = floor.getY();
+							System.out.println("landed");
 						}
+						
 						
 					}
 				}				
