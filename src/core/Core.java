@@ -54,6 +54,7 @@ public class Core {
 		Simulation simulation = new Simulation(joints,part1,part2,part3,ball, floor);
 		
 		Drawing mainFrame = new Drawing(panel, simulation);
+		simulation.setDrawing(mainFrame);
 		
 		mainFrame.show();
 		

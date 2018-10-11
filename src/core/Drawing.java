@@ -81,4 +81,8 @@ public class Drawing extends JFrame {
 		
 		repaint();
 	}
+	public void redraw()
+	{
+		repaint();
+	}
 }

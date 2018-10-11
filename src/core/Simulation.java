@@ -35,6 +35,8 @@ public class Simulation {
 	private int finalPosX;
 	private int finalPosY;
 	
+	private Drawing mainFrame;
+	
 	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor)
 	{
 		this.ball = ball;
@@ -87,20 +89,21 @@ public class Simulation {
 							System.out.println("Simulation sleeping (" + ns_to_wait + "ns) got interrupted!");
 						}
 					}
-	
+					
+					if(checkCollision())
+					{
+						ball.nullSpeed();
+						finalPosX = ball.getPosX();
+						finalPosY = floor.getY();
+						
+					}					
+					
 					// update graphics and statistics
 					step++;
 					if (step % this.visualization_frequency == 0) {
-						
-						if(checkCollision())
-						{
-							ball.nullSpeed();
-							finalPosX = ball.getPosX();
-							finalPosY = floor.getY();
-							System.out.println("landed");
-						}
-						
-						
+
+						ball.setSpeedY();
+						mainFrame.redraw();
 					}
 				}				
 			});
@@ -112,5 +115,8 @@ public class Simulation {
 	{
 		targetX = target;
 	}
-
+	public void setDrawing(Drawing frame)
+	{
+		mainFrame = frame;
+	}
 }
