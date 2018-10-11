@@ -16,7 +16,7 @@ import java.util.*;
 public class Simulation {
 	
 	private int targetX = 200;
-	private int targetY = 481;
+	private int targetY ;
 	private boolean is_running = false;
 	
 	private long start_time;
@@ -39,6 +39,7 @@ public class Simulation {
 	{
 		this.ball = ball;
 		this.floor = floor;
+		targetY = floor.getY();
 		
 	}
 	public boolean checkCollision() 
@@ -105,6 +106,9 @@ public class Simulation {
 			th.start();
 		
 	}
-	
+	public void setTarget(int target)
+	{
+		targetX = target;
+	}
 
 }

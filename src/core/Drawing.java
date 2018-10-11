@@ -17,8 +17,10 @@ public class Drawing extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtAngel;
 	private JTextField txtAngel_1;
+	private JTextField txtTarget;
+	
 
-	public Drawing(Panel panel) {
+	public Drawing(Panel panel, Simulation simulation) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 869, 586);
 		contentPane = new JPanel();
@@ -51,6 +53,12 @@ public class Drawing extends JFrame {
 		txtAngel_1.setBounds(209, 21, 96, 20);
 		panel_2.add(txtAngel_1);
 		txtAngel_1.setColumns(10);
+		
+		txtTarget = new JTextField();
+		txtTarget.setText("Target");
+		txtTarget.setBounds(333, 21, 96, 20);
+		panel_2.add(txtTarget);
+		txtTarget.setColumns(10);
 		btnShoot.addActionListener(new ActionListener() {
 			
 			@Override
@@ -61,6 +69,7 @@ public class Drawing extends JFrame {
 				{
 					panel.getJoint1().setTargetAngle(Integer.parseInt(angel1));
 					panel.getJoint2().setTargetAngle(Integer.parseInt(angel2));
+					simulation.setTarget(Integer.parseInt(txtTarget.getText()));
 				}
 				
 			}

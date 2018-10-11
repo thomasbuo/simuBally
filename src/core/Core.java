@@ -53,7 +53,7 @@ public class Core {
 		panel.setBounds(10, 11, 834, 453);
 		Simulation simulation = new Simulation(joints,part1,part2,part3,ball, floor);
 		
-		Drawing mainFrame = new Drawing(panel);
+		Drawing mainFrame = new Drawing(panel, simulation);
 		
 		mainFrame.show();
 		
