@@ -70,6 +70,8 @@ public class Drawing extends JFrame {
 					panel.getJoint1().setTargetAngle(Integer.parseInt(angel1));
 					panel.getJoint2().setTargetAngle(Integer.parseInt(angel2));
 					simulation.setTarget(Integer.parseInt(txtTarget.getText()));
+					
+					simulation.simulate();
 				}
 				
 			}
