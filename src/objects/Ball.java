@@ -4,10 +4,10 @@ public class Ball {
 
 	private int diameter;
 	private int weight;
-	private int speedX = 0;
-	private int speedY = 0;
-	private int posX;
-	private int posY;
+	private double speedX = 0;
+	private double speedY = 0;
+	private double posX;
+	private double posY;
 	public Ball(int diameter, int weight, int posX, int posY)
 	{
 		this.posX = posX;
@@ -21,32 +21,48 @@ public class Ball {
 	public int getWeight() {
 		return weight;
 	}	
-	public int getPosX() {
+	public double getPosX() {
 		return posX;
 	}
-	public int getSpeedX()
+	public double getSpeedX()
 	{
 		return speedX;
 	}
-	public int getSpeedY()
+	public double getSpeedY()
 	{
 		return speedY;
 	}
-	public void setSpeedY()
+	
+	public void setSpeedX(double x)
 	{
-		speedY -= 10;
+		this.speedX = x;
+	}
+	
+	public void setSpeedY(double y)
+	{
+		this.speedY = y;
+	}
+	
+	public void updateSpeedY()
+	{
+		speedY += 0.1;
+		posY += speedY;
+		posX += speedX;
 	}
 	public void nullSpeed()
 	{
 		speedX = 0;
 		speedY = 0;
 	}
-	public int getPosY() {
+	
+	
+	public double getPosY() {
 		return posY;
 	}
-	public void setPos()
+	public void setPos(int X, int Y)
 	{
-		
+		posX = X;
+		posY = Y;
 	}
 	
 	

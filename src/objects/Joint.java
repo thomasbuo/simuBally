@@ -19,6 +19,10 @@ public class Joint {
 	{
 		this.targetAngel = target;
 	}
+	public int getTargetAngle() 
+	{
+		return targetAngel;
+	}
 	public void updateSpeed()
 	{
 		// update;

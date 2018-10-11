@@ -43,19 +43,19 @@ public class Drawing extends JFrame {
 		panel_2.add(btnShoot);
 		
 		txtAngel = new JTextField();
-		txtAngel.setText("angel1");
+		txtAngel.setText("-30");
 		txtAngel.setBounds(90, 21, 96, 20);
 		panel_2.add(txtAngel);
 		txtAngel.setColumns(10);
 		
 		txtAngel_1 = new JTextField();
-		txtAngel_1.setText("angel2");
+		txtAngel_1.setText("0");
 		txtAngel_1.setBounds(209, 21, 96, 20);
 		panel_2.add(txtAngel_1);
 		txtAngel_1.setColumns(10);
 		
 		txtTarget = new JTextField();
-		txtTarget.setText("Target");
+		txtTarget.setText("300");
 		txtTarget.setBounds(333, 21, 96, 20);
 		panel_2.add(txtTarget);
 		txtTarget.setColumns(10);
@@ -65,7 +65,7 @@ public class Drawing extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String angel1 = txtAngel.getText();
 				String angel2 = txtAngel_1.getText();
-				if(!angel1.equals("angel1") && !angel2.equals("angel2"))
+				if(!angel1.equals("") && !angel2.equals(""))
 				{
 					panel.getJoint1().setTargetAngle(Integer.parseInt(angel1));
 					panel.getJoint2().setTargetAngle(Integer.parseInt(angel2));

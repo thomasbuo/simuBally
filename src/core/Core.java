@@ -18,7 +18,7 @@ public class Core {
 		ArrayList<Joint> joints = new ArrayList();
 		
 		joints.add(new Joint(-90));
-		joints.add(new Joint(-20));
+		joints.add(new Joint(-30));
 		
 		ArmPart part1 = new ArmPart(joints,40,100,430);
 		
@@ -43,7 +43,8 @@ public class Core {
 		}
 		
 		ArmPart part3 = new ArmPart(joints,40,part2.getPosX2(),part2.getPosY2());
-		
+		//part3.setPosX1(3);
+		//part3.setPosY1(3);
 		part3.setPosX2(3);
 		part3.setPosY2(3);
 				

@@ -43,7 +43,7 @@ public class Panel extends JPanel {
 		g2.setColor(Color.green);
 		g2.drawLine(part3.getPosX1(), part3.getPosY1(), part3.getPosX2(), part3.getPosY2());
 		g2.setColor(Color.black);
-		g2.drawOval(ball.getPosX(), ball.getPosY(), ball.getDiameter(), ball.getDiameter());
+		g2.drawOval((int)(ball.getPosX()), (int)(ball.getPosY()), ball.getDiameter(), ball.getDiameter());
 		g2.fillOval(part1.getPosX2(), part1.getPosY2(), 5, 5);
 		g2.fillOval(part2.getPosX2(), part2.getPosY2(), 5, 5);
 	}

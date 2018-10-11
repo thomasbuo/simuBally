@@ -47,7 +47,13 @@ public int getPosX1() {
 }
 
 public void setPosX1(int posX1) {
+	
 	this.posX1 = posX1;
+	
+	/*if(armNumber == 3)
+	{
+		this.posX1 = 
+	}*/
 }
 
 public int getPosY1() {
