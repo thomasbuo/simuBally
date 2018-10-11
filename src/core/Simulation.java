@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import objects.ArmPart;
 import objects.Ball;
+import objects.Floor;
 import objects.Joint;
 
 import java.sql.Time;
@@ -29,9 +30,13 @@ public class Simulation {
 	private double realistic_time_in_seconds;
 	private int days_simulated;
 	
-	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball)
+	private Ball ball;
+	private Floor floor;
+	
+	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor)
 	{
-		
+		this.ball = ball;
+		this.floor = floor;
 		
 	}
 	public void simulate()
@@ -74,7 +79,6 @@ public class Simulation {
 					step++;
 					if (step % this.visualization_frequency == 0) {
 						
-						//do shit
 					}
 				}				
 			});

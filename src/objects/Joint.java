@@ -2,8 +2,9 @@ package objects;
 
 public class Joint {
 //-90 and 20
-private double speed;
-private int angle;
+	private int targetAngel;
+	private double speed = 5;
+	private int angle;
 	
 	public Joint(int angle)
 	{
@@ -13,6 +14,10 @@ private int angle;
 	public void setAngle(int angle)
 	{
 		this.angle  =  angle;
+	}
+	public void setTargetAngle(int target)
+	{
+		this.targetAngel = target;
 	}
 	public void updateSpeed()
 	{
