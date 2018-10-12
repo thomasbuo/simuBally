@@ -65,12 +65,13 @@ public class Drawing extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String angel1 = txtAngel.getText();
 				String angel2 = txtAngel_1.getText();
+				String tgt = txtTarget.getText();
 				if(!angel1.equals("") && !angel2.equals(""))
 				{
 					panel.getJoint1().setTargetAngle(Integer.parseInt(angel1));
 					panel.getJoint2().setTargetAngle(Integer.parseInt(angel2));
 					simulation.setTarget(Integer.parseInt(txtTarget.getText()));
-					
+					panel.getTarget().setX(Integer.parseInt(tgt));
 					simulation.simulate();
 				}
 				
