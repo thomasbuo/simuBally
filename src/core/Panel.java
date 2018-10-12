@@ -42,10 +42,8 @@ public class Panel extends JPanel {
 		g2.setColor(Color.blue);
 		g2.drawLine(part1.getPosX1(), part1.getPosY1(), part1.getPosX2(), part1.getPosY2());
 		g2.setColor(Color.red);
-		g2.drawLine(part2.getPosX1(), part2.getPosY1(), part2.getPosX2(), part2.getPosY2());
-		
+		g2.drawLine(part2.getPosX1(), part2.getPosY1(), part2.getPosX2(), part2.getPosY2());	
 		g2.drawLine(target.getX()-10, floor.getY()-2, target.getX()+10, floor.getY()-2);
-		
 		g2.setColor(Color.green);
 		g2.drawLine(part3.getPosX1(), part3.getPosY1(), part3.getPosX2(), part3.getPosY2());
 		g2.setColor(Color.black);
