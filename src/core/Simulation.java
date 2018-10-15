@@ -113,7 +113,16 @@ public class Simulation {
 						finalPosX = (int) ball.getPosX();
 						finalPosY = floor.getY();
 						
+						if(10 >= Math.abs((finalPosX - target.getX())))
+						{
+							is_running = false;
+						}
 						ml.setErrorX(finalPosX - target.getX());
+						
+						ArrayList<Integer> angles = ml.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
+						joints.get(0).setTargetAngle(angles.get(0));
+						joints.get(1).setTargetAngle(angles.get(1));
+						System.out.println("an1: "+angles.get(0)+" ang2: "+angles.get(1)+" error: "+(finalPosX - target.getX()));
 						
 						ball.setPos(ball.getOriginalPosX(), ball.getOriginalPosY());
 						joints.get(0).setAngle(joints.get(0).getOriginalAngle1());
@@ -175,7 +184,7 @@ public class Simulation {
 						
 						ball.updateSpeedY();
 						mainFrame.redraw();
-						System.out.println("X " + ball.getPosX() + " Y " + ball.getPosY());
+						//System.out.println("X " + ball.getPosX() + " Y " + ball.getPosY());
 					}
 				}				
 			});
