@@ -8,10 +8,14 @@ public class Ball {
 	private double speedY = 0;
 	private double posX;
 	private double posY;
+	private double originalPosX;
+	private double originalPosY;
 	public Ball(int diameter, int weight, int posX, int posY)
 	{
 		this.posX = posX;
 		this.posY = posY;
+		originalPosX = posX;
+		originalPosY= posY;
 		this.diameter = diameter;
 		this.weight = weight;
 	}
@@ -59,11 +63,18 @@ public class Ball {
 	public double getPosY() {
 		return posY;
 	}
-	public void setPos(int X, int Y)
+	public void setPos(double d, double e)
 	{
-		posX = X;
-		posY = Y;
+		posX = d;
+		posY = e;
 	}
-	
+	public double getOriginalPosX()
+	{
+		return originalPosX;
+	}
+	public double getOriginalPosY()
+	{
+		return originalPosY;
+	}
 	
 }

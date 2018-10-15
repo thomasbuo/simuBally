@@ -105,7 +105,18 @@ public class Simulation {
 						ball.nullSpeed();
 						finalPosX = (int) ball.getPosX();
 						finalPosY = floor.getY();
-						is_running = false;
+						ball.setPos(ball.getOriginalPosX(), ball.getOriginalPosY());
+						joints.get(0).setAngle(joints.get(0).getOriginalAngle1());
+						joints.get(1).setAngle(joints.get(1).getOriginalAngle2());
+						part2.setPosX2(2);
+						part2.setPosY2(2);
+						part3.setPosY1(part2.getPosY2());
+						part3.setPosX1(part2.getPosX2());
+						
+						part3.setPosX2(3);
+						part3.setPosY2(3);
+						//is_running = false;
+						continue;
 					}	
 					
 

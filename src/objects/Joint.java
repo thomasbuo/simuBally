@@ -2,6 +2,9 @@ package objects;
 
 public class Joint {
 //-90 and 20
+	private int originalAngle1 = -90;
+	private int originalAngle2 = -30;
+	
 	private int targetAngel;
 	private double speed = 5;
 	private int angle;
@@ -33,6 +36,14 @@ public class Joint {
 
 	public int getAngle() {
 		return angle;
+	}
+	public int getOriginalAngle1()
+	{
+		return originalAngle1;
+	}
+	public int getOriginalAngle2()
+	{
+		return originalAngle2;
 	}
 	
 }
