@@ -6,6 +6,7 @@ import objects.ArmPart;
 import objects.Ball;
 import objects.Floor;
 import objects.Joint;
+import objects.Target;
 
 public class Core {
 	
@@ -20,7 +21,7 @@ public class Core {
 		ArrayList<Joint> joints = new ArrayList();
 		
 		joints.add(new Joint(-90));
-		joints.add(new Joint(-30));
+		joints.add(new Joint(-20));
 		
 		ArmPart part1 = new ArmPart(joints,40,100,430);
 		
@@ -52,9 +53,11 @@ public class Core {
 				
 		Ball ball = new Ball(5, 10,part3.getPosX2(),part3.getPosY2()); //size in pixels weight in grams
 		
-		Panel panel = new Panel(joints.get(0),joints.get(1),part1,part2,part3,ball,floor);
+		Target target = new Target();
+		
+		Panel panel = new Panel(joints.get(0),joints.get(1),part1,part2,part3,ball,floor, target);
 		panel.setBounds(10, 11, 834, 453);
-		Simulation simulation = new Simulation(joints,part1,part2,part3,ball, floor);
+		Simulation simulation = new Simulation(joints,part1,part2,part3,ball, floor, target);
 		
 		Drawing mainFrame = new Drawing(panel, simulation);
 		simulation.setDrawing(mainFrame);

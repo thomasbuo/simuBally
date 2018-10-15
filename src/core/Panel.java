@@ -21,7 +21,7 @@ public class Panel extends JPanel {
 	private Floor floor;
 	private Target target;
 	
-	public Panel(Joint joint1, Joint joint2, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor)
+	public Panel(Joint joint1, Joint joint2, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor, Target target)
 	{
 		this.joint1 = joint1;
 		this.joint2 = joint2;
@@ -30,7 +30,7 @@ public class Panel extends JPanel {
 		this.part2 = part2;
 		this.part3 = part3;
 		this.floor = floor;
-		this.target = new Target();
+		this.target = target;
 	}
 	
 	@Override

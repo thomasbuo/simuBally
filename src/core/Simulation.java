@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import Maths.ML;
 import objects.ArmPart;
 import objects.Ball;
 import objects.Floor;
 import objects.Joint;
+import objects.Target;
 
 import java.sql.Time;
 import java.util.*;
@@ -37,6 +39,9 @@ public class Simulation {
 	private ArmPart part3;
 	private boolean target1, target2;
 	private boolean done = false;
+	private Target target;
+	
+	private ML ml;
 
 	private int finalPosX;
 	private int finalPosY;
@@ -44,7 +49,7 @@ public class Simulation {
 	
 	private Drawing mainFrame;
 	
-	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor)
+	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor, Target target)
 	{
 		this.ball = ball;
 		this.floor = floor;
@@ -52,6 +57,8 @@ public class Simulation {
 		this.joints = joints;
 		this.part2 = part2;
 		this.part3 = part3;
+		this.ml = new ML(target);
+		this.target = target;
 		
 	}
 	public boolean checkCollision() 
@@ -105,6 +112,9 @@ public class Simulation {
 						ball.nullSpeed();
 						finalPosX = (int) ball.getPosX();
 						finalPosY = floor.getY();
+						
+						ml.setErrorX(finalPosX - target.getX());
+						
 						ball.setPos(ball.getOriginalPosX(), ball.getOriginalPosY());
 						joints.get(0).setAngle(joints.get(0).getOriginalAngle1());
 						joints.get(1).setAngle(joints.get(1).getOriginalAngle2());
