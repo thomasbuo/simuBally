@@ -49,7 +49,7 @@ public class Ball {
 	
 	public void updateSpeedY()
 	{
-		speedY += 0.1;
+		speedY += 0.11;
 		posY += speedY;
 		posX += speedX;
 	}

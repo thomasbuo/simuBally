@@ -2,27 +2,27 @@ package objects;
 
 public class Joint {
 //-90 and 20
-	private int originalAngle1 = -90;
-	private int originalAngle2 = -30;
+	private double originalAngle1 = -90;
+	private double originalAngle2 = -30;
 	
-	private int targetAngel;
+	private double targetAngel;
 	private double speed = 5;
-	private int angle;
+	private double angle;
 	
 	public Joint(int angle)
 	{
 		this.angle = angle;
 	}
 
-	public void setAngle(int angle)
+	public void setAngle(double angle)
 	{
 		this.angle  =  angle;
 	}
-	public void setTargetAngle(int target)
+	public void setTargetAngle(double target)
 	{
 		this.targetAngel = target;
 	}
-	public int getTargetAngle() 
+	public double getTargetAngle() 
 	{
 		return targetAngel;
 	}
@@ -34,14 +34,14 @@ public class Joint {
 		return speed;
 	}
 
-	public int getAngle() {
+	public double getAngle() {
 		return angle;
 	}
-	public int getOriginalAngle1()
+	public double getOriginalAngle1()
 	{
 		return originalAngle1;
 	}
-	public int getOriginalAngle2()
+	public double getOriginalAngle2()
 	{
 		return originalAngle2;
 	}
