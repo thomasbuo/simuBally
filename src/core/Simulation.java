@@ -116,6 +116,7 @@ public class Simulation {
 						part3.setPosX2(3);
 						part3.setPosY2(3);
 						//is_running = false;
+						done = false;
 						continue;
 					}	
 					
