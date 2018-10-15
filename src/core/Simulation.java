@@ -17,6 +17,8 @@ import java.util.*;
 
 public class Simulation {
 	
+	private boolean paint = true;
+	
 	private int targetX = 200;
 	private int targetY ;
 	private boolean is_running = false;
@@ -183,7 +185,11 @@ public class Simulation {
 						
 						
 						ball.updateSpeedY();
-						mainFrame.redraw();
+						if(paint)
+						{
+							mainFrame.redraw();
+						}
+						
 						//System.out.println("X " + ball.getPosX() + " Y " + ball.getPosY());
 					}
 				}				
@@ -216,5 +222,9 @@ public class Simulation {
 	public void setDrawing(Drawing frame)
 	{
 		mainFrame = frame;
+	}
+	public void togglePaint()
+	{
+		paint = !paint;
 	}
 }
