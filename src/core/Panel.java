@@ -11,6 +11,7 @@ import objects.ArmPart;
 import objects.Ball;
 import objects.Floor;
 import objects.Joint;
+import objects.Target;
 
 public class Panel extends JPanel {
 	
@@ -18,6 +19,7 @@ public class Panel extends JPanel {
 	private ArmPart part1,part2,part3;
 	private Ball ball;
 	private Floor floor;
+	private Target target;
 	
 	public Panel(Joint joint1, Joint joint2, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor)
 	{
@@ -28,6 +30,7 @@ public class Panel extends JPanel {
 		this.part2 = part2;
 		this.part3 = part3;
 		this.floor = floor;
+		this.target = new Target();
 	}
 	
 	@Override
@@ -39,7 +42,8 @@ public class Panel extends JPanel {
 		g2.setColor(Color.blue);
 		g2.drawLine(part1.getPosX1(), part1.getPosY1(), part1.getPosX2(), part1.getPosY2());
 		g2.setColor(Color.red);
-		g2.drawLine(part2.getPosX1(), part2.getPosY1(), part2.getPosX2(), part2.getPosY2());
+		g2.drawLine(part2.getPosX1(), part2.getPosY1(), part2.getPosX2(), part2.getPosY2());	
+		g2.drawLine(target.getX()-10, floor.getY()-2, target.getX()+10, floor.getY()-2);
 		g2.setColor(Color.green);
 		g2.drawLine(part3.getPosX1(), part3.getPosY1(), part3.getPosX2(), part3.getPosY2());
 		g2.setColor(Color.black);
@@ -64,6 +68,9 @@ public class Panel extends JPanel {
 		this.joint2 = joint2;
 	}
 
+	public Target getTarget() {
+		return target;
+	}
 	public ArmPart getPart1() {
 		return part1;
 	}
