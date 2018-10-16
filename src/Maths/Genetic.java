@@ -73,14 +73,14 @@ public class Genetic {
 		batch3 = new ArrayList<Angle>(angles.subList(b2end+1, angles.size()-1));
 		
 		angles = new ArrayList();
-		/*
+		
 		System.out.println("b1");
 		for(Angle a : batch1)
 		{
 			System.out.println(a.getError()+", "+a.getAngle1()+", "+a.getAngle2());
 			
 		}
-		
+		/*
 		System.out.println("b2");
 		for(Angle a : batch2)
 		{
@@ -127,17 +127,17 @@ public class Genetic {
 			}*/
 			
 			int z = 0;
-			if((r.nextInt(100-1)+1) > 5) 
+			if((r.nextInt(100-1)+1) > 2) 
 			{		
 				int rand = r.nextInt(100-1) +1;
-				if(rand <= 80)
+				if(rand <= 90)
 				{	
 					//System.out.println("batch1");
 					z = r.nextInt((batch1.size()-1));
 					
 					angles.add(batch1.get(z));
 				}
-				else if(rand> 80 && rand <= 92)
+				else if(rand> 90 && rand <= 97)
 				{
 					//System.out.println("batch2");
 					z = r.nextInt((batch2.size()-1));

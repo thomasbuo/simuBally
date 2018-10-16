@@ -30,7 +30,7 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 30;
+	private int population = 300;
 	private int population_counter = 0;
 	
 	private long start_time;
@@ -38,7 +38,7 @@ public class Simulation {
 	private long total_calculation_time;
 	private double simulated_seconds_per_real_second = 0.01;
 	private boolean full_speed = false;
-	private int visualization_frequency = 100000;
+	private int visualization_frequency = 1000;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
