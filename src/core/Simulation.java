@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+import Maths.Angle;
+import Maths.Genetic;
 import Maths.ML;
 import objects.ArmPart;
 import objects.Ball;
@@ -22,13 +24,17 @@ public class Simulation {
 	private int targetX = 200;
 	private int targetY ;
 	private boolean is_running = false;
+	//genetic
+	private int iterations = 20;
+	private int population = 300;
+	private int population_counter = 0;
 	
 	private long start_time;
 	private double current_time;
 	private long total_calculation_time;
 	private double simulated_seconds_per_real_second = 0.01;
 	private boolean full_speed = false;
-	private int visualization_frequency = 100000;
+	private int visualization_frequency = 100;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
@@ -88,7 +94,10 @@ public class Simulation {
 				double delta_t = 0.05; // in seconds
 				this.total_calculation_time = 0;
 				int step = 0;
-	
+				
+				//comment out to use other ml;
+				Genetic g = new Genetic(this);
+				
 				while (this.is_running) {
 					start_time = System.nanoTime();
 	
@@ -111,20 +120,49 @@ public class Simulation {
 					
 					if(checkCollision())
 					{
+						int error = finalPosX - target.getX();
 						ball.nullSpeed();
 						finalPosX = (int) ball.getPosX();
 						finalPosY = floor.getY();
 						
+						
 						if(10 >= Math.abs((finalPosX - target.getX())))
 						{
-							is_running = false;
+							if(g.getGeneration()>iterations)
+								is_running = false;
+							System.out.println(" perfect "+joints.get(0).getTargetAngle()+" "+joints.get(1).getTargetAngle());
 						}
-						ml.setErrorX(finalPosX - target.getX());
 						
-						ArrayList<Integer> angles = ml.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
-						joints.get(0).setTargetAngle(angles.get(0));
-						joints.get(1).setTargetAngle(angles.get(1));
-						System.out.println("an1: "+angles.get(0)+" ang2: "+angles.get(1)+" error: "+(finalPosX - target.getX()));
+						
+						if(paint)
+						{
+							ml.setErrorX(error);
+							ArrayList<Integer> angles = ml.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
+							joints.get(0).setTargetAngle(angles.get(0));
+							joints.get(1).setTargetAngle(angles.get(1));System.out.println("an1: "+angles.get(0)+" ang2: "+angles.get(1)+" error: "+error);
+						}
+						else
+						{
+							g.getAngles().get(population_counter).setError(error);
+							/////////////////////////////////////////////////////////////////////////////////////////////
+							if(population_counter == (population-1))
+							{
+								g.compute();
+								population_counter = 0;
+								
+								System.out.println();
+								for(int p = 0; p<g.getAverrages().size()-1;p++)
+								{
+									System.out.print(g.getAverrages().get(p)+", ");
+								}
+								System.out.println();
+								
+							}
+							Angle a = g.getAngles().get(population_counter);
+							joints.get(0).setTargetAngle(a.getAngle1());
+							joints.get(1).setTargetAngle(a.getAngle2());
+							System.out.println("an1: "+a.getAngle1()+" ang2: "+a.getAngle2()+" error: "+ error+ " generation: "+ g.getGeneration()+" popc: "+population_counter);						
+						}						
 						
 						ball.setPos(ball.getOriginalPosX(), ball.getOriginalPosY());
 						joints.get(0).setAngle(joints.get(0).getOriginalAngle1());
@@ -137,6 +175,7 @@ public class Simulation {
 						part3.setPosX2(3);
 						part3.setPosY2(3);
 						//is_running = false;
+						population_counter++;
 						done = false;
 						continue;
 					}	
@@ -189,7 +228,7 @@ public class Simulation {
 						{
 							mainFrame.redraw();
 						}
-						
+						mainFrame.redraw();
 						//System.out.println("X " + ball.getPosX() + " Y " + ball.getPosY());
 					}
 				}				
@@ -226,5 +265,9 @@ public class Simulation {
 	public void togglePaint()
 	{
 		paint = !paint;
+	}
+	public int getPopulation()
+	{
+		return population;
 	}
 }
