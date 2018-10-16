@@ -9,7 +9,6 @@ import core.Simulation;
 public class Genetic {
 
 	private ArrayList<Angle> angles = new ArrayList();
-	private ArrayList<Angle> newAngles = new ArrayList();
 	private ArrayList<Angle> batch1 = new ArrayList();
 	private ArrayList<Angle> batch2 = new ArrayList();
 	private ArrayList<Angle> batch3 = new ArrayList();
@@ -40,6 +39,7 @@ public class Genetic {
 	public void compute()
 	{
 		generation++;
+		
 		boolean action = true;
 		while(action)
 		{
@@ -48,6 +48,7 @@ public class Genetic {
 			{
 				if(Math.abs(angles.get(i).getError()) < Math.abs(angles.get(i-1).getError()))
 				{
+					//System.out.println("swap: "+ angles.get(i).getError()+", "+ angles.get(i).getAngle1()+", "+angles.get(i).getAngle2()+" with: "+ angles.get(i-1).getError()+", "+ angles.get(i-1).getAngle1()+", "+angles.get(i-1).getAngle2());
 					Collections.swap(angles, i, i-1);
 					action = true;
 				}
@@ -57,28 +58,29 @@ public class Genetic {
 		double avg = 0;
 		for(int i=0;i<angles.size()-1;i++)
 		{
-			System.out.println(angles.get(i).getError());
+			//System.out.println(angles.get(i).getError());
 			avg = avg+angles.get(i).getError();
 			//System.out.println("hjbsdvkjhbasvjhbalfdjvbsdjvbdajv: "+i+", "+angles.size()+", "+((i*1.00)/angles.size()) +", "+i/angles.size()*100);
 		}
 		
 		
 		
-		int b1end = (int)(s.getPopulation() * 0.08);
-		int b2end = (int)(s.getPopulation() * 0.15);
+		int b1end = (int)(s.getPopulation() * 0.15);
+		int b2end = (int)(s.getPopulation() * 0.35);
 		
 		batch1 = new ArrayList<Angle>(angles.subList(0, b1end));
 		batch2 = new ArrayList<Angle>(angles.subList(b1end+1, b2end));
 		batch3 = new ArrayList<Angle>(angles.subList(b2end+1, angles.size()-1));
 		
 		angles = new ArrayList();
+		/*
 		System.out.println("b1");
 		for(Angle a : batch1)
 		{
 			System.out.println(a.getError()+", "+a.getAngle1()+", "+a.getAngle2());
 			
 		}
-		/*
+		
 		System.out.println("b2");
 		for(Angle a : batch2)
 		{
@@ -125,17 +127,17 @@ public class Genetic {
 			}*/
 			
 			int z = 0;
-			if((r.nextInt(100-1)+1) > 0) 
+			if((r.nextInt(100-1)+1) > 5) 
 			{		
 				int rand = r.nextInt(100-1) +1;
-				if(rand <= 100)
+				if(rand <= 80)
 				{	
 					//System.out.println("batch1");
 					z = r.nextInt((batch1.size()-1));
 					
-					angles.add(batch1.get(0));
+					angles.add(batch1.get(z));
 				}
-				else if(rand> 95 && rand <= 98)
+				else if(rand> 80 && rand <= 92)
 				{
 					//System.out.println("batch2");
 					z = r.nextInt((batch2.size()-1));

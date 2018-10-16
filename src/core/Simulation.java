@@ -30,7 +30,7 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 300;
+	private int population = 30;
 	private int population_counter = 0;
 	
 	private long start_time;
@@ -38,7 +38,7 @@ public class Simulation {
 	private long total_calculation_time;
 	private double simulated_seconds_per_real_second = 0.01;
 	private boolean full_speed = false;
-	private int visualization_frequency = 100;
+	private int visualization_frequency = 100000;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
@@ -125,11 +125,11 @@ public class Simulation {
 					
 					if(checkCollision())
 					{
-						double error = finalPosX - target.getX();
+						
 						ball.nullSpeed();
 						finalPosX = ball.getPosX();
 						finalPosY = floor.getY();
-						
+						double error = finalPosX - target.getX();
 
 
 						if(15 >= Math.abs((finalPosX - target.getX())))
@@ -152,18 +152,19 @@ public class Simulation {
 						else
 						{
 							g.getAngles().get(population_counter).setError(error);
+							population_counter++;
 							/////////////////////////////////////////////////////////////////////////////////////////////
 							if(population_counter == (population-1))
 							{
-								g.compute();
 								population_counter = 0;
-								
 								System.out.println();
 								for(int p = 0; p<g.getAverrages().size()-1;p++)
 								{
 									System.out.print(g.getAverrages().get(p)+", ");
 								}
 								System.out.println();
+								
+								g.compute();											
 								
 							}
 							Angle a = g.getAngles().get(population_counter);
@@ -192,7 +193,7 @@ public class Simulation {
 						part3.setPosX2(3);
 						part3.setPosY2(3);
 						//is_running = false;
-						population_counter++;
+						
 						done = false;
 						continue;
 					}	
@@ -267,7 +268,7 @@ public class Simulation {
 		double x = Math.sin(angle*Math.PI/180)*vTan;
 		//System.out.println("x: " + x);
 		double y = Math.cos(angle*Math.PI/180)*vTan;
-		System.out.println("x: " + x +" y: " + y);
+		//System.out.println("x: " + x +" y: " + y);
 		speeds.add(x);
 		speeds.add(y);
 	}
