@@ -32,17 +32,24 @@ public class GD
 		
 		//curX -= gamma * f.apply(prevX);
 		//previousStepSize = abs(curX - prevX);
-		if(target - land < 0) 
+		if(Math.abs(target-land) > 10)
 		{
-			ang1 -= gamma*land;
-			ang2 -= gamma*land;
+			if(target - land < 0) 
+			{
+				ang1 -= gamma*land;
+				ang2 -= gamma*land;
+			}
+			else
+			{
+				ang1 +=gamma*land;
+				ang2 +=gamma/2*land;
+			}
 		}
 		else
 		{
-			ang1 +=gamma*land;
-			ang2 +=gamma/2*land;
+			ang1 = d;
+			ang2 = e;
 		}
-		
 		angles.add(ang1);
 		angles.add(ang2);
 		

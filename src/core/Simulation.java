@@ -36,9 +36,9 @@ public class Simulation {
 	private long start_time;
 	private double current_time;
 	private long total_calculation_time;
-	private double simulated_seconds_per_real_second = 0.01;
+	private double simulated_seconds_per_real_second =100 /*0.01*/;
 	private boolean full_speed = false;
-	private int visualization_frequency = 1000;
+	private int visualization_frequency = 100;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
@@ -53,7 +53,7 @@ public class Simulation {
 	private boolean done = false;
 	private Target target;
 	
-	private GD gd;
+	//private GD gd;
 
 	private double finalPosX;
 	private int finalPosY;
@@ -69,7 +69,7 @@ public class Simulation {
 		this.joints = joints;
 		this.part2 = part2;
 		this.part3 = part3;
-		this.gd = new GD(target);
+		//this.gd = new GD(target);
 		this.target = target;
 		
 	}
@@ -100,8 +100,8 @@ public class Simulation {
 				int step = 0;
 				
 				//comment out to use other ml;
-				Genetic g = new Genetic(this);
-				ML ml = new ML(target);
+				//Genetic g = new Genetic(this);
+				GD gd = new GD(target);
 				
 				while (this.is_running) {
 					start_time = System.nanoTime();
@@ -131,26 +131,27 @@ public class Simulation {
 						finalPosY = floor.getY();
 						double error = finalPosX - target.getX();
 
-
+						/*//commented for GD
 						if(15 >= Math.abs((finalPosX - target.getX())))
 						{
 							if(g.getGeneration()>iterations)
 								is_running = false;
 							System.out.println(" perfect "+joints.get(0).getTargetAngle()+" "+joints.get(1).getTargetAngle());
 						}
-
+						*/ // *
 					//	gd.setLandX(finalPosX/* - target.getX()*/);
 
 						
 						if(paint)
 						{
-							ml.setErrorX(error);
-							ArrayList<Double> angles = ml.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
+							gd.setLandX(finalPosX);
+							ArrayList<Double> angles = gd.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
 							joints.get(0).setTargetAngle(angles.get(0));
 							joints.get(1).setTargetAngle(angles.get(1));System.out.println("an1: "+angles.get(0)+" ang2: "+angles.get(1)+" error: "+error);
 						}
 						else
 						{
+							/* //commented for GD
 							g.getAngles().get(population_counter).setError(error);
 							population_counter++;
 							/////////////////////////////////////////////////////////////////////////////////////////////
@@ -171,7 +172,8 @@ public class Simulation {
 							joints.get(0).setTargetAngle(a.getAngle1());
 							joints.get(1).setTargetAngle(a.getAngle2());
 							System.out.println("an1: "+a.getAngle1()+" ang2: "+a.getAngle2()+" error: "+ error+ " generation: "+ g.getGeneration()+" popc: "+population_counter);						
-						}						
+						*/ // *
+						}					
 						if(paint)
 						{
 							ArrayList<Double> angles = gd.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
