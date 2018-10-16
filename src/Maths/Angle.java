@@ -2,8 +2,8 @@ package Maths;
 
 public class Angle {
 
-	private int angle1;
-	private int angle2;
+	private double angle1;
+	private double angle2;
 	private double error = 0;
 	
 	public Angle(int angle1, int angle2)
@@ -19,11 +19,11 @@ public class Angle {
 	{
 		this.error = error;
 	}
-	public int getAngle1()
+	public double getAngle1()
 	{
 		return angle1;
 	}
-	public int getAngle2()
+	public double getAngle2()
 	{
 		return angle2;
 	}

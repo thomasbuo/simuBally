@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
+
 import Maths.Angle;
 import Maths.Genetic;
+
+import Maths.GD;
+
 import Maths.ML;
 import objects.ArmPart;
 import objects.Ball;
@@ -49,9 +53,9 @@ public class Simulation {
 	private boolean done = false;
 	private Target target;
 	
-	private ML ml;
+	private GD gd;
 
-	private int finalPosX;
+	private double finalPosX;
 	private int finalPosY;
 	private ArrayList<Joint> joints;
 	
@@ -65,7 +69,7 @@ public class Simulation {
 		this.joints = joints;
 		this.part2 = part2;
 		this.part3 = part3;
-		this.ml = new ML(target);
+		this.gd = new GD(target);
 		this.target = target;
 		
 	}
@@ -97,6 +101,7 @@ public class Simulation {
 				
 				//comment out to use other ml;
 				Genetic g = new Genetic(this);
+				ML ml = new ML(target);
 				
 				while (this.is_running) {
 					start_time = System.nanoTime();
@@ -120,24 +125,27 @@ public class Simulation {
 					
 					if(checkCollision())
 					{
-						int error = finalPosX - target.getX();
+						double error = finalPosX - target.getX();
 						ball.nullSpeed();
-						finalPosX = (int) ball.getPosX();
+						finalPosX = ball.getPosX();
 						finalPosY = floor.getY();
 						
-						
-						if(10 >= Math.abs((finalPosX - target.getX())))
+
+
+						if(15 >= Math.abs((finalPosX - target.getX())))
 						{
 							if(g.getGeneration()>iterations)
 								is_running = false;
 							System.out.println(" perfect "+joints.get(0).getTargetAngle()+" "+joints.get(1).getTargetAngle());
 						}
-						
+
+					//	gd.setLandX(finalPosX/* - target.getX()*/);
+
 						
 						if(paint)
 						{
 							ml.setErrorX(error);
-							ArrayList<Integer> angles = ml.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
+							ArrayList<Double> angles = ml.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
 							joints.get(0).setTargetAngle(angles.get(0));
 							joints.get(1).setTargetAngle(angles.get(1));System.out.println("an1: "+angles.get(0)+" ang2: "+angles.get(1)+" error: "+error);
 						}
@@ -163,7 +171,16 @@ public class Simulation {
 							joints.get(1).setTargetAngle(a.getAngle2());
 							System.out.println("an1: "+a.getAngle1()+" ang2: "+a.getAngle2()+" error: "+ error+ " generation: "+ g.getGeneration()+" popc: "+population_counter);						
 						}						
+						if(paint)
+						{
+							ArrayList<Double> angles = gd.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
 						
+							joints.get(0).setTargetAngle(angles.get(0));
+							joints.get(1).setTargetAngle(angles.get(1));
+						}
+						
+						//System.out.println("ang1: "+angles.get(0)+" ang2: "+angles.get(1));
+						//System.out.println("error: "+(finalPosX - target.getX())+ " Landed: " + finalPosX);
 						ball.setPos(ball.getOriginalPosX(), ball.getOriginalPosY());
 						joints.get(0).setAngle(joints.get(0).getOriginalAngle1());
 						joints.get(1).setAngle(joints.get(1).getOriginalAngle2());
@@ -189,7 +206,7 @@ public class Simulation {
 						if (joints.get(0).getTargetAngle() > joints.get(0).getAngle())
 						{
 							//System.out.println("Angle1" + joints.get(0).getAngle());
-							joints.get(0).setAngle((int) (joints.get(0).getAngle()+joints.get(0).getSpeed()));
+							joints.get(0).setAngle( (joints.get(0).getAngle()+joints.get(0).getSpeed()));
 							target1 = false;
 						}
 						part2.setPosX2(2);
@@ -201,7 +218,7 @@ public class Simulation {
 						if (joints.get(1).getTargetAngle() > joints.get(1).getAngle())
 						{
 							//System.out.println("Angle2" + joints.get(1).getAngle());
-							joints.get(1).setAngle((int) (joints.get(1).getAngle()+joints.get(1).getSpeed()));
+							joints.get(1).setAngle( (joints.get(1).getAngle()+joints.get(1).getSpeed()));
 							target2 = false;
 						}
 						part3.setPosX2(3);
@@ -242,7 +259,7 @@ public class Simulation {
 	{
 		speeds.clear();
 		done = true;
-		int angle = joints.get(0).getAngle()+joints.get(1).getAngle()+90;
+		double angle = joints.get(0).getAngle()+joints.get(1).getAngle()+90;
 		double length = Math.sqrt( ( ( part3.getPosX2() - part2.getPosX1() ) * (  part3.getPosX2() - part2.getPosX1()  ) ) + ( ( part3.getPosY2() - part2.getPosY1()  ) * (  part3.getPosY2() - part2.getPosY1()  ) ))	;
 		//System.out.println("length: " + length);
 		double vTan = length/70 * joints.get(0).getSpeed();
@@ -250,7 +267,7 @@ public class Simulation {
 		double x = Math.sin(angle*Math.PI/180)*vTan;
 		//System.out.println("x: " + x);
 		double y = Math.cos(angle*Math.PI/180)*vTan;
-		//System.out.println("y: " + y);
+		System.out.println("x: " + x +" y: " + y);
 		speeds.add(x);
 		speeds.add(y);
 	}

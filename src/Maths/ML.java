@@ -9,7 +9,7 @@ public class ML
 	private int target;
 	private int oldAng1;
 	private int oldAng2;
-	private int error = 0;	
+	private double error = 0;	
 	private double learning_rate = 1.05;
 	private double fake_learning_rate = 2.0;
 	
@@ -18,26 +18,26 @@ public class ML
 		this.target = target.getX();
 	}
 	
-	public ArrayList<Integer> learn(int oldAng1, int oldAng2, int target){
-		ArrayList<Integer> angles = new ArrayList<Integer>();
+	public ArrayList<Double> learn(double d, double e, int target){
+		ArrayList<Double> angles = new ArrayList<Double>();
 		
 		if(error > 10)
 		{
-			if(oldAng1 == oldAng1 * +learning_rate)
+			if(d == d * +learning_rate)
 			{
-				angles.add((int) (oldAng1 * +fake_learning_rate));
+				angles.add((d * +fake_learning_rate));
 			}
 			else
 			{
-				angles.add((int) (oldAng1 * +learning_rate));
+				angles.add((d * +learning_rate));
 			}
-			if(oldAng2 == oldAng2 * +learning_rate)
+			if(e == e * +learning_rate)
 			{
-				angles.add((int) (oldAng2 * +fake_learning_rate));
+				angles.add((e * +fake_learning_rate));
 			}
 			else 
 			{
-				angles.add((int) (oldAng2 * +learning_rate));
+				angles.add((e * +learning_rate));
 			}
 			
 			
@@ -45,37 +45,37 @@ public class ML
 		else if(error < -10)
 		{
 			
-			if(oldAng1 == (oldAng1 + oldAng1*-learning_rate))
+			if(d == (d + d*-learning_rate))
 			{
-				angles.add((int) (oldAng1 + oldAng1*-fake_learning_rate));
+				angles.add((d + d*-fake_learning_rate));
 			}
 			else
 			{
-				angles.add((int) (oldAng1 + oldAng1*-learning_rate));
+				angles.add((d + d*-learning_rate));
 			}
-			if(oldAng2 == (oldAng2 + oldAng2*-learning_rate))
+			if(e == (e + e*-learning_rate))
 			{
-				angles.add((int) (oldAng2 + oldAng2*-fake_learning_rate));
+				angles.add((e + e*-fake_learning_rate));
 			}
 			else 
 			{
-				angles.add((int) (oldAng2 + oldAng2*-learning_rate));
+				angles.add((e + e*-learning_rate));
 			}
 			
-			angles.add((int) (oldAng1 + oldAng1*-learning_rate));
-			angles.add((int) (oldAng2 + oldAng2*-learning_rate));
+			angles.add( (d + d*-learning_rate));
+			angles.add( (e + e*-learning_rate));
 		}
 		else 
 		{
-			angles.add(oldAng1);
-			angles.add(oldAng2);
+			angles.add(d);
+			angles.add(e);
 		}
 		return angles;	
 	}
 	
-	public void setErrorX(int x) 
+	public void setErrorX(double error2) 
 	{
-		this.error = x;
+		this.error = error2;
 	}
 	
 }
