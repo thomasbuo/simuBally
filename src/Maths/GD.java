@@ -13,9 +13,7 @@ public class GD
 	
 	private double land = 0;	
 	
-	private int precision = 10;
-	private double gamma = 0.01;
-	private int previousStepSize;
+	private double gamma = 0.005;
 
 
 	
@@ -37,18 +35,19 @@ public class GD
 			if(target - land < 0) 
 			{
 				ang1 -= gamma*land;
-				ang2 -= gamma*land;
+				ang2 -= gamma/2*land;
 			}
 			else
 			{
-				ang1 +=gamma*land;
-				ang2 +=gamma/2*land;
+				ang1 +=gamma/2*land;
+				ang2 +=gamma*land;
 			}
 		}
 		else
 		{
 			ang1 = d;
 			ang2 = e;
+			System.out.println("Perfect");
 		}
 		angles.add(ang1);
 		angles.add(ang2);

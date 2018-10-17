@@ -23,7 +23,7 @@ import java.util.*;
 
 public class Simulation {
 	
-	private boolean paint = true;
+	private boolean paint = false;
 	
 	private int targetX = 200;
 	private int targetY ;
@@ -38,7 +38,7 @@ public class Simulation {
 	private long total_calculation_time;
 	private double simulated_seconds_per_real_second =100 /*0.01*/;
 	private boolean full_speed = false;
-	private int visualization_frequency = 100;
+	private int visualization_frequency = 7000;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
@@ -100,7 +100,7 @@ public class Simulation {
 				int step = 0;
 				
 				//comment out to use other ml;
-				//Genetic g = new Genetic(this);
+				Genetic g = new Genetic(this);
 				GD gd = new GD(target);
 				
 				while (this.is_running) {
@@ -131,14 +131,14 @@ public class Simulation {
 						finalPosY = floor.getY();
 						double error = finalPosX - target.getX();
 
-						/*//commented for GD
+						//commented for GD
 						if(15 >= Math.abs((finalPosX - target.getX())))
 						{
 							if(g.getGeneration()>iterations)
 								is_running = false;
 							System.out.println(" perfect "+joints.get(0).getTargetAngle()+" "+joints.get(1).getTargetAngle());
 						}
-						*/ // *
+						// *
 					//	gd.setLandX(finalPosX/* - target.getX()*/);
 
 						
@@ -151,7 +151,7 @@ public class Simulation {
 						}
 						else
 						{
-							/* //commented for GD
+							//commented for GD
 							g.getAngles().get(population_counter).setError(error);
 							population_counter++;
 							/////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,7 +172,7 @@ public class Simulation {
 							joints.get(0).setTargetAngle(a.getAngle1());
 							joints.get(1).setTargetAngle(a.getAngle2());
 							System.out.println("an1: "+a.getAngle1()+" ang2: "+a.getAngle2()+" error: "+ error+ " generation: "+ g.getGeneration()+" popc: "+population_counter);						
-						*/ // *
+						// *
 						}					
 						if(paint)
 						{
