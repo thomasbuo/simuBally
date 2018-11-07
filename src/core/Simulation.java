@@ -11,6 +11,7 @@ import Maths.Genetic;
 import Maths.GD;
 
 import Maths.ML;
+import Maths.NeuralCore;
 import objects.ArmPart;
 import objects.Ball;
 import objects.Floor;
@@ -23,22 +24,22 @@ import java.util.*;
 
 public class Simulation {
 	
-	private boolean paint = false;
+	private boolean paint = true;
 	
 	private int targetX = 200;
 	private int targetY ;
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 300;
+	private int population = 50;
 	private int population_counter = 0;
 	
 	private long start_time;
 	private double current_time;
 	private long total_calculation_time;
-	private double simulated_seconds_per_real_second =100 /*0.01*/;
+	private double simulated_seconds_per_real_second =100 /0.01;
 	private boolean full_speed = false;
-	private int visualization_frequency = 7000;
+	private int visualization_frequency = 1000000;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
@@ -52,7 +53,7 @@ public class Simulation {
 	private boolean target1, target2;
 	private boolean done = false;
 	private Target target;
-	
+	private double maxRotation = 180;
 	//private GD gd;
 
 	private double finalPosX;
@@ -102,6 +103,7 @@ public class Simulation {
 				//comment out to use other ml;
 				Genetic g = new Genetic(this);
 				GD gd = new GD(target);
+				NeuralCore nc = new NeuralCore();
 				
 				while (this.is_running) {
 					start_time = System.nanoTime();
@@ -132,12 +134,14 @@ public class Simulation {
 						double error = finalPosX - target.getX();
 
 						//commented for GD
+						/*
 						if(15 >= Math.abs((finalPosX - target.getX())))
 						{
 							if(g.getGeneration()>iterations)
 								is_running = false;
 							System.out.println(" perfect "+joints.get(0).getTargetAngle()+" "+joints.get(1).getTargetAngle());
 						}
+						*/
 						// *
 					//	gd.setLandX(finalPosX/* - target.getX()*/);
 
@@ -152,6 +156,7 @@ public class Simulation {
 						else
 						{
 							//commented for GD
+							/*
 							g.getAngles().get(population_counter).setError(error);
 							population_counter++;
 							/////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,7 +177,14 @@ public class Simulation {
 							joints.get(0).setTargetAngle(a.getAngle1());
 							joints.get(1).setTargetAngle(a.getAngle2());
 							System.out.println("an1: "+a.getAngle1()+" ang2: "+a.getAngle2()+" error: "+ error+ " generation: "+ g.getGeneration()+" popc: "+population_counter);						
-						// *
+						*/
+							nc.setError(error);
+							ArrayList<Double> anglePercentage = nc.getAngles(target.getX());
+							joints.get(0).setTargetAngle(anglePercentage.get(0)*maxRotation);
+							joints.get(1).setTargetAngle(anglePercentage.get(1)*maxRotation);
+							
+							//new angles!!!
+							
 						}					
 						if(paint)
 						{
@@ -185,6 +197,9 @@ public class Simulation {
 						//System.out.println("ang1: "+angles.get(0)+" ang2: "+angles.get(1));
 						//System.out.println("error: "+(finalPosX - target.getX())+ " Landed: " + finalPosX);
 						ball.setPos(ball.getOriginalPosX(), ball.getOriginalPosY());
+						
+						//use nn set error;
+						
 						joints.get(0).setAngle(joints.get(0).getOriginalAngle1());
 						joints.get(1).setAngle(joints.get(1).getOriginalAngle2());
 						part2.setPosX2(2);
@@ -240,7 +255,7 @@ public class Simulation {
 							//System.out.println("X " + ball.getSpeedX()+ " Y " + ball.getSpeedY());
 						}
 						
-						//System.out.println((joints.get(0).getAngle()+joints.get(1).getAngle())+90/**Math.PI/180*/);
+						//System.out.println((joints.get(0).getAngle()+joints.get(1).getAngle())+90/*Math.PI/180/);
 						
 						
 						ball.updateSpeedY();
