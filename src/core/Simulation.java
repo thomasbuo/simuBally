@@ -53,7 +53,8 @@ public class Simulation {
 	private boolean target1, target2;
 	private boolean done = false;
 	private Target target;
-	private double maxRotation = 180;
+	private double maxRotation1 = 90;
+	private double maxRotation2 = 180;
 	//private GD gd;
 
 	private double finalPosX;
@@ -63,7 +64,8 @@ public class Simulation {
 	private Drawing mainFrame;
 	
 	private double hitCount = 0;
-	
+	private int populationIteration = 0;
+	private Random r = new Random();
 	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor, Target target)
 	{
 		this.ball = ball;
@@ -140,7 +142,7 @@ public class Simulation {
 							hitCount ++;
 							
 						}
-						double score = 10 * mainFrame.getWidth() - error;
+						double score = 1 * mainFrame.getWidth() - error;
 
 						//commented for GD
 						/*
@@ -191,25 +193,36 @@ public class Simulation {
 							
 							
 							nc.setError(error);
-							nc.getPopulation().get(population_counter).setScore(score);
+							nc.getPopulation().get(population_counter).setScore(nc.getPopulation().get(population_counter).getScore()+score);
 							ArrayList<Double> targetlist = new ArrayList<>();
 							targetlist.add(target.getX()/1.0);
 							ArrayList<Double> angles = nc.getPopulation().get(population_counter).getNN().guess(targetlist);
 							//System.out.println("Angles: " + angles.get(0)*maxRotation + " Second: " + angles.get(1)*maxRotation);
-							joints.get(0).setTargetAngle(-90 + angles.get(0)*maxRotation);
-							joints.get(1).setTargetAngle(-90 + angles.get(1)*maxRotation);
+							joints.get(0).setTargetAngle(-(int)(maxRotation1/2) + angles.get(0)*maxRotation1);
+							joints.get(1).setTargetAngle(-(int)(maxRotation2/2)  + angles.get(1)*maxRotation2);
 							population_counter++;
 							if(population_counter == (population-1))
 							{
-								if((hitCount/population)>=0.92)
+								populationIteration++;
+								if((hitCount/population)>=1.00)
 								{
 									is_running = false;
 								}
 								population_counter = 0;
 								System.out.println("Hit count: " + hitCount +" %: "+(double)(hitCount/population));
-								
-								nc.train(nc.getPopulation());											
+								if(populationIteration == 100)
+								{
+									for(int i = 0; i< nc.getPopulation().size();i++)
+									{
+										nc.getPopulation().get(i).setScore(nc.getPopulation().get(i).getScore()/populationIteration);
+									}
+									populationIteration = 0;
+									nc.train(nc.getPopulation());											
+									
+									target.setX((int)(r.nextDouble()*200)+200);
+								}
 								hitCount=0;
+								target.setX((int)(r.nextDouble()*200)+200);
 							}
 							//new angles!!!
 							
