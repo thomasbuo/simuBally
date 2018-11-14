@@ -132,6 +132,8 @@ public class Simulation {
 						finalPosX = ball.getPosX();
 						finalPosY = floor.getY();
 						double error = finalPosX - target.getX();
+						
+						double score = mainFrame.getWidth() - error;
 
 						//commented for GD
 						/*
@@ -178,6 +180,7 @@ public class Simulation {
 							joints.get(1).setTargetAngle(a.getAngle2());
 							System.out.println("an1: "+a.getAngle1()+" ang2: "+a.getAngle2()+" error: "+ error+ " generation: "+ g.getGeneration()+" popc: "+population_counter);						
 						*/
+							
 							nc.setError(error);
 							ArrayList<Double> anglePercentage = nc.getAngles(target.getX());
 							joints.get(0).setTargetAngle(anglePercentage.get(0)*maxRotation);
