@@ -11,9 +11,12 @@ public class NeuralCore {
 	private NeuralNetwork nn;
 	private GeneticAlgorithm gn = new GeneticAlgorithm() ;
 	private ArrayList<Angle> population = new ArrayList();
-	public NeuralCore()
+	public NeuralCore(int popSize)
 	{
-		nn = new NeuralNetwork(1,2,6,2);
+		for(int i = 0; i < popSize; i++)
+		{
+			population.add(new Angle(0.0,0.0, 1, 2, 4, 2));
+		}
 	}
 	
 	public void setError(double error)
@@ -26,12 +29,12 @@ public class NeuralCore {
 		ArrayList<Double> input = new ArrayList();
 		input.add(target);
 		ArrayList<Double> angles = nn.guess(input);
-		System.out.println(angles);
+		System.out.println("HI: " +  angles);
 		return angles;
 		
 		
 	}
-	public ArrayList<Angle>  Train(ArrayList<Angle> angles)
+	public ArrayList<Angle>  train(ArrayList<Angle> angles)
 	{
 		population = gn.generateNewPopulation(angles);
 		return population;

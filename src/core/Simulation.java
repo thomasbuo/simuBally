@@ -24,14 +24,14 @@ import java.util.*;
 
 public class Simulation {
 	
-	private boolean paint = true;
+	private boolean paint = false;
 	
 	private int targetX = 200;
 	private int targetY ;
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 50;
+	private int population = 100;
 	private int population_counter = 0;
 	
 	private long start_time;
@@ -39,7 +39,7 @@ public class Simulation {
 	private long total_calculation_time;
 	private double simulated_seconds_per_real_second =100 /0.01;
 	private boolean full_speed = false;
-	private int visualization_frequency = 1000000;
+	private int visualization_frequency = 1000;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
@@ -61,6 +61,8 @@ public class Simulation {
 	private ArrayList<Joint> joints;
 	
 	private Drawing mainFrame;
+	
+	private double hitCount = 0;
 	
 	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor, Target target)
 	{
@@ -101,9 +103,9 @@ public class Simulation {
 				int step = 0;
 				
 				//comment out to use other ml;
-				Genetic g = new Genetic(this);
+				//Genetic g = new Genetic(this);
 				GD gd = new GD(target);
-				NeuralCore nc = new NeuralCore();
+				NeuralCore nc = new NeuralCore(population);
 				
 				while (this.is_running) {
 					start_time = System.nanoTime();
@@ -131,9 +133,14 @@ public class Simulation {
 						ball.nullSpeed();
 						finalPosX = ball.getPosX();
 						finalPosY = floor.getY();
-						double error = finalPosX - target.getX();
+						double error = Math.abs(finalPosX - target.getX());
 						
-						double score = mainFrame.getWidth() - error;
+						if(15 >= Math.abs((finalPosX - target.getX())))
+						{
+							hitCount ++;
+							
+						}
+						double score = 10 * mainFrame.getWidth() - error;
 
 						//commented for GD
 						/*
@@ -181,12 +188,29 @@ public class Simulation {
 							System.out.println("an1: "+a.getAngle1()+" ang2: "+a.getAngle2()+" error: "+ error+ " generation: "+ g.getGeneration()+" popc: "+population_counter);						
 						*/
 							
-							nc.setError(error);
-							nc.getPopulation(population_counter).setScore(score);
-							ArrayList<Double> anglePercentage = nc.getAngles(target.getX());
-							joints.get(0).setTargetAngle(anglePercentage.get(0)*maxRotation);
-							joints.get(1).setTargetAngle(anglePercentage.get(1)*maxRotation);
 							
+							
+							nc.setError(error);
+							nc.getPopulation().get(population_counter).setScore(score);
+							ArrayList<Double> targetlist = new ArrayList<>();
+							targetlist.add(target.getX()/1.0);
+							ArrayList<Double> angles = nc.getPopulation().get(population_counter).getNN().guess(targetlist);
+							//System.out.println("Angles: " + angles.get(0)*maxRotation + " Second: " + angles.get(1)*maxRotation);
+							joints.get(0).setTargetAngle(-90 + angles.get(0)*maxRotation);
+							joints.get(1).setTargetAngle(-90 + angles.get(1)*maxRotation);
+							population_counter++;
+							if(population_counter == (population-1))
+							{
+								if((hitCount/population)>=0.92)
+								{
+									is_running = false;
+								}
+								population_counter = 0;
+								System.out.println("Hit count: " + hitCount +" %: "+(double)(hitCount/population));
+								
+								nc.train(nc.getPopulation());											
+								hitCount=0;
+							}
 							//new angles!!!
 							
 						}					

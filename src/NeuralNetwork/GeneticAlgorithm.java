@@ -26,7 +26,7 @@ public class GeneticAlgorithm {
 		sort(angles);
 		for(Angle a : angles)
 		{
-			System.out.print(a.getError()+", ");
+			System.out.print("Scores: "+a.getScore()+", ");
 		}
 		System.out.println();
 		int totalScore = computeTotalScore(angles);
@@ -43,7 +43,7 @@ public class GeneticAlgorithm {
 
 		for(Angle a : batch)
 		{
-			Angle ang = new Angle(a.getAngle1(),a.getAngle2());
+			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 4, 2);
 			ang.setNN(a.getNN());
 			newAngles.add(ang);
 		}
@@ -170,7 +170,7 @@ public class GeneticAlgorithm {
 	{
 		
 			
-			Angle child = new Angle(0.0,0.0);
+			Angle child = new Angle(0.0,0.0, 1, 2, 4, 2);
 			
 			ArrayList<Weight> weightP1 = p1.getNN().getWeights();
 			int max = weightP1.size();
@@ -204,6 +204,21 @@ public class GeneticAlgorithm {
 				}
 			}	
 			
+			for(int i = 0; i < child.getNN().getLayers().size(); i++)
+			{
+				for(int j = 0; j < child.getNN().getLayers().get(i).size();j++)
+				{
+					double chance = r.nextDouble();
+					if(chance<0.5)
+					{
+						child.getNN().getLayers().get(i).get(j).setBias(p1.getNN().getLayers().get(i).get(j).getBias());
+					}
+					else 
+					{
+						child.getNN().getLayers().get(i).get(j).setBias(p2.getNN().getLayers().get(i).get(j).getBias());
+					}
+				}
+			}
 			return child;
 		
 		

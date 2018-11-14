@@ -18,7 +18,7 @@ public class Perceptron {
 	public Perceptron(String id)
 	{
 		this.id = id;
-		//bias = r.nextDouble()*2 -1;
+		bias = r.nextDouble()*2 -1;
 		bias = 0;
 	}
 	
