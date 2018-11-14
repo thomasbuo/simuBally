@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Properties;
 import java.util.Random;
 
-import Objects.Bird;
+import Maths.Angle;
 
 public class GeneticAlgorithm {
 
@@ -20,41 +20,41 @@ public class GeneticAlgorithm {
 		
 	}
 	
-	public ArrayList<Bird> generateNewPopulation(ArrayList<Bird> birds)
+	public ArrayList<Angle> generateNewPopulation(ArrayList<Angle> angles)
 	{		
 		
-		sort(birds);
-		for(Bird b : birds)
+		sort(angles);
+		for(Angle a : angles)
 		{
-			System.out.print(b.getScore()+", ");
+			System.out.print(a.getError()+", ");
 		}
 		System.out.println();
-		int totalScore = computeTotalScore(birds);
+		int totalScore = computeTotalScore(angles);
 		
-		ArrayList<Bird> newBirds = new ArrayList();
+		ArrayList<Angle> newAngles = new ArrayList();
 		
 		ArrayList<Double> probabilities = new ArrayList<>();
-		for(int i =0;i<birds.size();i++)
+		for(int i =0;i<angles.size();i++)
 		{
-			probabilities.add((birds.get(i).getScore()/totalScore));
+			probabilities.add((angles.get(i).getScore()/totalScore));
 		}
 		
-		ArrayList<Bird> batch = new ArrayList<Bird>(birds.subList(0, (int)(birds.size()*KEEP_PERCENT_TOP)));
+		ArrayList<Angle> batch = new ArrayList<Angle>(angles.subList(0, (int)(angles.size()*KEEP_PERCENT_TOP)));
 
-		for(Bird bird : batch)
+		for(Angle a : batch)
 		{
-			Bird b = new Bird(height);
-			b.setNeuralNetwork(bird.getNeuralNetwork());
-			newBirds.add(b);
+			Angle ang = new angles();
+			ang.setNeuralNetwork(a.getNeuralNetwork());
+			newAngles.add(ang);
 		}
 		
-		while(newBirds.size()<birds.size())
+		while(newAngles.size()<angles.size())
 		{
 			double p1 = r.nextDouble();
 			double p2 = r.nextDouble();
 			
-			Bird b1 = null;
-			Bird b2 = null;
+			Angle a1 = null;
+			Angle a2 = null;
 			
 			double sum=0;
 			
@@ -64,7 +64,7 @@ public class GeneticAlgorithm {
 				
 				if(sum > p1)
 				{
-					b1 = birds.get(j);
+					a1 = angles.get(j);
 				}
 			}
 			
@@ -76,12 +76,12 @@ public class GeneticAlgorithm {
 				
 				if(sum > p2)
 				{
-					b2 = birds.get(j);
+					a2 = angles.get(j);
 				}
 			}
 			
-			Bird child = breed(b1,b2);
-			newBirds.add(child);
+			Angle child = breed(a1,a2);
+			newAngles.add(child);
 			
 		}
 		mutate(newBirds);
@@ -125,17 +125,17 @@ public class GeneticAlgorithm {
 		return newBirds;
 	}
 	
-	public int computeTotalScore(ArrayList<Bird> birds)
+	public int computeTotalScore(ArrayList<Angle> angles)
 	{
 		int score = 0;
-		for(Bird b : birds)
+		for(Angle a : angles)
 		{
-			score+= b.getScore();
+			score+= a.getScore();
 		}
 		return score;
 	}
 	
-	public void sort(ArrayList<Bird> sortableList)
+	public void sort(ArrayList<Angle> sortableList)
 	{
 		boolean action = true;
 		while(action)
