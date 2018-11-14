@@ -10,6 +10,7 @@ public class NeuralCore {
 	private double error = 0;
 	private NeuralNetwork nn;
 	private GeneticAlgorithm gn = new GeneticAlgorithm() ;
+	private ArrayList<Angle> population = new ArrayList();
 	public NeuralCore()
 	{
 		nn = new NeuralNetwork(1,2,6,2);
@@ -30,9 +31,10 @@ public class NeuralCore {
 		
 		
 	}
-	public ArrayList<Angle>  Train()
+	public ArrayList<Angle>  Train(ArrayList<Angle> angles)
 	{
-		return gn.generateNewPopulation()
+		population = gn.generateNewPopulation(angles);
+		return population;
 	}
 	
 }

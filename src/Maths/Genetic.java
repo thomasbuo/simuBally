@@ -30,8 +30,8 @@ public class Genetic {
 		s.togglePaint();
 		for(int i = 0; i< s.getPopulation(); i++)
 		{
-			int a1 = r.nextInt(high1-low1) + low1;
-			int a2 = r.nextInt(high2-low2) + low2;
+			double a1 = r.nextInt(high1-low1) + low1;
+			double a2 = r.nextInt(high2-low2) + low2;
 			angles.add(new Angle(a1, a2));
 		}
 	}
@@ -156,8 +156,8 @@ public class Genetic {
 			}
 			else
 			{
-				int a3 = r.nextInt(high1-low1) + low1;
-				int a4 = r.nextInt(high2-low2) + low2;
+				double a3 = r.nextInt(high1-low1) + low1;
+				double a4 = r.nextInt(high2-low2) + low2;
 				angles.add(new Angle(a3, a4));
 			}			
 		}
