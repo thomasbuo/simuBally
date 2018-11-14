@@ -30,9 +30,9 @@ public class NeuralCore {
 		
 		
 	}
-	public ArrayList<ArrayList<Double>>  Train()
+	public ArrayList<Angle>  Train()
 	{
-		return gn.generateNewPopulation(birds)
+		return gn.generateNewPopulation()
 	}
 	
 }
