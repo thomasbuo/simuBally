@@ -2,12 +2,14 @@ package Maths;
 
 import java.util.ArrayList;
 
+import NeuralNetwork.GeneticAlgorithm;
 import NeuralNetwork.NeuralNetwork;
 
 public class NeuralCore {
 
 	private double error = 0;
 	private NeuralNetwork nn;
+	private GeneticAlgorithm gn = new GeneticAlgorithm() ;
 	public NeuralCore()
 	{
 		nn = new NeuralNetwork(1,2,6,2);
@@ -27,6 +29,10 @@ public class NeuralCore {
 		return angles;
 		
 		
+	}
+	public ArrayList<ArrayList<Double>>  Train()
+	{
+		return gn.generateNewPopulation(birds)
 	}
 	
 }

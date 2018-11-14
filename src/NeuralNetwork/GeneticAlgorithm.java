@@ -15,9 +15,9 @@ public class GeneticAlgorithm {
 	private int height;
 		
 	private Random r = new Random();
-	public GeneticAlgorithm(int height)
+	public GeneticAlgorithm()
 	{		
-		this.height = height;
+		
 	}
 	
 	public ArrayList<Bird> generateNewPopulation(ArrayList<Bird> birds)
