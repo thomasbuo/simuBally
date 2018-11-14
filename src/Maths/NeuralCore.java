@@ -36,5 +36,9 @@ public class NeuralCore {
 		population = gn.generateNewPopulation(angles);
 		return population;
 	}
+	public ArrayList<Angle> getPopulation()
+	{
+		return population;
+	}
 	
 }
