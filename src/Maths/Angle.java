@@ -10,7 +10,7 @@ public class Angle {
 	private double score = 0;
 	private NeuralNetwork nn = null;
 	
-	public Angle(int angle1, int angle2)
+	public Angle(Double angle1, Double angle2)
 	{
 		this.angle1 = angle1;
 		this.angle2 = angle2;
