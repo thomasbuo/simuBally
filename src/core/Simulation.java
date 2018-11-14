@@ -182,6 +182,7 @@ public class Simulation {
 						*/
 							
 							nc.setError(error);
+							nc.getPopulation(population_counter).setScore(score);
 							ArrayList<Double> anglePercentage = nc.getAngles(target.getX());
 							joints.get(0).setTargetAngle(anglePercentage.get(0)*maxRotation);
 							joints.get(1).setTargetAngle(anglePercentage.get(1)*maxRotation);
