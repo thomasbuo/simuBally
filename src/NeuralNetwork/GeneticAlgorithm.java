@@ -44,7 +44,7 @@ public class GeneticAlgorithm {
 
 		for(Angle a : batch)
 		{
-			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 5, 10);
+			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 10, 1);
 			ang.setNN(a.getNN());
 			newAngles.add(ang);
 		}
@@ -166,17 +166,20 @@ public class GeneticAlgorithm {
 	public Angle breed(Angle p1, Angle p2)
 	{
 		
-			
-			Angle child = new Angle(0.0,0.0, 1, 2, 5,10);
-			
-			ArrayList<Weight> weightP1 = p1.getNN().getWeights();
-			int max = weightP1.size();
-			int halfMax = (int)(r.nextDouble()*max);
-			for(int j = 0; j < halfMax; j++)
+		
+		Angle child = new Angle(0.0,0.0, 1, 2, 20,1);
+		
+		ArrayList<Weight> weightP1 = p1.getNN().getWeights();
+		ArrayList<Weight> weightP2 = p2.getNN().getWeights();
+		int weightSize = p1.getNN().getWeights().size();
+		
+		for(int j = 0; j<weightSize;j++)
+		{
+			if(r.nextDouble()>0.5)
 			{
 				String id1 = weightP1.get(j).getBackPerceptron().getID();
 				String id2 = weightP1.get(j).getCurrentPerceptron().getID();
-				for(int d = 0; d <max;d++ )
+				for(int d = 0; d <weightSize;d++ )
 				{
 					ArrayList<Weight> newBirdsWeights = child.getNN().getWeights();
 					if(newBirdsWeights.get(d).getBackPerceptron().getID().equals(id1) && newBirdsWeights.get(d).getCurrentPerceptron().getID().equals(id2) )
@@ -185,21 +188,22 @@ public class GeneticAlgorithm {
 					}
 				}
 			}
-			
-			ArrayList<Weight> weightP2 = p2.getNN().getWeights();
-			for(int j = halfMax; j < max; j++)
+			else 
 			{
 				String id1 = weightP2.get(j).getBackPerceptron().getID();
 				String id2 = weightP2.get(j).getCurrentPerceptron().getID();
-				for(int d = 0; d <max;d++ )
+				for(int d = 0; d <weightSize;d++ )
 				{
-					ArrayList<Weight> newBirdsWeights = child.getNN().getWeights();
-					if(newBirdsWeights.get(d).getBackPerceptron().getID().equals(id1) && newBirdsWeights.get(d).getCurrentPerceptron().getID().equals(id2) )
+					ArrayList<Weight> newAngleWeights = child.getNN().getWeights();
+					if(newAngleWeights.get(d).getBackPerceptron().getID().equals(id1) && newAngleWeights.get(d).getCurrentPerceptron().getID().equals(id2) )
 					{
-						newBirdsWeights.get(d).setWeight(weightP2.get(j).getWeight());
+						newAngleWeights.get(d).setWeight(weightP2.get(j).getWeight());
 					}
 				}
-			}	
+			}
+		}
+			
+			
 			
 			for(int i = 0; i < child.getNN().getLayers().size(); i++)
 			{
