@@ -32,7 +32,7 @@ public class Genetic {
 		{
 			double a1 = r.nextInt(high1-low1) + low1;
 			double a2 = r.nextInt(high2-low2) + low2;
-			angles.add(new Angle(a1, a2));
+			angles.add(new Angle(a1, a2,1,2,4,1));
 		}
 	}
 	
@@ -158,7 +158,7 @@ public class Genetic {
 			{
 				double a3 = r.nextInt(high1-low1) + low1;
 				double a4 = r.nextInt(high2-low2) + low2;
-				angles.add(new Angle(a3, a4));
+				angles.add(new Angle(a3, a4,1,2,4,1));
 			}			
 		}
 		

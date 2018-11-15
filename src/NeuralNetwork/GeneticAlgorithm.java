@@ -11,7 +11,7 @@ import Maths.Angle;
 public class GeneticAlgorithm {
 
 	private final double KEEP_PERCENT_TOP = 0.10;
-	
+	private final double MUTATION_RATE = 0.03;
 	private int height;
 		
 	private Random r = new Random();
@@ -51,9 +51,21 @@ public class GeneticAlgorithm {
 		
 		while(newAngles.size()<angles.size())
 		{
-			double p1 = r.nextDouble();
-			double p2 = r.nextDouble();
+
+			double p1;
+			double p2;
 			
+			if(r.nextDouble()>0.2)
+			{
+				p1 = r.nextDouble()*0.1;
+				p2 = r.nextDouble()*0.1;
+			}
+			else 
+			{
+				p1 = r.nextDouble();
+				p2 = r.nextDouble();
+			}
+
 			Angle a1 = null;
 			Angle a2 = null;
 			
@@ -85,43 +97,8 @@ public class GeneticAlgorithm {
 			newAngles.add(child);
 			
 		}
+		
 		mutate(newAngles);
-		
-		/*
-		ArrayList<Bird> batch = new ArrayList<Bird>(birds.subList(0, (int)(birds.size()*KEEP_PERCENT_TOP)));
-		
-		for(int i = 0; i< (int)(0.10*birds.size());i++)
-		{
-			Bird b= new Bird(height); 
-			b.setNeuralNetwork(birds.get(0).getNeuralNetwork());
-		}
-		
-		for(Bird bird : batch)
-		{
-			Bird b = new Bird(height);
-			b.setNeuralNetwork(bird.getNeuralNetwork());
-			newBirds.add(b);
-		}
-		
-		batch =  new ArrayList<Bird>(birds.subList((int)(birds.size() - birds.size()*KEEP_PERCENT_BOTTOM), birds.size()-1));
-		
-		for(Bird bird : batch)
-		{
-			Bird b = new Bird(height);
-			b.setNeuralNetwork(bird.getNeuralNetwork());
-			newBirds.add(b);
-		}
-		
-		ArrayList<Bird> parents = new ArrayList();
-		
-		for(Bird bird : newBirds)
-		{
-			Bird b = new Bird(height);
-			b.setNeuralNetwork(bird.getNeuralNetwork());
-			parents.add(b);
-		}*/
-		
-		
 		
 		return newAngles;
 	}
@@ -159,9 +136,13 @@ public class GeneticAlgorithm {
 		{
 			for(int j = 0; j< angles.get(i).getNN().getWeights().size(); j++)
 			{
-				if(r.nextDouble()>0.90)
+				if(r.nextDouble()<MUTATION_RATE)
 				{
 					angles.get(i).getNN().getWeights().get(j).setWeight(r.nextDouble()*2 -1);
+				}
+				if(r.nextDouble()<MUTATION_RATE)
+				{
+					angles.get(i).getNN().getLayers().get(i).get(j).setBias(r.nextDouble()*2 -1);						
 				}
 			}
 		}
