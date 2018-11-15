@@ -54,10 +54,10 @@ public class GeneticAlgorithm {
 			double p1;
 			double p2;
 			
-			if(r.nextDouble()>0.5)
+			if(r.nextDouble()>0.2)
 			{
-				p1 = r.nextDouble()*0.3;
-				p2 = r.nextDouble()*0.3;
+				p1 = r.nextDouble()*0.1;
+				p2 = r.nextDouble()*0.1;
 			}
 			else 
 			{
