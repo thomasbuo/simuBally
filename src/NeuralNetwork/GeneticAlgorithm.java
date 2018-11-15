@@ -132,6 +132,7 @@ public class GeneticAlgorithm {
 	
 	public void mutate(ArrayList<Angle> angles)
 	{
+		//weights
 		for(int i =0; i< angles.size();i++)
 		{
 			for(int j = 0; j< angles.get(i).getNN().getWeights().size(); j++)
@@ -140,12 +141,26 @@ public class GeneticAlgorithm {
 				{
 					angles.get(i).getNN().getWeights().get(j).setWeight(r.nextDouble()*2 -1);
 				}
-				if(r.nextDouble()<MUTATION_RATE)
-				{
-					angles.get(i).getNN().getLayers().get(i).get(j).setBias(r.nextDouble()*2 -1);						
-				}
+				
 			}
 		}
+		//bias
+		for(int i =0; i< angles.size();i++)
+		{
+			for(int j = 0; j< angles.get(i).getNN().getLayers().size(); j++)
+			{
+				for(int k = 0; k< angles.get(i).getNN().getLayers().get(j).size(); k++)
+				{
+					if(r.nextDouble()<MUTATION_RATE)
+					{
+						angles.get(i).getNN().getLayers().get(j).get(k).setBias(r.nextDouble()*2 -1);						
+					}
+				}
+				
+			}
+		}
+		
+		
 	}
 	
 	public Angle breed(Angle p1, Angle p2)
