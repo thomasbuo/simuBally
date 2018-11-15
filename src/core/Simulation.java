@@ -31,7 +31,7 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 30;
+	private int population = 100;
 	private int population_counter = 0;
 	private boolean plop = false;
 	private long start_time;
@@ -212,7 +212,7 @@ public class Simulation {
 									is_running = false;
 								}
 								population_counter = 0;
-								if(populationIteration == 100)
+								if(populationIteration == 50)
 								{
 									generation++;
 									System.out.println("gen: "+generation+" Hit count: " + hitCount +" %: "+(double)(hitCount/population)/populationIteration*100);

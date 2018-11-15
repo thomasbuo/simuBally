@@ -51,8 +51,19 @@ public class GeneticAlgorithm {
 		
 		while(newAngles.size()<angles.size())
 		{
-			double p1 = r.nextDouble();
-			double p2 = r.nextDouble();
+			double p1;
+			double p2;
+			
+			if(r.nextDouble()>0.5)
+			{
+				p1 = r.nextDouble()*0.3;
+				p2 = r.nextDouble()*0.3;
+			}
+			else 
+			{
+				p1 = r.nextDouble();
+				p2 = r.nextDouble();
+			}
 			
 			Angle a1 = null;
 			Angle a2 = null;
@@ -159,7 +170,7 @@ public class GeneticAlgorithm {
 		{
 			for(int j = 0; j< angles.get(i).getNN().getWeights().size(); j++)
 			{
-				if(r.nextDouble()>0.90)
+				if(r.nextDouble()>0.97)
 				{
 					angles.get(i).getNN().getWeights().get(j).setWeight(r.nextDouble()*2 -1);
 				}
@@ -172,8 +183,41 @@ public class GeneticAlgorithm {
 		
 			
 			Angle child = new Angle(0.0,0.0, 1, 2, 20,1);
-			
 			ArrayList<Weight> weightP1 = p1.getNN().getWeights();
+			ArrayList<Weight> weightP2 = p2.getNN().getWeights();
+			int weightSize = p1.getNN().getWeights().size();
+			
+			for(int j = 0; j<weightSize;j++)
+			{
+				if(r.nextDouble()>0.5)
+				{
+					String id1 = weightP1.get(j).getBackPerceptron().getID();
+					String id2 = weightP1.get(j).getCurrentPerceptron().getID();
+					for(int d = 0; d <weightSize;d++ )
+					{
+						ArrayList<Weight> newBirdsWeights = child.getNN().getWeights();
+						if(newBirdsWeights.get(d).getBackPerceptron().getID().equals(id1) && newBirdsWeights.get(d).getCurrentPerceptron().getID().equals(id2) )
+						{
+							newBirdsWeights.get(d).setWeight(weightP1.get(j).getWeight());
+						}
+					}
+				}
+				else 
+				{
+					String id1 = weightP2.get(j).getBackPerceptron().getID();
+					String id2 = weightP2.get(j).getCurrentPerceptron().getID();
+					for(int d = 0; d <weightSize;d++ )
+					{
+						ArrayList<Weight> newAngleWeights = child.getNN().getWeights();
+						if(newAngleWeights.get(d).getBackPerceptron().getID().equals(id1) && newAngleWeights.get(d).getCurrentPerceptron().getID().equals(id2) )
+						{
+							newAngleWeights.get(d).setWeight(weightP2.get(j).getWeight());
+						}
+					}
+				}
+			}
+			
+			/*
 			int max = weightP1.size();
 			int halfMax = (int)(r.nextDouble()*max);
 			for(int j = 0; j < halfMax; j++)
@@ -190,7 +234,7 @@ public class GeneticAlgorithm {
 				}
 			}
 			
-			ArrayList<Weight> weightP2 = p2.getNN().getWeights();
+			
 			for(int j = halfMax; j < max; j++)
 			{
 				String id1 = weightP2.get(j).getBackPerceptron().getID();
@@ -204,7 +248,7 @@ public class GeneticAlgorithm {
 					}
 				}
 			}	
-			
+			*/
 			for(int i = 0; i < child.getNN().getLayers().size(); i++)
 			{
 				for(int j = 0; j < child.getNN().getLayers().get(i).size();j++)
