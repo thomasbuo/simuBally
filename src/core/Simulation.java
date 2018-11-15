@@ -139,7 +139,7 @@ public class Simulation {
 						finalPosY = floor.getY();
 						double error = Math.abs(finalPosX - target.getX());
 						
-						if(15 >= Math.abs((finalPosX - target.getX())))
+						if(15 >= error)
 						{
 							hitCount ++;
 							
@@ -212,7 +212,7 @@ public class Simulation {
 									is_running = false;
 								}
 								population_counter = 0;
-								if(populationIteration == 50)
+								if(populationIteration == 20)
 								{
 									generation++;
 									System.out.println("gen: "+generation+" Hit count: " + hitCount +" %: "+(double)(hitCount/population)/populationIteration*100);
