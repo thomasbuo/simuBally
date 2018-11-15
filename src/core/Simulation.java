@@ -212,11 +212,10 @@ public class Simulation {
 									is_running = false;
 								}
 								population_counter = 0;
-								if(populationIteration == 20)
+								if(populationIteration == 100)
 								{
 									generation++;
-									System.out.println("gen: "+generation+" Hit count: " + hitCount +" %: "+(double)(hitCount/population)/populationIteration*100);
-
+									System.out.print("gen: "+ generation+" ");
 									for(int i = 0; i< nc.getPopulation().size();i++)
 									{
 										nc.getPopulation().get(i).setScore(nc.getPopulation().get(i).getScore()/populationIteration);

@@ -24,11 +24,11 @@ public class GeneticAlgorithm {
 	{		
 		
 		sort(angles);
-		/*for(Angle a : angles)
+		for(Angle a : angles)
 		{
 			System.out.print("Scores: "+a.getScore()+", ");
-		}*/
-		//System.out.println();
+		}
+		System.out.println();
 		int totalScore = computeTotalScore(angles);
 		
 		ArrayList<Angle> newAngles = new ArrayList();
