@@ -43,7 +43,7 @@ public class GeneticAlgorithm {
 
 		for(Angle a : batch)
 		{
-			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 4, 0);
+			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 10, 1);
 			ang.setNN(a.getNN());
 			newAngles.add(ang);
 		}
@@ -170,7 +170,7 @@ public class GeneticAlgorithm {
 	{
 		
 			
-			Angle child = new Angle(0.0,0.0, 1, 2, 4, 0);
+			Angle child = new Angle(0.0,0.0, 1, 2, 10, 1);
 			
 			ArrayList<Weight> weightP1 = p1.getNN().getWeights();
 			int max = weightP1.size();

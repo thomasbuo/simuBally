@@ -31,7 +31,7 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 100;
+	private int population = 250;
 	private int population_counter = 0;
 	
 	private long start_time;
@@ -39,7 +39,7 @@ public class Simulation {
 	private long total_calculation_time;
 	private double simulated_seconds_per_real_second =100 /0.01;
 	private boolean full_speed = false;
-	private int visualization_frequency = 1000;
+	private int visualization_frequency = 10;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
@@ -210,19 +210,20 @@ public class Simulation {
 								}
 								population_counter = 0;
 								System.out.println("Hit count: " + hitCount +" %: "+(double)(hitCount/population));
-								if(populationIteration == 100)
+								if(populationIteration ==1)
 								{
 									for(int i = 0; i< nc.getPopulation().size();i++)
 									{
 										nc.getPopulation().get(i).setScore(nc.getPopulation().get(i).getScore()/populationIteration);
 									}
 									populationIteration = 0;
-									nc.train(nc.getPopulation());											
+																			
 									
 									target.setX((int)(r.nextDouble()*200)+200);
 								}
+								nc.train(nc.getPopulation());	
 								hitCount=0;
-								target.setX((int)(r.nextDouble()*200)+200);
+								
 							}
 							//new angles!!!
 							
