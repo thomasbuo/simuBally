@@ -31,7 +31,7 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 200;
+	private int population = 30;
 	private int population_counter = 0;
 	private boolean plop = false;
 	private long start_time;
@@ -223,12 +223,13 @@ public class Simulation {
 									}
 									populationIteration = 0;	
 									target.setX((int)(r.nextDouble()*300)+100);
+									nc.train(nc.getPopulation());	
 									
 								}
 								//target.setX((int)(r.nextDouble()*300)+100);
 								target.setX((int)(r.nextDouble()*300)+100);
 								
-								nc.train(nc.getPopulation());	
+								//nc.train(nc.getPopulation());	
 								hitCount=0;
 								
 							}

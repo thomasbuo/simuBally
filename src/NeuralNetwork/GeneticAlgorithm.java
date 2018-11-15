@@ -34,6 +34,7 @@ public class GeneticAlgorithm {
 		ArrayList<Angle> newAngles = new ArrayList();
 		
 		ArrayList<Double> probabilities = new ArrayList<>();
+		
 		for(int i =0;i<angles.size();i++)
 		{
 			probabilities.add((angles.get(i).getScore()/totalScore));
@@ -158,7 +159,7 @@ public class GeneticAlgorithm {
 		{
 			for(int j = 0; j< angles.get(i).getNN().getWeights().size(); j++)
 			{
-				if(r.nextDouble()>0.97)
+				if(r.nextDouble()>0.90)
 				{
 					angles.get(i).getNN().getWeights().get(j).setWeight(r.nextDouble()*2 -1);
 				}
