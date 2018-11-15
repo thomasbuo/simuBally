@@ -31,7 +31,7 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 30;
+	private int population = 50;
 	private int population_counter = 0;
 	private boolean plop = false;
 	private long start_time;
@@ -139,7 +139,7 @@ public class Simulation {
 						finalPosY = floor.getY();
 						double error = Math.abs(finalPosX - target.getX());
 						
-						if(15 >= Math.abs((finalPosX - target.getX())))
+						if(15 >= error)
 						{
 							hitCount ++;
 							
@@ -212,7 +212,7 @@ public class Simulation {
 									is_running = false;
 								}
 								population_counter = 0;
-								if(populationIteration == 100)
+								if(populationIteration == 20)
 								{
 									generation++;
 									System.out.println("gen: "+generation+" Hit count: " + hitCount +" %: "+(double)(hitCount/population)/populationIteration*100);
