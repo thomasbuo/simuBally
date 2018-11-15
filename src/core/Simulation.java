@@ -31,15 +31,15 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 250;
+	private int population = 200;
 	private int population_counter = 0;
-	
+	private boolean plop = false;
 	private long start_time;
 	private double current_time;
 	private long total_calculation_time;
 	private double simulated_seconds_per_real_second =100 /0.01;
 	private boolean full_speed = false;
-	private int visualization_frequency = 10;
+	private int visualization_frequency = 100;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	
@@ -66,6 +66,8 @@ public class Simulation {
 	private double hitCount = 0;
 	private int populationIteration = 0;
 	private Random r = new Random();
+	
+	private int generation=-1;
 	public Simulation(ArrayList<Joint> joints, ArmPart part1, ArmPart part2, ArmPart part3, Ball ball, Floor floor, Target target)
 	{
 		this.ball = ball;
@@ -142,7 +144,7 @@ public class Simulation {
 							hitCount ++;
 							
 						}
-						double score = 1 * mainFrame.getWidth() - error;
+						double score = - error;
 
 						//commented for GD
 						/*
@@ -162,7 +164,8 @@ public class Simulation {
 							gd.setLandX(finalPosX);
 							ArrayList<Double> angles = gd.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());
 							joints.get(0).setTargetAngle(angles.get(0));
-							joints.get(1).setTargetAngle(angles.get(1));System.out.println("an1: "+angles.get(0)+" ang2: "+angles.get(1)+" error: "+error);
+							joints.get(1).setTargetAngle(angles.get(1));
+							System.out.println("an1: "+angles.get(0)+" ang2: "+angles.get(1)+" error: "+error);
 						}
 						else
 						{
@@ -209,18 +212,22 @@ public class Simulation {
 									is_running = false;
 								}
 								population_counter = 0;
-								System.out.println("Hit count: " + hitCount +" %: "+(double)(hitCount/population));
-								if(populationIteration ==1)
+								if(populationIteration == 100)
 								{
+									generation++;
+									System.out.println("gen: "+generation+" Hit count: " + hitCount +" %: "+(double)(hitCount/population)/populationIteration*100);
+
 									for(int i = 0; i< nc.getPopulation().size();i++)
 									{
 										nc.getPopulation().get(i).setScore(nc.getPopulation().get(i).getScore()/populationIteration);
 									}
-									populationIteration = 0;
-																			
+									populationIteration = 0;	
+									target.setX((int)(r.nextDouble()*300)+100);
 									
-									target.setX((int)(r.nextDouble()*200)+200);
 								}
+								//target.setX((int)(r.nextDouble()*300)+100);
+								target.setX((int)(r.nextDouble()*300)+100);
+								
 								nc.train(nc.getPopulation());	
 								hitCount=0;
 								
