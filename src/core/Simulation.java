@@ -212,7 +212,7 @@ public class Simulation {
 									is_running = false;
 								}
 								population_counter = 0;
-								if(populationIteration == 100)
+								if(populationIteration == 50)
 								{
 									generation++;
 									System.out.print("gen: "+ generation+" ");

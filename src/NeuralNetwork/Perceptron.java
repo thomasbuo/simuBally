@@ -19,7 +19,7 @@ public class Perceptron {
 	{
 		this.id = id;
 		bias = r.nextDouble()*2 -1;
-		bias = 0;
+		//bias = 0;
 	}
 	
 	public void computeOutput(double sum)
