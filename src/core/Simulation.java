@@ -31,7 +31,7 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 50;
+	private int population = 100;
 	private int population_counter = 0;
 	private boolean plop = false;
 	private long start_time;
