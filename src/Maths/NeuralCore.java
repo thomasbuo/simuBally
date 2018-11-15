@@ -15,7 +15,7 @@ public class NeuralCore {
 	{
 		for(int i = 0; i < popSize; i++)
 		{
-			population.add(new Angle(0.0,0.0, 1, 2, 20, 1));
+			population.add(new Angle(0.0,0.0, 1, 2, 5, 10));
 		}
 	}
 	

@@ -24,11 +24,11 @@ public class GeneticAlgorithm {
 	{		
 		
 		sort(angles);
-		/*for(Angle a : angles)
+		for(Angle a : angles)
 		{
 			System.out.print("Scores: "+a.getScore()+", ");
 		}
-		System.out.println();*/
+		System.out.println();
 		int totalScore = computeTotalScore(angles);
 		
 		ArrayList<Angle> newAngles = new ArrayList();
@@ -44,7 +44,7 @@ public class GeneticAlgorithm {
 
 		for(Angle a : batch)
 		{
-			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 20, 1);
+			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 5, 10);
 			ang.setNN(a.getNN());
 			newAngles.add(ang);
 		}
@@ -144,7 +144,7 @@ public class GeneticAlgorithm {
 			action = false;
 			for(int i = 1; i < sortableList.size()-1; i++)
 			{
-				if(Math.abs(sortableList.get(i).getScore()) > Math.abs(sortableList.get(i-1).getScore()))
+				if(sortableList.get(i).getScore() > sortableList.get(i-1).getScore())
 				{
 					Collections.swap(sortableList, i, i-1);
 					action = true;
@@ -171,7 +171,7 @@ public class GeneticAlgorithm {
 	{
 		
 			
-			Angle child = new Angle(0.0,0.0, 1, 2, 20,1);
+			Angle child = new Angle(0.0,0.0, 1, 2, 5,10);
 			
 			ArrayList<Weight> weightP1 = p1.getNN().getWeights();
 			int max = weightP1.size();
