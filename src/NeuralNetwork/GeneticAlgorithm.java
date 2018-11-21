@@ -11,7 +11,7 @@ import Maths.Angle;
 public class GeneticAlgorithm {
 
 	private final double KEEP_PERCENT_TOP = 0.10;
-	private final double MUTATION_RATE = 0.03;
+	private final double MUTATION_RATE = 0.07;
 	private int height;
 		
 	private Random r = new Random();
@@ -51,7 +51,7 @@ public class GeneticAlgorithm {
 
 		for(Angle a : batch)
 		{
-			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 20, 2);
+			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 20, 3);
 			ang.setNN(a.getNN());
 			newAngles.add(ang);
 		}
@@ -178,7 +178,7 @@ public class GeneticAlgorithm {
 	{
 		
 		
-		Angle child = new Angle(0.0,0.0, 1, 2, 20,2);
+		Angle child = new Angle(0.0,0.0, 1, 2, 20, 3);
 		
 		ArrayList<Weight> weightP1 = p1.getNN().getWeights();
 		ArrayList<Weight> weightP2 = p2.getNN().getWeights();

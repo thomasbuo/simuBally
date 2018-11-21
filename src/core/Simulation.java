@@ -226,12 +226,12 @@ public class Simulation {
 									nc.train(nc.getPopulation());	
 									
 								}
-//								if(target.getX()>400)
-//								{
-//									target.setX(0);
-//								}
-//								target.setX(target.getX()+100);
-								target.setX((int)(r.nextDouble()*300)+100);
+								if(target.getX()>400)
+								{
+									target.setX(0);
+								}
+								target.setX(target.getX()+100);
+								//target.setX((int)(r.nextDouble()*300)+100);
 								
 								hitCount=0;
 							}

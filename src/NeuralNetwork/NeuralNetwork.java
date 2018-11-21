@@ -66,7 +66,7 @@ public class NeuralNetwork {
 						layer.add(new Perceptron(id, 1, hiddenLayers + 1));
 					}
 				}
-				if(i == hiddenNodes-1)
+				else
 				{
 					for(int j = 0 ; j < hiddenNodes; j++)
 					{
@@ -74,8 +74,7 @@ public class NeuralNetwork {
 						id+=j;
 						layer.add(new Perceptron(id, 0, hiddenLayers + 1));
 					}
-				}
-				
+				}								
 			}
 			
 			layers.add(layer);
