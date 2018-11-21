@@ -31,9 +31,13 @@ public class GeneticAlgorithm {
 			averageScore+=angles.get(i).getScore();
 		}
 		System.out.println("avg "+averageScore/angles.size()+" ");
+		/*
+		for(int i = 0 ; i< angles.size();i++)
+		{
+			System.out.println(angles.get(i).getScore()+" ");
+		}*/
 		
-		int totalScore = computeTotalScore(angles);
-		
+		int totalScore = computeTotalScore(angles); //sum
 		ArrayList<Angle> newAngles = new ArrayList();
 		
 		ArrayList<Double> probabilities = new ArrayList<>();
@@ -95,11 +99,11 @@ public class GeneticAlgorithm {
 					a2 = angles.get(j);
 				}
 			}
-			Angle ang1 = new Angle(0.0,0.0, 1, 2, 5, 1);
+			Angle ang1 = new Angle(0.0,0.0, 1, 2, 20, 2);
 			ang1.setNN(a1.getNN());
 			newAngles.add(ang1);
 			
-			Angle ang2 = new Angle(0.0,0.0, 1, 2, 5, 1);
+			Angle ang2 = new Angle(0.0,0.0, 1, 2, 20, 2);
 			ang2.setNN(a2.getNN());
 			newAngles.add(ang2);
 			
@@ -113,7 +117,7 @@ public class GeneticAlgorithm {
 		return newAngles;
 	}
 	
-	public int computeTotalScore(ArrayList<Angle> angles)
+	public int computeTotalScore(ArrayList<Angle> angles) //sum
 	{
 		int score = 0;
 		for(Angle a : angles)
@@ -146,9 +150,12 @@ public class GeneticAlgorithm {
 		for(int i =0; i< angles.size();i++)
 		{
 			for(int j = 0; j< angles.get(i).getNN().getWeights().size(); j++)
-			{
-				if(r.nextDouble()<MUTATION_RATE)
+			{ 
+				double randomv = r.nextDouble();
+				
+				if(randomv<MUTATION_RATE)
 				{
+					
 					angles.get(i).getNN().getWeights().get(j).setWeight(r.nextDouble()*2 -1);
 				}
 				
@@ -177,11 +184,11 @@ public class GeneticAlgorithm {
 	{
 		
 		
-		Angle child = new Angle(0.0,0.0, 1, 2, 5,1);
+		Angle child = new Angle(0.0,0.0, 1, 2, 20,2);
 		
 		ArrayList<Weight> weightP1 = p1.getNN().getWeights();
 		ArrayList<Weight> weightP2 = p2.getNN().getWeights();
-		int weightSize = p1.getNN().getWeights().size();
+		
 		
 		ArrayList<Weight> newAngleWeights = child.getNN().getWeights();
 		for(int j = 0; j<newAngleWeights.size();j++)
@@ -215,7 +222,7 @@ public class GeneticAlgorithm {
 		}
 			
 			
-			
+			//bias
 			for(int i = 0; i < child.getNN().getLayers().size(); i++)
 			{
 				for(int j = 0; j < child.getNN().getLayers().get(i).size();j++)

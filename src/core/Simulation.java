@@ -31,7 +31,7 @@ public class Simulation {
 	private boolean is_running = false;
 	//genetic
 	private int iterations = 20;
-	private int population = 100;
+	private int population = 50;
 	private int population_counter = 0;
 	private boolean plop = false;
 	private long start_time;
@@ -55,7 +55,8 @@ public class Simulation {
 	private Target target;
 	private double maxRotation1 = 90;
 	private double maxRotation2 = 180;
-	//private GD gd;
+	private int targetPos = 0;
+			//private GD gd;
 
 	private double finalPosX;
 	private int finalPosY;
@@ -221,16 +222,14 @@ public class Simulation {
 										nc.getPopulation().get(i).setScore(nc.getPopulation().get(i).getScore()/populationIteration);
 									}
 									populationIteration = 0;	
-									target.setX((int)(r.nextDouble()*300)+100);
+								target.setX((int)(r.nextDouble()*300)+100);
 									nc.train(nc.getPopulation());	
 									
 								}
-								//target.setX((int)(r.nextDouble()*300)+100);
 								target.setX((int)(r.nextDouble()*300)+100);
 								
 								//nc.train(nc.getPopulation());	
 								hitCount=0;
-								
 							}
 							//new angles!!!
 							
