@@ -138,7 +138,7 @@ public class Simulation {
 						ball.nullSpeed();
 						finalPosX = ball.getPosX();
 						finalPosY = floor.getY();
-						double error = Math.abs(finalPosX - target.getX());
+						double error =(finalPosX - target.getX())*(finalPosX - target.getX());
 						
 						if(15 >= error)
 						{
@@ -222,13 +222,17 @@ public class Simulation {
 										nc.getPopulation().get(i).setScore(nc.getPopulation().get(i).getScore()/populationIteration);
 									}
 									populationIteration = 0;	
-								target.setX((int)(r.nextDouble()*300)+100);
+								    target.setX((int)(r.nextDouble()*300)+100);
 									nc.train(nc.getPopulation());	
 									
 								}
+//								if(target.getX()>400)
+//								{
+//									target.setX(0);
+//								}
+//								target.setX(target.getX()+100);
 								target.setX((int)(r.nextDouble()*300)+100);
 								
-								//nc.train(nc.getPopulation());	
 								hitCount=0;
 							}
 							//new angles!!!

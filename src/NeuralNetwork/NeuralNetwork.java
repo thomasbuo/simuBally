@@ -31,6 +31,7 @@ public class NeuralNetwork {
 			ArrayList<Perceptron> layer = new ArrayList<Perceptron>();
 			
 			String id = "";
+			//input
 			if(layers.size() == 0)
 			{
 				
@@ -38,10 +39,11 @@ public class NeuralNetwork {
 				{
 					id+=i;
 					id+=j;
-					layer.add(new Perceptron(id));
+					layer.add(new Perceptron(id, i, hiddenLayers+1 ));
 				
 				}
 			}
+			//output
 			else if(i == hiddenLayers +1)
 			{
 				
@@ -49,18 +51,31 @@ public class NeuralNetwork {
 				{
 					id+=i;
 					id+=j;
-					layer.add(new Perceptron(id));
+					layer.add(new Perceptron(id,i,hiddenLayers+1));
 				}
 			}
+			//hidden layers
 			else
-			{
-				
-				for(int j = 0 ; j < hiddenNodes; j++)
+			{	
+				if(i == hiddenNodes)
 				{
-					id+=i;
-					id+=j;
-					layer.add(new Perceptron(id));
+					for(int j = 0 ; j < hiddenNodes; j++)
+					{
+						id+=i;
+						id+=j;
+						layer.add(new Perceptron(id, 1, hiddenLayers + 1));
+					}
 				}
+				if(i == hiddenNodes-1)
+				{
+					for(int j = 0 ; j < hiddenNodes; j++)
+					{
+						id+=i;
+						id+=j;
+						layer.add(new Perceptron(id, 0, hiddenLayers + 1));
+					}
+				}
+				
 			}
 			
 			layers.add(layer);
