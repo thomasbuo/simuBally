@@ -14,7 +14,7 @@ public class Weight {
 	{
 		this.backPerceptron = backPerceptron;
 		this.currentPerceptron = currentPerceptron;
-		weight = r.nextDouble()*2-1;		
+		weight = r.nextDouble()*2-1;
 	}
 
 	public Perceptron getBackPerceptron() {

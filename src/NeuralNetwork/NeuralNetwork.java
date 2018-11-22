@@ -1,8 +1,8 @@
 package NeuralNetwork;
 
 import java.util.ArrayList;
-
-import javax.swing.plaf.synth.SynthScrollBarUI;
+import java.util.Arrays;
+import java.util.List;
 
 public class NeuralNetwork {
 
@@ -16,7 +16,61 @@ public class NeuralNetwork {
 	private int hiddenNodes;
 	private int hiddenLayers;
 
-	private final double LEARNING_RATE = 0.4;
+
+	private final double LEARNING_RATE = 0.5;
+
+	public static void main(String[] args) {
+		var x = new NeuralNetwork(2, 1, 3, 1);
+
+		for (var i=0; i<400; i++) {
+			x.backprop(Arrays.asList(0.0, 0.0), Arrays.asList(0.0));
+			x.backprop(Arrays.asList(1.0, 0.0), Arrays.asList(1.0));
+			x.backprop(Arrays.asList(0.0, 1.0), Arrays.asList(1.0));
+			x.backprop(Arrays.asList(1.0, 1.0), Arrays.asList(0.0));
+		}
+
+		System.out.println(x.guess(Arrays.asList(0.0, 0.0)));
+		System.out.println(x.guess(Arrays.asList(1.0, 0.0)));
+		System.out.println(x.guess(Arrays.asList(0.0, 1.0)));
+		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
+	}
+
+	public void backprop(List<Double> input, List<Double> target) {
+		ArrayList<Double> actual = guess(input);
+
+		var lastLayer = this.layers.get(this.layers.size()-1);
+
+		for (var l=0; l<lastLayer.size(); l++) {
+			var error = actual.get(l)-target.get(l);
+			var perc = lastLayer.get(l);
+			perc.setError(error * perc.activationFunctionDerivative(perc.getOutput()));
+		}
+
+		for (var l=this.layers.size()-2; l>0; l--) {
+			var layer = this.layers.get(l);
+			for (var i=0; i<layer.size(); i++) {
+				var perc = layer.get(i);
+				var error = 0.0;
+				for (var j=0; j<this.layers.get(l+1).size(); j++) {
+					var outPerc = layers.get(l+1).get(j);
+
+					// Find the weight between i and j
+					var weight = weights.stream().filter(w -> w.getBackPerceptron()==perc
+															&& w.getCurrentPerceptron()==outPerc).findFirst().get();
+
+					error += weight.getWeight()*outPerc.getError();
+				}
+
+				error *= perc.activationFunctionDerivative(perc.getOutput());
+				perc.setError(error);
+			}
+		}
+
+		for (var weight : weights) {
+			var delta = -LEARNING_RATE * weight.getCurrentPerceptron().getError() * weight.getBackPerceptron().getOutput();
+			weight.setWeight(weight.getWeight()+delta);
+		}
+	}
 
 	public NeuralNetwork(int inputNodes, int outputNodes, int hiddenNodes, int hiddenLayers) {
 
@@ -37,8 +91,9 @@ public class NeuralNetwork {
 					id += j;
 					layer.add(new Perceptron(id, i, hiddenLayers + 1));
 					layer.get(layer.size()-1).setBias(0.0);
-
 				}
+				layer.add(new Perceptron("bias", i, hiddenLayers + 1));
+				layer.get(layer.size()-1).setOutput(1.0);
 			}
 			// output
 			else if (i == hiddenLayers + 1) {
@@ -51,19 +106,26 @@ public class NeuralNetwork {
 			}
 			// hidden layers
 			else {
-				if (i == hiddenNodes) {
-					for (int j = 0; j < hiddenNodes; j++) {
-						id += i;
-						id += j;
-						layer.add(new Perceptron(id, hiddenLayers + 1, hiddenLayers + 1));
-					}
-				} else {
-					for (int j = 0; j < hiddenNodes; j++) {
-						id += i;
-						id += j;
-						layer.add(new Perceptron(id, 0, hiddenLayers + 1));
-					}
+				for (int j = 0; j < hiddenNodes; j++) {
+					id += i;
+					id += j;
+					layer.add(new Perceptron(id,  i, hiddenLayers + 1));
 				}
+				layer.add(new Perceptron("bias", i, hiddenLayers + 1));
+				layer.get(layer.size()-1).setOutput(1.0);
+//				if (i == hiddenNodes) {
+//					for (int j = 0; j < hiddenNodes; j++) {
+//						id += i;
+//						id += j;
+//						layer.add(new Perceptron(id, hiddenLayers + 1, hiddenLayers + 1));
+//					}
+//				} else {
+//					for (int j = 0; j < hiddenNodes; j++) {
+//						id += i;
+//						id += j;
+//						layer.add(new Perceptron(id, 0, hiddenLayers + 1));
+//					}
+//				}
 			}
 
 			layers.add(layer);
@@ -85,23 +147,23 @@ public class NeuralNetwork {
 
 	}
 
-	public ArrayList<Double> guess(ArrayList<Double> input) {
+	public ArrayList<Double> guess(List<Double> input) {
 
-		if (input.size() != layers.get(0).size()) {
+		if (input.size()+1 != layers.get(0).size()) {
 			return null;
 		}
 
 		for (int i = 0; i < layers.size(); i++) {
 			if (i == 0) {
 
-				for (int j = 0; j < layers.get(i).size(); j++) {
+				for (int j = 0; j < layers.get(i).size()-1; j++) {
 					layers.get(i).get(j).computeOutput(input.get(j));
 				}
 
 				continue;
 			}
 
-			for (int j = 0; j < layers.get(i).size(); j++) {
+			for (int j = 0; j < layers.get(i).size()-(i < this.layers.size()-1 ? 1 : 0); j++) {
 				double sum = 0;
 				for (int k = 0; k < layers.get(i).get(j).getBackConnections().size(); k++) {
 					double w = 0;
@@ -128,7 +190,7 @@ public class NeuralNetwork {
 		return guesses;
 	}
 
-	public void train(ArrayList<Double> input, ArrayList<Double> target) {
+	public void train(List<Double> input, List<Double> target) {
 		ArrayList<Double> guess = guess(input);
 
 		attempts++;

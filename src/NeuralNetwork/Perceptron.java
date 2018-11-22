@@ -30,7 +30,7 @@ public class Perceptron {
 	{
 		//System.out.println();
 		//output = Math.signum(sum + bias);
-		output = activationFunction(sum + bias);
+		output = activationFunction(sum);
 		//.out.println("output"+ output+", "+(sum+bias));
 	}
 	
@@ -51,6 +51,25 @@ public class Perceptron {
 		}
 		
 		
+	}
+
+	public double activationFunctionDerivative(double phix) // Derivative of phi with respect to x given phi(x)
+	{
+		if(layer == 0)
+		{
+			return phix > 0 ? 1 : 0;
+		}
+		else if(layer == totalLayers)
+		{
+			//sigmoid
+			return phix * (1-phix);
+		}
+		else
+		{
+			return phix > 0 ? 1 : 0;
+		}
+
+
 	}
 	
 	public double getOutput() {
