@@ -38,7 +38,7 @@ public class Perceptron {
 	{
 		if(layer == 0)
 		{
-			return x;
+			return Math.max(0, x);
 		}
 		else if(layer == totalLayers)
 		{
@@ -47,7 +47,7 @@ public class Perceptron {
 		}
 		else
 		{
-			return x;
+			return Math.max(0, x);
 		}
 		
 		
