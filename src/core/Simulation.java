@@ -138,7 +138,7 @@ public class Simulation {
 						ball.nullSpeed();
 						finalPosX = ball.getPosX();
 						finalPosY = floor.getY();
-						double actualError = finalPosX - target.getX();
+						double actualError = 0.5*(finalPosX - target.getX())*(finalPosX - target.getX());
 						double error =(finalPosX - target.getX())*(finalPosX - target.getX());
 						
 						if(15 >= error)
@@ -196,71 +196,72 @@ public class Simulation {
 						*/
 							
 						// this is for backpropagation
-//							ArrayList<Double> newAngles = nc.guess(target.getX());
-//							joints.get(0).setTargetAngle(-(int)(maxRotation1/2) + newAngles.get(0)*maxRotation1);
-//							joints.get(1).setTargetAngle(-(int)(maxRotation2/2)  + newAngles.get(1)*maxRotation2);
-//							populationIteration++;
-//							
-//							if(populationIteration == 100)
-//							{
-//								generation++;
-//								System.out.println("gen: "+ generation+" "+ actualError);
-//								if(target.getX()>300)
-//								{
-//									target.setX(0);
-//								}
-//								target.setX(target.getX()+100);
-//								populationIteration=0;				
-//							}
-//						
-//							nc.trainNeuralNetwork(actualError);
+							ArrayList<Double> newAngles = nc.guess(target.getX());
+							joints.get(0).setTargetAngle(-(int)(maxRotation1/2) + newAngles.get(0)*maxRotation1);
+							joints.get(1).setTargetAngle(-(int)(maxRotation2/2)  + newAngles.get(1)*maxRotation2);
+							populationIteration++;
+							
+							if(populationIteration == 100)
+							{
+								generation++;
+								System.out.println("gen: "+ generation+" "+ actualError);
+								if(target.getX()>300)
+								{
+									target.setX(0);
+								}
+								target.setX(target.getX()+100);
+								populationIteration=0;				
+							}
+							for(int i = 0; i<nc.getNeuralNetwork().getWeights().size();i++ )
+								System.out.print(nc.getNeuralNetwork().getWeights().get(i).getWeight()+" ");
+							nc.trainNeuralNetwork(actualError);
 							
 							
 						//this is for genetic	
-							nc.setError(error);
-							nc.getPopulation().get(population_counter).setScore(nc.getPopulation().get(population_counter).getScore()+score);
-							ArrayList<Double> targetlist = new ArrayList<>();
-							targetlist.add(target.getX()/1.0);
-							ArrayList<Double> angles = nc.getPopulation().get(population_counter).getNN().guess(targetlist);
-							//System.out.println("Angles: " + angles.get(0)*maxRotation + " Second: " + angles.get(1)*maxRotation);
-							joints.get(0).setTargetAngle(-(int)(maxRotation1/2) + angles.get(0)*maxRotation1);
-							joints.get(1).setTargetAngle(-(int)(maxRotation2/2)  + angles.get(1)*maxRotation2);
-							population_counter++;
-							if(population_counter == (population-1))
-							{
-								populationIteration++;
-								if((hitCount/population)>=1.00)
-								{
-									is_running = false;
-								}
-								population_counter = 0;
-								
-								if(populationIteration == 50)
-								{
-									generation++;
-									System.out.print("gen: "+ generation+" ");
-									for(int i = 0; i< nc.getPopulation().size();i++)
-									{
-										nc.getPopulation().get(i).setScore(nc.getPopulation().get(i).getScore()/populationIteration);
-									}
-									populationIteration = 0;	
-									if(target.getX()>300)
-									{
-										target.setX(0);
-									}
-									target.setX(target.getX()+100);
-									nc.train(nc.getPopulation());	
-									
-								}
-								
-								target.setX((int)(r.nextDouble()*300)+100);
-								
-								hitCount=0;
-							}
-							//new angles!!!
-							
+//							nc.setError(error);
+//							nc.getPopulation().get(population_counter).setScore(nc.getPopulation().get(population_counter).getScore()+score);
+//							ArrayList<Double> targetlist = new ArrayList<>();
+//							targetlist.add(target.getX()/1.0);
+//							ArrayList<Double> angles = nc.getPopulation().get(population_counter).getNN().guess(targetlist);
+//							//System.out.println("Angles: " + angles.get(0)*maxRotation + " Second: " + angles.get(1)*maxRotation);
+//							joints.get(0).setTargetAngle(-(int)(maxRotation1/2) + angles.get(0)*maxRotation1);
+//							joints.get(1).setTargetAngle(-(int)(maxRotation2/2)  + angles.get(1)*maxRotation2);
+//							population_counter++;
+//							if(population_counter == (population-1))
+//							{
+//								populationIteration++;
+//								if((hitCount/population)>=1.00)
+//								{
+//									is_running = false;
+//								}
+//								population_counter = 0;
+//								
+//								if(populationIteration == 50)
+//								{
+//									generation++;
+//									System.out.print("gen: "+ generation+" ");
+//									for(int i = 0; i< nc.getPopulation().size();i++)
+//									{
+//										nc.getPopulation().get(i).setScore(nc.getPopulation().get(i).getScore()/populationIteration);
+//									}
+//									populationIteration = 0;	
+//									if(target.getX()>300)
+//									{
+//										target.setX(0);
+//									}
+//									target.setX(target.getX()+100);
+//									nc.train(nc.getPopulation());	
+//									
+//								}
+//								
+//								target.setX((int)(r.nextDouble()*300)+100);
+//								
+//								hitCount=0;
+//							}
+//							//new angles!!!
+							//end genetic
 						}	
-						//end genetic
+						
 						if(paint)
 						{
 							ArrayList<Double> angles = gd.learn(joints.get(0).getTargetAngle(), joints.get(1).getTargetAngle(), target.getX());

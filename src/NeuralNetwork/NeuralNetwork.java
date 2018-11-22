@@ -36,6 +36,7 @@ public class NeuralNetwork {
 					id += i;
 					id += j;
 					layer.add(new Perceptron(id, i, hiddenLayers + 1));
+					layer.get(layer.size()-1).setBias(0.0);
 
 				}
 			}
@@ -179,27 +180,34 @@ public class NeuralNetwork {
 		if (Math.round(guess.get(0)) == Math.round(target.get(0)))
 			correctPercent++;
 
-		System.out.println("guess: " + guess + " target: " + target + " " + (double) correctPercent / attempts + " "
+		System.out.println("guess: " + Math.round(guess.get(0)) + " target: " + target + " " + (double) correctPercent / attempts + " error "
 				+ (target.get(0) - guess.get(0)));
-
+		//backrpopagation weights
 		for (int i = 0; i < weights.size(); i++) {
 			weights.get(i).setWeight(weights.get(i).getWeight() + weights.get(i).getCurrentPerceptron().getError()
 					* LEARNING_RATE * weights.get(i).getBackPerceptron().getOutput());
 		}
-
-		for (int i = 0; i < layers.size(); i++) {
-			for (int j = 0; j < layers.get(i).size(); j++) {
-				double delta = LEARNING_RATE * layers.get(i).get(j).getError()
-						* (layers.get(i).get(j).getOutput() * (1 - layers.get(i).get(j).getOutput()));
-
-				layers.get(i).get(j).setBias(layers.get(i).get(j).getBias() + delta);
-			}
-		}
+//		//backrpopagation bias
+//		for (int i = 0; i < layers.size(); i++) {
+//			for (int j = 0; j < layers.get(i).size(); j++) {
+//				double delta = LEARNING_RATE * layers.get(i).get(j).getError()
+//						* (layers.get(i).get(j).getOutput() * (1 - layers.get(i).get(j).getOutput()));
+//
+//				layers.get(i).get(j).setBias(layers.get(i).get(j).getBias() + delta);
+//			}
+//		}
 	}
+
+	
 
 	public void seperateTrain(double error) {
 
-		for (int i = 0; i < layers.get(layers.size() - 1).size(); i++) {
+
+		attempts++;
+
+		// compute error
+		for (int i = 0; i < layers.get(layers.size()-1).size(); i++) {
+			
 			layers.get(layers.size() - 1).get(i).setError(error);
 		}
 
@@ -220,7 +228,9 @@ public class NeuralNetwork {
 							if (weights.get(p).getBackPerceptron() == layers.get(i + 1).get(k).getBackConnections()
 									.get(t) && weights.get(p).getCurrentPerceptron() == layers.get(i + 1).get(k)
 									&& layers.get(i + 1).get(k).getBackConnections().get(t) == layers.get(i).get(j)) {
+
 								currentWeight = weights.get(p).getWeight();
+
 							}
 
 							if (weights.get(p).getBackPerceptron() == layers.get(i + 1).get(k).getBackConnections()
@@ -230,10 +240,8 @@ public class NeuralNetwork {
 						}
 						weightSum += w;
 					}
-					if (weightSum == 0)
-						weightSum = 1;
+
 					e += (currentWeight / weightSum) * tempE;
-					System.out.println("e: " + e + " cw: " + currentWeight + " ws: " + weightSum + " t " + tempE);
 
 				}
 
@@ -241,22 +249,26 @@ public class NeuralNetwork {
 			}
 		}
 
-		// just backpropogate
+		if (Math.abs(error)<10)
+			correctPercent++;
+
+		System.out.println((double) correctPercent / attempts + " error "
+				+ error);
+		//backrpopagation weights
 		for (int i = 0; i < weights.size(); i++) {
-			// System.out.print(weights.get(i).getWeight()+" ");
 			weights.get(i).setWeight(weights.get(i).getWeight() + weights.get(i).getCurrentPerceptron().getError()
 					* LEARNING_RATE * weights.get(i).getBackPerceptron().getOutput());
-			// System.out.println(weights.get(i).getWeight()+" ");
 		}
-
-		for (int i = 0; i < layers.size(); i++) {
-			for (int j = 0; j < layers.get(i).size(); j++) {
-				double delta = LEARNING_RATE * layers.get(i).get(j).getError()
-						* (layers.get(i).get(j).getOutput() * (1 - layers.get(i).get(j).getOutput()));
-
-				layers.get(i).get(j).setBias(layers.get(i).get(j).getBias() + delta);
-			}
-		}
+//		//backrpopagation bias
+//		for (int i = 0; i < layers.size(); i++) {
+//			for (int j = 0; j < layers.get(i).size(); j++) {
+//				double delta = LEARNING_RATE * layers.get(i).get(j).getError()
+//						* (layers.get(i).get(j).getOutput() * (1 - layers.get(i).get(j).getOutput()));
+//
+//				layers.get(i).get(j).setBias(layers.get(i).get(j).getBias() + delta);
+//			}
+//		}
+	
 	}
 
 	public void train2(ArrayList<Double> input, ArrayList<Double> label) {
