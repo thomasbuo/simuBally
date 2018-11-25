@@ -20,7 +20,7 @@ public class Drawing extends JFrame {
 	private JTextField txtTarget;
 	
 
-	public Drawing(Panel panel, Simulation simulation) {
+	public Drawing(Panel panel, Simulation2 simulation) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 869, 586);
 		contentPane = new JPanel();
@@ -65,13 +65,12 @@ public class Drawing extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String angel1 = txtAngel.getText();
 				String angel2 = txtAngel_1.getText();
-				String tgt = txtTarget.getText();
 				if(!angel1.equals("") && !angel2.equals(""))
 				{
 					panel.getJoint1().setTargetAngle(Integer.parseInt(angel1));
 					panel.getJoint2().setTargetAngle(Integer.parseInt(angel2));
-					simulation.setTarget(Integer.parseInt(txtTarget.getText()));
-					panel.getTarget().setX(Integer.parseInt(tgt));
+					simulation.setTarget(200);
+					panel.getTarget().setX(simulation.getTarget());
 					simulation.simulate();
 				}
 				

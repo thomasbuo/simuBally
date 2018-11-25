@@ -3,6 +3,7 @@ package NeuralNetwork;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class NeuralNetwork {
 
@@ -16,24 +17,44 @@ public class NeuralNetwork {
 	private int hiddenNodes;
 	private int hiddenLayers;
 
-
+	private static Random r = new Random();
 	private final double LEARNING_RATE = 0.5;
 //  XOR test
-//	public static void main(String[] args) {
-//		NeuralNetwork x = new NeuralNetwork(2, 1, 3, 1);
-//
-//		for (int i=0; i<400; i++) {
+	public static void main(String[] args) {
+		NeuralNetwork x = new NeuralNetwork(2, 2, 3, 1);
+
+		for (int i=0; i<100000; i++) {
 //			x.backprop(Arrays.asList(0.0, 0.0), Arrays.asList(0.0));
 //			x.backprop(Arrays.asList(1.0, 0.0), Arrays.asList(1.0));
 //			x.backprop(Arrays.asList(0.0, 1.0), Arrays.asList(1.0));
 //			x.backprop(Arrays.asList(1.0, 1.0), Arrays.asList(0.0));
-//		}
-//
+			
+			ArrayList<Double> input = new ArrayList();
+			ArrayList<Double> label = new ArrayList();
+			double k = r.nextDouble();
+			double l = r.nextDouble();
+			
+			input.add(k);
+			input.add(l);
+			if(k<l)
+			{
+				label.add(1.0);
+				label.add(0.0);
+			}
+			else 
+			{
+				label.add(0.0);
+				label.add(1.0);
+			}
+			System.out.println(x.guess(input)+" "+label+" k: "+k +" l: "+l);
+			
+		}
+
 //		System.out.println(x.guess(Arrays.asList(0.0, 0.0)));
 //		System.out.println(x.guess(Arrays.asList(1.0, 0.0)));
 //		System.out.println(x.guess(Arrays.asList(0.0, 1.0)));
 //		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
-//	}
+	}
 
 	public void backprop(List<Double> input, List<Double> target) {
 		ArrayList<Double> actual = guess(input);
@@ -298,9 +319,11 @@ public class NeuralNetwork {
 		}
 
 		for (Weight weight : weights) {
-			double delta = -LEARNING_RATE * weight.getCurrentPerceptron().getError() * weight.getBackPerceptron().getOutput();
+			double delta = -LEARNING_RATE/1.00 * weight.getCurrentPerceptron().getError()/1.00 * weight.getBackPerceptron().getOutput()/1.00;
+			System.out.print (delta +" ");
 			weight.setWeight(weight.getWeight()+delta);
 		}	
+		System.out.println();
 	}
 
 	public void train2(ArrayList<Double> input, ArrayList<Double> label) {
