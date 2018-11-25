@@ -18,44 +18,44 @@ public class NeuralNetwork {
 
 
 	private final double LEARNING_RATE = 0.5;
-
-	public static void main(String[] args) {
-		var x = new NeuralNetwork(2, 1, 3, 1);
-
-		for (var i=0; i<400; i++) {
-			x.backprop(Arrays.asList(0.0, 0.0), Arrays.asList(0.0));
-			x.backprop(Arrays.asList(1.0, 0.0), Arrays.asList(1.0));
-			x.backprop(Arrays.asList(0.0, 1.0), Arrays.asList(1.0));
-			x.backprop(Arrays.asList(1.0, 1.0), Arrays.asList(0.0));
-		}
-
-		System.out.println(x.guess(Arrays.asList(0.0, 0.0)));
-		System.out.println(x.guess(Arrays.asList(1.0, 0.0)));
-		System.out.println(x.guess(Arrays.asList(0.0, 1.0)));
-		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
-	}
+//  XOR test
+//	public static void main(String[] args) {
+//		NeuralNetwork x = new NeuralNetwork(2, 1, 3, 1);
+//
+//		for (int i=0; i<400; i++) {
+//			x.backprop(Arrays.asList(0.0, 0.0), Arrays.asList(0.0));
+//			x.backprop(Arrays.asList(1.0, 0.0), Arrays.asList(1.0));
+//			x.backprop(Arrays.asList(0.0, 1.0), Arrays.asList(1.0));
+//			x.backprop(Arrays.asList(1.0, 1.0), Arrays.asList(0.0));
+//		}
+//
+//		System.out.println(x.guess(Arrays.asList(0.0, 0.0)));
+//		System.out.println(x.guess(Arrays.asList(1.0, 0.0)));
+//		System.out.println(x.guess(Arrays.asList(0.0, 1.0)));
+//		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
+//	}
 
 	public void backprop(List<Double> input, List<Double> target) {
 		ArrayList<Double> actual = guess(input);
 
-		var lastLayer = this.layers.get(this.layers.size()-1);
-
-		for (var l=0; l<lastLayer.size(); l++) {
-			var error = actual.get(l)-target.get(l);
-			var perc = lastLayer.get(l);
+		ArrayList<Perceptron> lastLayer = this.layers.get(this.layers.size()-1);
+		//set error for output layer
+		for (int l=0; l<lastLayer.size(); l++) {
+			double error = actual.get(l)-target.get(l);
+			Perceptron perc = lastLayer.get(l);
 			perc.setError(error * perc.activationFunctionDerivative(perc.getOutput()));
 		}
-
-		for (var l=this.layers.size()-2; l>0; l--) {
-			var layer = this.layers.get(l);
-			for (var i=0; i<layer.size(); i++) {
-				var perc = layer.get(i);
-				var error = 0.0;
-				for (var j=0; j<this.layers.get(l+1).size(); j++) {
-					var outPerc = layers.get(l+1).get(j);
+		//set error for hidden layers
+		for (int l=this.layers.size()-2; l>0; l--) {
+			ArrayList<Perceptron> layer = this.layers.get(l);
+			for (int i=0; i<layer.size(); i++) {
+				Perceptron perc = layer.get(i);
+				double error = 0.0;
+				for (int j=0; j<this.layers.get(l+1).size(); j++) {
+					Perceptron outPerc = layers.get(l+1).get(j);
 
 					// Find the weight between i and j
-					var weight = weights.stream().filter(w -> w.getBackPerceptron()==perc
+					Weight weight = weights.stream().filter(w -> w.getBackPerceptron()==perc
 															&& w.getCurrentPerceptron()==outPerc).findFirst().get();
 
 					error += weight.getWeight()*outPerc.getError();
@@ -66,8 +66,8 @@ public class NeuralNetwork {
 			}
 		}
 
-		for (var weight : weights) {
-			var delta = -LEARNING_RATE * weight.getCurrentPerceptron().getError() * weight.getBackPerceptron().getOutput();
+		for (Weight weight : weights) {
+			double delta = -LEARNING_RATE * weight.getCurrentPerceptron().getError() * weight.getBackPerceptron().getOutput();
 			weight.setWeight(weight.getWeight()+delta);
 		}
 	}
@@ -195,6 +195,11 @@ public class NeuralNetwork {
 
 		attempts++;
 
+		if(true)
+		{
+			backprop(input, target);
+			return;
+		}
 		// compute error
 		for (int i = 0; i < guess.size(); i++) {
 			double e = target.get(i) - guess.get(i);
@@ -262,75 +267,40 @@ public class NeuralNetwork {
 
 	
 
-	public void seperateTrain(double error) {
+	public void seperateTrain(double e) {
+		attempts++;		
 
-
-		attempts++;
-
-		// compute error
-		for (int i = 0; i < layers.get(layers.size()-1).size(); i++) {
-			
-			layers.get(layers.size() - 1).get(i).setError(error);
+		ArrayList<Perceptron> lastLayer = this.layers.get(this.layers.size()-1);
+		//set error for output layer
+		for (int l=0; l<lastLayer.size(); l++) {
+			Perceptron perc = lastLayer.get(l);
+			perc.setError(e * perc.activationFunctionDerivative(perc.getOutput()));
 		}
+		//set error for hidden layers
+		for (int l=this.layers.size()-2; l>0; l--) {
+			ArrayList<Perceptron> layer = this.layers.get(l);
+			for (int i=0; i<layer.size(); i++) {
+				Perceptron perc = layer.get(i);
+				double error = 0.0;
+				for (int j=0; j<this.layers.get(l+1).size(); j++) {
+					Perceptron outPerc = layers.get(l+1).get(j);
 
-		for (int i = layers.size() - 2; i >= 0; i--) {
-			for (int j = 0; j < layers.get(i).size(); j++) {
-				double e = 0;
+					// Find the weight between i and j
+					Weight weight = weights.stream().filter(w -> w.getBackPerceptron()==perc
+															&& w.getCurrentPerceptron()==outPerc).findFirst().get();
 
-				for (int k = 0; k < layers.get(i + 1).size(); k++) {
-
-					double tempE = layers.get(i + 1).get(k).getError();
-
-					double weightSum = 0;
-					double currentWeight = 0;
-					for (int t = 0; t < layers.get(i + 1).get(k).getBackConnections().size(); t++) {
-						double w = 0;
-						for (int p = 0; p < weights.size(); p++) {
-
-							if (weights.get(p).getBackPerceptron() == layers.get(i + 1).get(k).getBackConnections()
-									.get(t) && weights.get(p).getCurrentPerceptron() == layers.get(i + 1).get(k)
-									&& layers.get(i + 1).get(k).getBackConnections().get(t) == layers.get(i).get(j)) {
-
-								currentWeight = weights.get(p).getWeight();
-
-							}
-
-							if (weights.get(p).getBackPerceptron() == layers.get(i + 1).get(k).getBackConnections()
-									.get(t) && weights.get(p).getCurrentPerceptron() == layers.get(i + 1).get(k)) {
-								w = weights.get(p).getWeight();
-							}
-						}
-						weightSum += w;
-					}
-
-					e += (currentWeight / weightSum) * tempE;
-
+					error += weight.getWeight()*outPerc.getError();
 				}
 
-				layers.get(i).get(j).setError(e);
+				error *= perc.activationFunctionDerivative(perc.getOutput());
+				perc.setError(error);
 			}
 		}
 
-		if (Math.abs(error)<10)
-			correctPercent++;
-
-		System.out.println((double) correctPercent / attempts + " error "
-				+ error);
-		//backrpopagation weights
-		for (int i = 0; i < weights.size(); i++) {
-			weights.get(i).setWeight(weights.get(i).getWeight() + weights.get(i).getCurrentPerceptron().getError()
-					* LEARNING_RATE * weights.get(i).getBackPerceptron().getOutput());
-		}
-//		//backrpopagation bias
-//		for (int i = 0; i < layers.size(); i++) {
-//			for (int j = 0; j < layers.get(i).size(); j++) {
-//				double delta = LEARNING_RATE * layers.get(i).get(j).getError()
-//						* (layers.get(i).get(j).getOutput() * (1 - layers.get(i).get(j).getOutput()));
-//
-//				layers.get(i).get(j).setBias(layers.get(i).get(j).getBias() + delta);
-//			}
-//		}
-	
+		for (Weight weight : weights) {
+			double delta = -LEARNING_RATE * weight.getCurrentPerceptron().getError() * weight.getBackPerceptron().getOutput();
+			weight.setWeight(weight.getWeight()+delta);
+		}	
 	}
 
 	public void train2(ArrayList<Double> input, ArrayList<Double> label) {
