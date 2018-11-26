@@ -10,7 +10,7 @@ import Maths.Angle;
 
 public class GeneticAlgorithm {
 
-	private final double KEEP_PERCENT_TOP = 0.10;
+	private final double KEEP_PERCENT_TOP = 0.20;
 	private final double MUTATION_RATE = 0.03;
 	private int height;
 		
