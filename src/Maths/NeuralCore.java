@@ -13,7 +13,7 @@ public class NeuralCore {
 	private ArrayList<Angle> population = new ArrayList();
 	public NeuralCore(int popSize)
 	{
-		nn = new NeuralNetwork(1, 2, 3, 1);
+		nn = new NeuralNetwork(1, 2, 20, 3);
 		for(int i = 0; i < popSize; i++)
 		{
 			population.add(new Angle(0.0,0.0, 1, 2, 20, 3));
@@ -40,10 +40,6 @@ public class NeuralCore {
 		population = gn.generateNewPopulation(angles);
 		return population;
 	}
-	public void trainNeuralNetwork(double error)
-	{		
-		nn.seperateTrain(error);
-	}
 	public ArrayList<Angle> getPopulation()
 	{
 		return population;
@@ -52,10 +48,13 @@ public class NeuralCore {
 	{
 		return nn;
 	}
-	public ArrayList<Double> guess(double target)
+	public ArrayList<Double> guess(ArrayList<Double> target)
 	{
 		ArrayList<Double> input = new ArrayList();
-		input.add(target);
+		for(int i = 0; i< target.size();i++)
+		{
+			input.add(target.get(0));
+		}		
 		return nn.guess(input);
 	}
 	
