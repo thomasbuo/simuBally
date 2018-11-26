@@ -11,7 +11,7 @@ import Maths.Angle;
 public class GeneticAlgorithm {
 
 	private final double KEEP_PERCENT_TOP = 0.10;
-	private final double MUTATION_RATE = 0.07;
+	private final double MUTATION_RATE = 0.03;
 	private int height;
 		
 	private Random r = new Random();
@@ -25,17 +25,17 @@ public class GeneticAlgorithm {
 		
 		sort(angles);
 		
-		double averageScore = 0;
-		for(int i = 0; i< angles.size();i++)
-		{
-			averageScore+=angles.get(i).getScore();
-		}
-		System.out.println("avg "+averageScore/angles.size()+" ");
-		/*
-		for(int i = 0 ; i< angles.size();i++)
-		{
-			System.out.println(angles.get(i).getScore()+" ");
-		}*/
+//		double averageScore = 0;
+//		for(int i = 0; i< angles.size();i++)
+//		{
+//			averageScore+=angles.get(i).getScore();
+//		}
+//		System.out.println("avg "+averageScore/angles.size()+" ");
+//		
+//		for(int i = 0 ; i< angles.size();i++)
+//		{
+//			System.out.println(angles.get(i).getScore()+" ");
+//		}
 		
 		int totalScore = computeTotalScore(angles); //sum
 		ArrayList<Angle> newAngles = new ArrayList();
@@ -47,11 +47,15 @@ public class GeneticAlgorithm {
 			probabilities.add((angles.get(i).getScore()/totalScore));
 		}
 		
-		ArrayList<Angle> batch = new ArrayList<Angle>(angles.subList(0, (int)(angles.size()*KEEP_PERCENT_TOP)));
+		ArrayList<Angle> batch = new ArrayList<Angle>();
+		for(int i = 0; i< KEEP_PERCENT_TOP*angles.size();i++)
+		{
+			batch.add(angles.get(0));
+		}
 
 		for(Angle a : batch)
 		{
-			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 20, 5);
+			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 20, 3);
 			ang.setNN(a.getNN());
 			newAngles.add(ang);
 		}
@@ -84,7 +88,9 @@ public class GeneticAlgorithm {
 				
 				if(sum > p1)
 				{
+					
 					a1 = angles.get(j);
+					break;
 				}
 			}
 			
@@ -96,10 +102,20 @@ public class GeneticAlgorithm {
 				
 				if(sum > p2)
 				{
+					
 					a2 = angles.get(j);
+					break;
 				}
 			}
-			
+//			Angle ang = new Angle(a1.getAngle1(),a1.getAngle2(), 1, 2, 20, 5);
+//			ang.setNN(a1.getNN());
+//			newAngles.add(ang);
+//			
+//			Angle ang2 = new Angle(a2.getAngle1(),a2.getAngle2(), 1, 2, 20, 5);
+//			ang.setNN(a2.getNN());
+//			newAngles.add(ang);
+//			
+//			System.out.println(a1+" "+a2);
 			
 			Angle child = breed(a1,a2);
 			newAngles.add(child);
@@ -156,20 +172,20 @@ public class GeneticAlgorithm {
 			}
 		}
 		//bias
-		for(int i =0; i< angles.size();i++)
-		{
-			for(int j = 0; j< angles.get(i).getNN().getLayers().size(); j++)
-			{
-				for(int k = 0; k< angles.get(i).getNN().getLayers().get(j).size(); k++)
-				{
-					if(r.nextDouble()<MUTATION_RATE)
-					{
-						angles.get(i).getNN().getLayers().get(j).get(k).setBias(r.nextDouble()*2 -1);						
-					}
-				}
-				
-			}
-		}
+//		for(int i =0; i< angles.size();i++)
+//		{
+//			for(int j = 0; j< angles.get(i).getNN().getLayers().size(); j++)
+//			{
+//				for(int k = 0; k< angles.get(i).getNN().getLayers().get(j).size(); k++)
+//				{
+//					if(r.nextDouble()<MUTATION_RATE)
+//					{
+//						angles.get(i).getNN().getLayers().get(j).get(k).setBias(r.nextDouble()*2 -1);						
+//					}
+//				}
+//				
+//			}
+//		}
 		
 		
 	}
@@ -178,7 +194,7 @@ public class GeneticAlgorithm {
 	{
 		
 		
-		Angle child = new Angle(0.0,0.0, 1, 2, 20, 5);
+		Angle child = new Angle(0.0,0.0, 1, 2, 20, 3);
 		
 		ArrayList<Weight> weightP1 = p1.getNN().getWeights();
 		ArrayList<Weight> weightP2 = p2.getNN().getWeights();
@@ -217,21 +233,21 @@ public class GeneticAlgorithm {
 			
 			
 			//bias
-			for(int i = 0; i < child.getNN().getLayers().size(); i++)
-			{
-				for(int j = 0; j < child.getNN().getLayers().get(i).size();j++)
-				{
-					double chance = r.nextDouble();
-					if(chance<0.5)
-					{
-						child.getNN().getLayers().get(i).get(j).setBias(p1.getNN().getLayers().get(i).get(j).getBias());
-					}
-					else 
-					{
-						child.getNN().getLayers().get(i).get(j).setBias(p2.getNN().getLayers().get(i).get(j).getBias());
-					}
-				}
-			}
+//			for(int i = 0; i < child.getNN().getLayers().size(); i++)
+//			{
+//				for(int j = 0; j < child.getNN().getLayers().get(i).size();j++)
+//				{
+//					double chance = r.nextDouble();
+//					if(chance<0.5)
+//					{
+//						child.getNN().getLayers().get(i).get(j).setBias(p1.getNN().getLayers().get(i).get(j).getBias());
+//					}
+//					else 
+//					{
+//						child.getNN().getLayers().get(i).get(j).setBias(p2.getNN().getLayers().get(i).get(j).getBias());
+//					}
+//				}
+//			}
 			return child;
 		
 		

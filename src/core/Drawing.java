@@ -20,7 +20,7 @@ public class Drawing extends JFrame {
 	private JTextField txtTarget;
 	
 
-	public Drawing(Panel panel, Simulation2 simulation) {
+	public Drawing(Panel panel, Simulation simulation) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 869, 586);
 		contentPane = new JPanel();

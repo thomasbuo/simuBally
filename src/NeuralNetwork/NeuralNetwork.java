@@ -20,41 +20,42 @@ public class NeuralNetwork {
 	private static Random r = new Random();
 	private final double LEARNING_RATE = 0.5;
 //  XOR test
-	public static void main(String[] args) {
-		NeuralNetwork x = new NeuralNetwork(2, 2, 3, 1);
-
-		for (int i=0; i<100000; i++) {
-//			x.backprop(Arrays.asList(0.0, 0.0), Arrays.asList(0.0));
-//			x.backprop(Arrays.asList(1.0, 0.0), Arrays.asList(1.0));
-//			x.backprop(Arrays.asList(0.0, 1.0), Arrays.asList(1.0));
-//			x.backprop(Arrays.asList(1.0, 1.0), Arrays.asList(0.0));
-			
-			ArrayList<Double> input = new ArrayList();
-			ArrayList<Double> label = new ArrayList();
-			double k = r.nextDouble();
-			double l = r.nextDouble();
-			
-			input.add(k);
-			input.add(l);
-			if(k<l)
-			{
-				label.add(1.0);
-				label.add(0.0);
-			}
-			else 
-			{
-				label.add(0.0);
-				label.add(1.0);
-			}
-			System.out.println(x.guess(input)+" "+label+" k: "+k +" l: "+l);
-			
-		}
-
-//		System.out.println(x.guess(Arrays.asList(0.0, 0.0)));
-//		System.out.println(x.guess(Arrays.asList(1.0, 0.0)));
-//		System.out.println(x.guess(Arrays.asList(0.0, 1.0)));
-//		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
-	}
+//	public static void main(String[] args) {
+//		NeuralNetwork x = new NeuralNetwork(2, 2, 3, 1);
+//
+//		for (int i=0; i<100000; i++) {
+////			x.backprop(Arrays.asList(0.0, 0.0), Arrays.asList(0.0));
+////			x.backprop(Arrays.asList(1.0, 0.0), Arrays.asList(1.0));
+////			x.backprop(Arrays.asList(0.0, 1.0), Arrays.asList(1.0));
+////			x.backprop(Arrays.asList(1.0, 1.0), Arrays.asList(0.0));
+//			
+//			ArrayList<Double> input = new ArrayList();
+//			ArrayList<Double> label = new ArrayList();
+//			double k = r.nextDouble();
+//			double l = r.nextDouble();
+//			
+//			input.add(k);
+//			input.add(l);
+//			if(k<l)
+//			{
+//				label.add(1.0);
+//				label.add(0.0);
+//			}
+//			else 
+//			{
+//				label.add(0.0);
+//				label.add(1.0);
+//			}
+//			x.backprop(input, label);
+//			System.out.println(x.guess(input)+" "+label+" k: "+k +" l: "+l);
+//			
+//		}
+//
+////		System.out.println(x.guess(Arrays.asList(0.0, 0.0)));
+////		System.out.println(x.guess(Arrays.asList(1.0, 0.0)));
+////		System.out.println(x.guess(Arrays.asList(0.0, 1.0)));
+////		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
+//	}
 
 	public void backprop(List<Double> input, List<Double> target) {
 		ArrayList<Double> actual = guess(input);
@@ -154,14 +155,26 @@ public class NeuralNetwork {
 
 		for (int i = 1; i < layers.size(); i++) {
 			for (int j = 0; j < layers.get(i).size(); j++) {
-				layers.get(i).get(j).setBackConnections(layers.get(i - 1));
+				if(layers.get(i).get(j).getID().equals("bias"))
+				{
+					// this is a bias node, it should not have back connections.
+				}
+				else 
+				{
+					layers.get(i).get(j).setBackConnections(layers.get(i - 1));
+				}				
 			}
 		}
 
 		for (int i = 1; i < layers.size(); i++) {
 			for (int j = 0; j < layers.get(i).size(); j++) {
 				for (int k = 0; k < layers.get(i).get(j).getBackConnections().size(); k++) {
+					
 					weights.add(new Weight(layers.get(i).get(j).getBackConnections().get(k), layers.get(i).get(j)));
+					if(layers.get(i).get(j).getBackConnections().get(k).getID().equals("bias"))
+					{
+						weights.get(weights.size()-1).setWeight(1.0);
+					}					
 				}
 			}
 		}
@@ -206,8 +219,9 @@ public class NeuralNetwork {
 		for (int i = 0; i < layers.get(layers.size() - 1).size(); i++) {
 
 			guesses.add(layers.get(layers.size() - 1).get(i).getOutput());
+			
 		}
-
+		System.out.print(guesses);
 		return guesses;
 	}
 
