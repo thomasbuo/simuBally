@@ -46,12 +46,13 @@ public class GeneticAlgorithm {
 		{
 			probabilities.add((angles.get(i).getScore()/totalScore));
 		}
-		
-		ArrayList<Angle> batch = new ArrayList<Angle>();
-		for(int i = 0; i< KEEP_PERCENT_TOP*angles.size();i++)
-		{
-			batch.add(angles.get(0));
-		}
+//		System.out.println(probabilities);
+		ArrayList<Angle> batch = new ArrayList<Angle>(angles.subList(0, (int)KEEP_PERCENT_TOP*angles.size()));
+//		ArrayList<Angle> batch = new ArrayList<Angle>();
+//		for(int i = 0; i< KEEP_PERCENT_TOP*angles.size();i++)
+//		{
+//			batch.add(angles.get(0));
+//		}
 
 		for(Angle a : batch)
 		{
@@ -107,15 +108,6 @@ public class GeneticAlgorithm {
 					break;
 				}
 			}
-//			Angle ang = new Angle(a1.getAngle1(),a1.getAngle2(), 1, 2, 20, 5);
-//			ang.setNN(a1.getNN());
-//			newAngles.add(ang);
-//			
-//			Angle ang2 = new Angle(a2.getAngle1(),a2.getAngle2(), 1, 2, 20, 5);
-//			ang.setNN(a2.getNN());
-//			newAngles.add(ang);
-//			
-//			System.out.println(a1+" "+a2);
 			
 			Angle child = breed(a1,a2);
 			newAngles.add(child);
@@ -143,7 +135,7 @@ public class GeneticAlgorithm {
 		while(action)
 		{
 			action = false;
-			for(int i = 1; i < sortableList.size()-1; i++)
+			for(int i = 1; i < sortableList.size(); i++)
 			{
 				if(sortableList.get(i).getScore() > sortableList.get(i-1).getScore())
 				{

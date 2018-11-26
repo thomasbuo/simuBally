@@ -221,7 +221,7 @@ public class NeuralNetwork {
 			guesses.add(layers.get(layers.size() - 1).get(i).getOutput());
 			
 		}
-		System.out.print(guesses);
+		//System.out.print(guesses);
 		return guesses;
 	}
 
