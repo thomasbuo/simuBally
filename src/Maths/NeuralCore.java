@@ -16,7 +16,7 @@ public class NeuralCore {
 		nn = new NeuralNetwork(1, 2, 20, 3);
 		for(int i = 0; i < popSize; i++)
 		{
-			population.add(new Angle(0.0,0.0, 1, 2, 20, 3));
+			population.add(new Angle(0.0,0.0, 1, 2, 20, 4));
 		}
 	}
 	
@@ -38,6 +38,15 @@ public class NeuralCore {
 	public ArrayList<Angle>  train(ArrayList<Angle> angles)
 	{
 		population = gn.generateNewPopulation(angles);
+		return population;
+	}
+	public void storePopulation()
+	{
+		gn.storePopulation();
+	}
+	public ArrayList<Angle> trainOnPreviousBest(ArrayList<Angle> angles)
+	{
+		population = gn.generateNewPopulationFromBest(angles.size());
 		return population;
 	}
 	public ArrayList<Angle> getPopulation()

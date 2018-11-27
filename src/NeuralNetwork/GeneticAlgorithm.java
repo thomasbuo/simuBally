@@ -13,7 +13,9 @@ public class GeneticAlgorithm {
 	private final double KEEP_PERCENT_TOP = 0.20;
 	private final double MUTATION_RATE = 0.03;
 	private int height;
-		
+	
+	private ArrayList<ArrayList<Angle>> bestPopulations = new ArrayList();
+	private ArrayList<Angle> temporaryBest =  new ArrayList();
 	private Random r = new Random();
 	public GeneticAlgorithm()
 	{		
@@ -56,7 +58,7 @@ public class GeneticAlgorithm {
 
 		for(Angle a : batch)
 		{
-			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 20, 3);
+			Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 20, 4);
 			ang.setNN(a.getNN());
 			newAngles.add(ang);
 		}
@@ -115,8 +117,92 @@ public class GeneticAlgorithm {
 		}
 		
 		mutate(newAngles);
-		
+		temporaryBest = newAngles;
 		return newAngles;
+	}
+	public ArrayList<Angle> generateNewPopulationFromBest(int populationSize)
+	{
+		
+		ArrayList<Angle> breedingPool = new ArrayList();
+		ArrayList<Angle> newPopulation = new ArrayList();
+		ArrayList<Angle> angles  = new ArrayList();
+		for(int i = 0; i < bestPopulations.size(); i++)
+		{
+			sort(bestPopulations.get(i));
+			angles = bestPopulations.get(i);
+			ArrayList<Angle> batch = new ArrayList<Angle>();
+			
+			for(int j=0;j<bestPopulations.get(i).size(); j++)
+			{
+				batch.add(bestPopulations.get(i).get(j));
+			}
+			for(Angle a : batch)
+			{
+				Angle ang = new Angle(a.getAngle1(),a.getAngle2(), 1, 2, 20, 4);
+				ang.setNN(a.getNN());
+				breedingPool.add(ang);
+			}
+			
+		}
+		ArrayList<Double> probabilities = new ArrayList<>();
+		
+		for(int i =0;i<breedingPool.size();i++)
+		{
+			probabilities.add(1.0/breedingPool.size());
+		}
+		
+		while(newPopulation.size()<populationSize)
+		{
+			double p1;
+			double p2;
+			
+			if(r.nextDouble()>0.2)
+			{
+				p1 = r.nextDouble()*0.1;
+				p2 = r.nextDouble()*0.1;
+			}
+			else 
+			{
+				p1 = r.nextDouble();
+				p2 = r.nextDouble();
+			}
+			
+			Angle a1 = null;
+			Angle a2 = null;
+			
+			double sum=0;
+			
+			for(int j = 0 ; j < probabilities.size();j++)
+			{
+				sum+=probabilities.get(j);
+				
+				if(sum > p1)
+				{
+					
+					a1 = breedingPool.get(j);
+					break;
+				}
+			}
+			
+			sum = 0;
+			
+			for(int j = 0 ; j < probabilities.size();j++)
+			{
+				sum+=probabilities.get(j);
+				
+				if(sum > p2)
+				{
+					
+					a2 = breedingPool.get(j);
+					break;
+				}
+			}
+			
+			Angle child = breed(a1,a2);
+			newPopulation.add(child);			
+		}
+		temporaryBest = newPopulation;
+		return newPopulation;
 	}
 	
 	public int computeTotalScore(ArrayList<Angle> angles) //sum
@@ -125,6 +211,7 @@ public class GeneticAlgorithm {
 		for(Angle a : angles)
 		{
 			score+= a.getScore();
+			//System.out.print(a.getScore()+ " ");
 		}
 		return score;
 	}
@@ -186,7 +273,7 @@ public class GeneticAlgorithm {
 	{
 		
 		
-		Angle child = new Angle(0.0,0.0, 1, 2, 20, 3);
+		Angle child = new Angle(0.0,0.0, 1, 2, 20, 4);
 		
 		ArrayList<Weight> weightP1 = p1.getNN().getWeights();
 		ArrayList<Weight> weightP2 = p2.getNN().getWeights();
@@ -240,9 +327,13 @@ public class GeneticAlgorithm {
 //					}
 //				}
 //			}
-			return child;
+			return child;		
+	}
+	
+	public void storePopulation()
+	{
 		
-		
-		
+		bestPopulations.add(temporaryBest);
+		//System.out.println(bestPopulations);
 	}
 }
