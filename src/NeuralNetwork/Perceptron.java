@@ -36,21 +36,16 @@ public class Perceptron {
 	
 	public double activationFunction(double x) // x = sum of weight times input + bias
 	{
-		if(layer == 0)
-		{
-			return Math.max(0, x);
-		}
-		else if(layer == totalLayers)
+		if(layer == totalLayers)
 		{
 			//sigmoid
 			return 1.0 / (1 + Math.exp(-x)); 
 		}
 		else
 		{
+			//relu
 			return Math.max(0, x);
-		}
-		
-		
+		}	
 	}
 
 	public double activationFunctionDerivative(double phix) // Derivative of phi with respect to x given phi(x)
