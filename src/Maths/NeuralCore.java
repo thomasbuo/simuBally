@@ -1,5 +1,5 @@
 package Maths;
-// HI THOMAS!! 
+// HI ZSOLTTTTT!! 
 import java.util.ArrayList;
 
 import NeuralNetwork.GeneticAlgorithm;

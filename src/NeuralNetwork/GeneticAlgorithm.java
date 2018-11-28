@@ -1,5 +1,5 @@
 package NeuralNetwork;
-//HELLOOOO!!
+//HELLOOOO!!!
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -270,7 +270,7 @@ public class GeneticAlgorithm {
 	public void mutate(ArrayList<Angle> angles)
 	{
 		//weights
-		for(int i = (int)(angles.size() * KEEP_PERCENT_TOP/2); i< angles.size();i++)
+		for(int i = (int)(angles.size() * KEEP_PERCENT_TOP); i< angles.size();i++)
 		{
 			for(int j = 0; j< angles.get(i).getNN().getWeights().size(); j++)
 			{ 

@@ -187,7 +187,7 @@ public class Simulation {
 						else
 						{
 							
-							//
+							
 						//this is for genetic	
 							nc.setError(error);
 							nc.getPopulation().get(population_counter).setScore(score);

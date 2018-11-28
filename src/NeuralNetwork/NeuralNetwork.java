@@ -11,7 +11,7 @@ import java.util.Random;
 
 
 public class NeuralNetwork {
-
+//test
 	private ArrayList<ArrayList<Perceptron>> layers = new ArrayList<ArrayList<Perceptron>>();
 	private ArrayList<Weight> weights = new ArrayList<Weight>();
 	private int correctPercent = 0;
