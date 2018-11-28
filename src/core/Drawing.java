@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
@@ -18,10 +19,26 @@ public class Drawing extends JFrame {
 	private JTextField txtAngel;
 	private JTextField txtAngel_1;
 	private JTextField txtTarget;
+	private JFrame closeFrame = new JFrame();
 	
-
-	public Drawing(Panel panel, Simulation simulation) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public Drawing(Panel panel, Simulation simulation) 
+	{
+		this.addWindowListener(new java.awt.event.WindowAdapter() 
+		{
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) 
+		    {
+		        if (JOptionPane.showConfirmDialog(closeFrame, 
+		            "Would you like to Save?", "save?", 
+		            JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+		        {
+		        	simulation.getNeuralCore().getPopulation().get(0).getNN().saveToFile("neuralNetwork");
+		        }
+		        System.exit(0);
+		    }
+		});
+		
 		setBounds(100, 100, 869, 586);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

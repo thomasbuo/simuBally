@@ -22,8 +22,8 @@ public class Perceptron {
 		this.layer = layer;
 		this.totalLayers = totalLayers;
 		this.id = id;
-		bias = r.nextDouble()*2 -1;
-		//bias = 0;
+		//bias = r.nextDouble()*2 -1;
+		bias = 1;
 	}
 	
 	public void computeOutput(double sum)

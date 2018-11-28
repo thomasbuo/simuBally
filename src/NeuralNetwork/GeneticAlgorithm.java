@@ -147,19 +147,32 @@ public class GeneticAlgorithm {
 		{
 			sort(bestPopulations.get(i));
 			angles = bestPopulations.get(i);
+			
+			if(bestPopulations.get(i).size()>0)
+			{		
+				System.out.println(" score " + bestPopulations.get(i).get(0).getScore() );
+//				Angle ang = new Angle(0.0,0.0,1,2,20,4);
+//				ang.setNN(bestPopulations.get(i).get(0).getNN());
+				newPopulation.add(bestPopulations.get(i).get(0));
+			}
 			for(int j =0;j<KEEP_PERCENT_TOP*angles.size();j++)
 			{
 				Angle ang = new Angle(0.0,0.0,1,2,20,4);
 				ang.setNN(bestPopulations.get(i).get(j).getNN());
 				breedingPool.add(ang);
 			}
-			Angle ang = new Angle(0.0,0.0,1,2,20,4);
-			if(bestPopulations.get(i).size()>0)
+			for(int j =0;j<KEEP_PERCENT_TOP*angles.size()/2;j++)
 			{
-				ang.setNN(bestPopulations.get(i).get(0).getNN());
-			}
-			
-			breedingPool.add(ang);
+				Angle ang = new Angle(0.0,0.0,1,2,20,4);
+				ang.setNN(bestPopulations.get(i).get(j).getNN());
+				breedingPool.add(ang);
+			}	
+			for(int j =0;j<KEEP_PERCENT_TOP*angles.size()/4;j++)
+			{
+				Angle ang = new Angle(0.0,0.0,1,2,20,4);
+				ang.setNN(bestPopulations.get(i).get(j).getNN());
+				breedingPool.add(ang);
+			}	
 			
 		}
 		
@@ -220,8 +233,11 @@ public class GeneticAlgorithm {
 			Angle child = breed(a1,a2);
 			newPopulation.add(child);			
 		}
+		
 		temporaryBest = newPopulation;
+		bestPopulations.clear();
 		return newPopulation;
+		
 	}
 	
 	public int computeTotalScore(ArrayList<Angle> angles) //sum
@@ -254,7 +270,7 @@ public class GeneticAlgorithm {
 	public void mutate(ArrayList<Angle> angles)
 	{
 		//weights
-		for(int i = (int)(angles.size() * KEEP_PERCENT_TOP); i< angles.size();i++)
+		for(int i = (int)(angles.size() * KEEP_PERCENT_TOP/2); i< angles.size();i++)
 		{
 			for(int j = 0; j< angles.get(i).getNN().getWeights().size(); j++)
 			{ 

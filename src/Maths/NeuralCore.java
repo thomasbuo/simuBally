@@ -66,5 +66,9 @@ public class NeuralCore {
 		}		
 		return nn.guess(input);
 	}
+	public void setPopulation(ArrayList<Angle> population)
+	{
+		this.population = population;
+	}
 	
 }

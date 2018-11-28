@@ -1,9 +1,14 @@
 package NeuralNetwork;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
 
 public class NeuralNetwork {
 
@@ -69,9 +74,14 @@ public class NeuralNetwork {
 
 		for (int i = 1; i < layers.size(); i++) {
 			for (int j = 0; j < layers.get(i).size(); j++) {
-				
+				if(layers.get(i).get(j).getID().equals("bias"))
+				{
+					// this is a bias node, it should not have back connections.
+				}
+				else 
+				{
 					layers.get(i).get(j).setBackConnections(layers.get(i - 1));
-							
+				}				
 			}
 		}
 
@@ -214,6 +224,46 @@ public class NeuralNetwork {
 //////		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
 //	}
 
+	public void saveToFile(String fileName)
+	{
+		BufferedWriter bw;
+		FileWriter fw;
+		File f = new File("./" + fileName + ".txt");
+
+		try {
+			int count = 1;
+			while (f.exists() && !f.isDirectory()) {
+				count++;
+				f = new File("./neural" + count + ".txt");
+			}
+
+			fw = new FileWriter(f);
+			bw = new BufferedWriter(fw);
+			bw.write(this.toString());
+			bw.close();
+			fw.close();
+
+			System.out.println("saved: " + "./neural" + count + ".txt");
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	public String toString()
+	{
+		String save = "";
+		save = save + inputNodes + ";" ;
+		save = save + outputNodes + ";" ;
+		save = save + hiddenNodes + ";" ;
+		save = save + hiddenLayers + ";" ;
+		for(int i=0; i<weights.size();i++)
+		{
+			save = save + weights.get(i).getBackPerceptron().getID() + ";";
+			save = save + weights.get(i).getCurrentPerceptron().getID() + ";";
+			save = save + weights.get(i).getWeight()+";";
+		}		
+		return save;
+	}
+	
 	public ArrayList<ArrayList<Perceptron>> getLayers() {
 		return layers;
 	}
