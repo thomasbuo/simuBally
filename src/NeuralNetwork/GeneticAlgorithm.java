@@ -59,7 +59,7 @@ public class GeneticAlgorithm {
 		
 		for(int i =0;i<KEEP_PERCENT_TOP*angles.size();i++)
 		{
-			Angle ang = new Angle(0.0,0.0,1,2,20,4);
+			Angle ang = new Angle(0.0,0.0,1,3,20,4);
 			ang.setNN(angles.get(i).getNN());
 			newAngles.add(ang);
 		}
@@ -307,7 +307,7 @@ public class GeneticAlgorithm {
 	{
 		
 		
-		Angle child = new Angle(0.0,0.0,1,2,20,4);
+		Angle child = new Angle(0.0,0.0,1,3,20,4);
 		
 		ArrayList<Weight> weightP1 = p1.getNN().getWeights();
 		ArrayList<Weight> weightP2 = p2.getNN().getWeights();

@@ -111,6 +111,7 @@ public class PhysicsEngine extends Thread{
             calcDistance();
             sim.updateSim();
             BIAS -= 0.025;
+            this.counter = 0;
             if(finalDistance != 0){
                 break;
             }
@@ -170,7 +171,7 @@ public class PhysicsEngine extends Thread{
         Vector2D d = ball.calcDrag();
 
         double vx = ball.getVx() - (a.getX() * timeFraction) - (d.getX()*timeFraction);
-        double vy = ball.getVy() - (a.getY() * timeFraction) + (d.getY()*timeFraction);
+        double vy = ball.getVy() - (a.getY() * timeFraction) - (d.getY()*timeFraction);
 //        System.out.println("THIS IS THE X COMPONENT OF ACCELERATION : " + a.getX());
 //        System.out.println("THIS IS THE Y COMPONENT OF ACCELERATION : " + a.getY());
 //        System.out.println("THIS IS THE UPDATED BALL VX : " + vx);
@@ -190,8 +191,8 @@ public class PhysicsEngine extends Thread{
         double previousX = ball.getX();
         double previousY = ball.getY();
 
-//        System.out.println("THIS IS THE BALL's CURRENT X POSITION : " + ball.getX());
-//        System.out.println("THIS IS THE BALL's CURRENT Y POSITION : " + ball.getY());
+        System.out.println("THIS IS THE BALL's CURRENT X POSITION : " + ball.getX());
+        System.out.println("THIS IS THE BALL's CURRENT Y POSITION : " + ball.getY());
 
         double newX = previousX + (ball.getVx()*timeFraction);
         double newY = previousY + (ball.getVy()*timeFraction);
@@ -200,8 +201,8 @@ public class PhysicsEngine extends Thread{
 
         ball.updatePosition(newX,newY);
 
-            if(newY<= 0.005){
-                if(newY >= -0.005){
+            if(newY<= 0.02){
+                if(newY >= -0.02){
                     this.finalDistance = newX-0.25;
                     System.out.println("THIS IS THE FINAL DISTANCE !!!!!!!!!!! : " + finalDistance);
 //                    System.out.println("THIS IS THE TARGET DISTANCE: " + targetDistance);
@@ -216,7 +217,7 @@ public class PhysicsEngine extends Thread{
 					double score = Math.abs((targetDistance/1000 + targetWidth/2000)*(targetDistance/1000 + targetWidth/2000) - error);
                 }
             }
-        System.out.println("TEST");
+ //       System.out.println("TEST");
 
             this.ballDistance = newX;
 //            System.out.println("THIS IS THE FINAL DISTANCE OF THE BALL WHEN IT HITS THE GROUND : " + ballDistance);
@@ -274,7 +275,7 @@ public class PhysicsEngine extends Thread{
         arm.selfAngle =  arm.selfAngle + ((Math.abs(endAngle1Value-startAngle1Value)/5)*timeFraction);
 //        System.out.println("THIS IS END ANGLE 1 VALUE : " + endAngle1Value);
 //        System.out.println("THIS IS START ANGLE 1 VALUE : " + startAngle1Value);
-//        System.out.println("THIS IS THE NEW ARM SELF ANGLE VALUE : " + arm.selfAngle);
+//        System.out.println("THIS IS THE ADDITION TO ARM SELF ANGLE VALUE : " + (Math.abs(endAngle1Value-startAngle1Value)/5)*timeFraction);
 //        System.out.println("THIS IS THE NEW ARM ANGULAR VEL VALUE : " + arm.getAngularVelocity());
         arm.update();
         this.armAngle = Math.atan(tipVel.getY()/tipVel.getX());
@@ -347,8 +348,8 @@ public class PhysicsEngine extends Thread{
 
                 if((arm3.getSelfAngle() >= realAngle2)) {
                     b = true;
-                    arm3.setAngularVel(210);
-                }else if(arm2.getSelfAngle() >= triggerAngle){
+                    arm3.setAngularVel(0);
+                }else if(arm2.getSelfAngle() >= triggerAngle-1){
                     arm3.setAngularVel(Math.abs(endAngle2Value-startAngle2Value)/delay);
                     performTimeStep(arm3);
                 }

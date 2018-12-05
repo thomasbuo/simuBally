@@ -13,10 +13,10 @@ public class NeuralCore {
 	private ArrayList<Angle> population = new ArrayList();
 	public NeuralCore(int popSize)
 	{
-		nn = new NeuralNetwork(1, 2, 20, 4);
+		nn = new NeuralNetwork(1, 3, 20, 4);
 		for(int i = 0; i < popSize; i++)
 		{
-			population.add(new Angle(0.0,0.0, 1, 2, 20, 4));
+			population.add(new Angle(0.0,0.0, 1, 3, 20, 4));
 		}
 	}
 	

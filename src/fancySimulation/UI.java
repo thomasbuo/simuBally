@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 //import java.util.DoubleSummaryStatistics;
+import java.util.ArrayList;
 
 public class UI {
 
@@ -171,27 +172,45 @@ public class UI {
                 double targetHeightValue = Double.parseDouble(targetHeight.getText())*1000;
                 double targetWidthValue = Double.parseDouble(targetWidth.getText())*1000;
 
-                sim.setStartAngle1Value(startAngle1Value);
-                sim.setStartAngle2Value(startAngle2Value);
-                sim.setEndAngle1Value(endAngle1Value);
-                sim.setEndAngle2Value(endAngle2Value);
-                sim.setTriggerAngle(triggerAngleValue);
-                sim.setTargetDistance(targetDistanceValue);
-                sim.setTargetHeight(targetHeightValue);
-                sim.setTargetWidth(targetWidthValue);
+                
                 System.out.println("THIS IS SIM TARGET WIDTH" + sim.getTargetWidth());
-                int pop = 100;
+                int pop = 10;
                 NeuralCore neural = new NeuralCore(pop);
                 for(int j = 0; j < 10; j++)
                 {
+                	System.out.println("new gen");
 	                for(int i = 0; i < pop; i++)
 	                {
+	                	System.out.println("die "+i);
+	                	ArrayList<Double> target = new ArrayList<Double>();
+	                	target.add(targetDistanceValue/1000);
+	                	ArrayList<Double> angles = neural.getPopulation().get(i).getNN().guess(target);
+	                	System.out.println("die2");
+	                	
+	                	int endAngle1ValueTemp = (int)Math.round(angles.get(0)*179-89);
+	                	int endAngle2ValueTemp = (int)Math.round(angles.get(1)*39-19);
+	                	int triggerAngleValueTemp = - 89 + (int)(Math.round(angles.get(2)*(endAngle1ValueTemp+89)));
+	                	System.out.println("THIS IS THE END ANGLE 1 VALUE : " + endAngle1ValueTemp);
+	                	System.out.println("THIS IS THE END ANGLE 2 VALUE : " + endAngle2ValueTemp);
+	                	System.out.println("THIS IS THE TRIGGER ANGLE VALUE : " + triggerAngleValueTemp);
+
+	                	
+	                	sim.setStartAngle1Value(startAngle1Value);
+	                    sim.setStartAngle2Value(startAngle2Value);
+	                    sim.setEndAngle1Value(endAngle1ValueTemp);
+	                    sim.setEndAngle2Value(endAngle2ValueTemp);
+	                    sim.setTriggerAngle(triggerAngleValueTemp);
+	                    sim.setTargetDistance(targetDistanceValue);
+	                    sim.setTargetHeight(targetHeightValue);
+	                    sim.setTargetWidth(targetWidthValue);
+	                    
 		                physicsEngine = new PhysicsEngine(sim);
 		                physicsEngine.setStartAngle1Value(startAngle1Value);
 		                physicsEngine.setStartAngle2Value(startAngle2Value);
-		                physicsEngine.setEndAngle1Value(endAngle1Value); //toLearn
-		                physicsEngine.setEndAngle2Value(endAngle2Value); //toLearn
-		                physicsEngine.setTriggerAngle(triggerAngleValue); //toLearn
+		                physicsEngine.setEndAngle1Value(endAngle1ValueTemp); //toLearn
+		                physicsEngine.setEndAngle2Value(endAngle2ValueTemp); //toLearn
+		                physicsEngine.setTriggerAngle(triggerAngleValueTemp); //toLearn
+		                System.out.println("die3 "+angles);
 		                physicsEngine.setTargetDistance(targetDistanceValue);
 		                physicsEngine.setTargetHeight(targetHeightValue);
 		                physicsEngine.setTargetWidth(targetWidthValue);
@@ -199,7 +218,7 @@ public class UI {
 		//                simulation.updateSim(0);
 		                physicsEngine.sim.repaint();
 		                neural.getPopulation().get(i).setScore(physicsEngine.getScore());
-		                resetpls();
+		                
 	                }
 	                neural.train(neural.getPopulation());
                 }
