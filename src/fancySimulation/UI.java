@@ -7,6 +7,10 @@ package fancySimulation;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+import Maths.NeuralCore;
+import NeuralNetwork.NeuralNetwork;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,12 +59,13 @@ public class UI {
     // final variables text field dimensions
     private static final int DIMWIDTH = 60;
     private static final int DIMHEIGHT = 25;
+    private Simulation sim;
 
     // angle correction
     private final int CORRECT = 0;
 
     public UI(Simulation sim){
-
+    	this.sim = sim;
         //Create labels
         angleLabel1 = new JLabel("Initial and final angles lower: ");
         angleLabel2 = new JLabel("Initial and final angles upper: ");
@@ -175,22 +180,29 @@ public class UI {
                 sim.setTargetHeight(targetHeightValue);
                 sim.setTargetWidth(targetWidthValue);
                 System.out.println("THIS IS SIM TARGET WIDTH" + sim.getTargetWidth());
-
-
-                physicsEngine = new PhysicsEngine(sim);
-                physicsEngine.setStartAngle1Value(startAngle1Value);
-                physicsEngine.setStartAngle2Value(startAngle2Value);
-                physicsEngine.setEndAngle1Value(endAngle1Value);
-                physicsEngine.setEndAngle2Value(endAngle2Value);
-                physicsEngine.setTriggerAngle(triggerAngleValue);
-                physicsEngine.setTargetDistance(targetDistanceValue);
-                physicsEngine.setTargetHeight(targetHeightValue);
-                physicsEngine.setTargetWidth(targetWidthValue);
-                physicsEngine.run();
-//                simulation.updateSim(0);
-                physicsEngine.sim.repaint();
-
-
+                int pop = 100;
+                NeuralCore neural = new NeuralCore(pop);
+                for(int j = 0; j < 10; j++)
+                {
+	                for(int i = 0; i < pop; i++)
+	                {
+		                physicsEngine = new PhysicsEngine(sim);
+		                physicsEngine.setStartAngle1Value(startAngle1Value);
+		                physicsEngine.setStartAngle2Value(startAngle2Value);
+		                physicsEngine.setEndAngle1Value(endAngle1Value); //toLearn
+		                physicsEngine.setEndAngle2Value(endAngle2Value); //toLearn
+		                physicsEngine.setTriggerAngle(triggerAngleValue); //toLearn
+		                physicsEngine.setTargetDistance(targetDistanceValue);
+		                physicsEngine.setTargetHeight(targetHeightValue);
+		                physicsEngine.setTargetWidth(targetWidthValue);
+		                physicsEngine.run();
+		//                simulation.updateSim(0);
+		                physicsEngine.sim.repaint();
+		                neural.getPopulation().get(i).setScore(physicsEngine.getScore());
+		                resetpls();
+	                }
+	                neural.train(neural.getPopulation());
+                }
             }
         });
 
@@ -233,8 +245,8 @@ public class UI {
 
             }
         });
-
-
+        
+      
         /*//time slider functionality
         timeSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -248,6 +260,40 @@ public class UI {
         });*/
 
 
+    }
+    public void resetpls() 
+    {
+	    int startAngle1Value =  Integer.parseInt(startAngle1.getText())+CORRECT;
+	    int startAngle2Value =  -(Integer.parseInt(startAngle2.getText())-CORRECT);
+	    int endAngle1Value =  Integer.parseInt(endAngle1.getText())+CORRECT;
+	    int endAngle2Value =  -(Integer.parseInt(endAngle2.getText())-CORRECT);
+	    int triggerAngleValue = Integer.parseInt(triggerAngle.getText());
+	    double targetDistanceValue = Double.parseDouble(targetDistance.getText());
+	    double targetHeightValue = Double.parseDouble(targetHeight.getText());
+	    double targetWidthValue = Double.parseDouble(targetWidth.getText());
+	
+	
+	    sim.setStartAngle1Value(startAngle1Value);
+	    sim.setStartAngle2Value(startAngle2Value);
+	    sim.setEndAngle1Value(endAngle1Value);
+	    sim.setEndAngle2Value(endAngle2Value);
+	    sim.setTriggerAngle(triggerAngleValue);
+	    sim.setTargetDistance(targetDistanceValue);
+	    sim.setTargetHeight(targetHeightValue);
+	    sim.setTargetWidth(targetWidthValue);
+	
+	    physicsEngine = new PhysicsEngine(sim);
+	   // simulation.updateSim(0);
+	    physicsEngine.setStartAngle1Value(startAngle1Value);
+	    physicsEngine.setStartAngle2Value(startAngle2Value);
+	    physicsEngine.setEndAngle1Value(endAngle1Value);
+	    physicsEngine.setEndAngle2Value(endAngle2Value);
+	    physicsEngine.setTriggerAngle(triggerAngleValue);
+	    physicsEngine.setTargetDistance(targetDistanceValue);
+	    physicsEngine.setTargetHeight(targetHeightValue);
+	    physicsEngine.setTargetWidth(targetWidthValue);
+	    physicsEngine.run();
+	    physicsEngine.sim.repaint();
     }
 
 }

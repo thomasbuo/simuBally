@@ -49,6 +49,9 @@ public class PhysicsEngine extends Thread{
     private Arm arm3 = new Arm(arm2,170,0);
     private Target target;
     private Trajectory currentTrajectory;
+    
+    private double error;
+    private double score;
 
     public PhysicsEngine(Simulation sim){
 
@@ -206,6 +209,8 @@ public class PhysicsEngine extends Thread{
                         }
                     }
                     System.out.println("HAS THE TARGET BEEN REACHED (TRUE OR FALSE) : " + targetReached);
+                    double error =(finalDistance - (targetDistance/1000 + targetWidth/2000))*((finalDistance - (targetDistance/1000 + targetWidth/2000)));
+					double score = Math.abs((targetDistance/1000 + targetWidth/2000)*(targetDistance/1000 + targetWidth/2000) - error);
                 }
             }
 
@@ -471,5 +476,14 @@ public class PhysicsEngine extends Thread{
 
     public void setTargetWidth(double targetWidth) {
         this.targetWidth = targetWidth;
+    }
+    
+    public double getScore()
+    {
+    	return score;
+    }
+    public double getError()
+    {
+    	return error;
     }
 }

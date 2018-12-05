@@ -50,8 +50,8 @@ public class Simulation extends JPanel{
     private Font small;
     private Font big;
 
-    private static final int HEIGHT = 700;
-    private static final int WIDTH = 1400;
+    private static final int HEIGHT = 600;
+    private static final int WIDTH = 1300;
     public static final int FLOORHEIGHT = HEIGHT - 40;
 
     private static final int startX = 250;
