@@ -1,7 +1,10 @@
 package NeuralNetwork;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +14,7 @@ import java.util.Random;
 
 
 public class NeuralNetwork {
-//test
+
 	private ArrayList<ArrayList<Perceptron>> layers = new ArrayList<ArrayList<Perceptron>>();
 	private ArrayList<Weight> weights = new ArrayList<Weight>();
 	private int correctPercent = 0;
@@ -31,7 +34,7 @@ public class NeuralNetwork {
 		this.outputNodes = outputNodes;
 		this.hiddenNodes = hiddenNodes;
 		this.hiddenLayers = hiddenLayers;
-
+		int biasid = 0;
 		for (int i = 0; i < hiddenLayers + 2; i++) {
 			ArrayList<Perceptron> layer = new ArrayList<Perceptron>();
 
@@ -45,7 +48,9 @@ public class NeuralNetwork {
 					layer.add(new Perceptron(id, i, hiddenLayers + 1));
 					layer.get(layer.size()-1).setBias(0.0);
 				}
-				layer.add(new Perceptron("bias", i, hiddenLayers + 1));
+				
+				layer.add(new Perceptron("bias"+biasid, i, hiddenLayers + 1));
+				biasid++;
 				layer.get(layer.size()-1).setOutput(1.0);
 			}
 			// output
@@ -64,7 +69,8 @@ public class NeuralNetwork {
 					id += j;
 					layer.add(new Perceptron(id,  i, hiddenLayers + 1));
 				}
-				layer.add(new Perceptron("bias", i, hiddenLayers + 1));
+				layer.add(new Perceptron("bias"+biasid, i, hiddenLayers + 1));
+				biasid++;
 				layer.get(layer.size()-1).setOutput(1.0);
 
 			}
@@ -263,7 +269,116 @@ public class NeuralNetwork {
 		}		
 		return save;
 	}
-	
+	public void load(String path) throws IOException
+	{
+		System.out.println("load");
+		layers.clear();
+		weights.clear();
+		BufferedReader br = new BufferedReader(new FileReader(path));
+		try {
+		   
+		    String line = br.readLine();
+		    String [] parts= line.split(";");
+		    inputNodes = Integer.parseInt(parts[0]);
+		    outputNodes = Integer.parseInt(parts[1]);
+		    hiddenNodes = Integer.parseInt(parts[2]);
+		    hiddenLayers = Integer.parseInt(parts[3]);
+		    
+		    for (int i = 0; i < hiddenLayers + 2; i++) {
+				ArrayList<Perceptron> layer = new ArrayList<Perceptron>();
+
+				String id = "";
+				// input
+				if (layers.size() == 0) {
+
+					for (int j = 0; j < inputNodes; j++) {
+						id += i;
+						id += j;
+						layer.add(new Perceptron(id, i, hiddenLayers + 1));
+						layer.get(layer.size()-1).setBias(0.0);
+					}
+					layer.add(new Perceptron("bias", i, hiddenLayers + 1));
+					layer.get(layer.size()-1).setOutput(1.0);
+				}
+				// output
+				else if (i == hiddenLayers + 1) {
+
+					for (int j = 0; j < outputNodes; j++) {
+						id += i;
+						id += j;
+						layer.add(new Perceptron(id, i, hiddenLayers + 1));
+					}
+				}
+				// hidden layers
+				else {
+					for (int j = 0; j < hiddenNodes; j++) {
+						id += i;
+						id += j;
+						layer.add(new Perceptron(id,  i, hiddenLayers + 1));
+					}
+					layer.add(new Perceptron("bias", i, hiddenLayers + 1));
+					layer.get(layer.size()-1).setOutput(1.0);
+
+				}
+
+				layers.add(layer);
+			}
+		    
+		   
+		    
+			for (int i = 1; i < layers.size(); i++) {
+				for (int j = 0; j < layers.get(i).size(); j++) {
+					if(layers.get(i).get(j).getID().equals("bias"))
+					{
+						// this is a bias node, it should not have back connections.
+					}
+					else 
+					{
+						layers.get(i).get(j).setBackConnections(layers.get(i - 1));
+					}				
+				}
+			}
+			
+			
+			
+			for (int i = 1; i < layers.size(); i++) {
+				for (int j = 0; j < layers.get(i).size(); j++) {
+					for (int k = 0; k < layers.get(i).get(j).getBackConnections().size(); k++) {
+						
+						weights.add(new Weight(layers.get(i).get(j).getBackConnections().get(k), layers.get(i).get(j)));
+										
+					}
+				}
+			}
+		    
+		    for(int i=4;i<parts.length-1;i++)
+		    {
+		    	
+		    	String id1 = parts[i];
+		    	i++;
+				String id2 = parts[i];
+				i++;
+				for(int d = 0; d <weights.size();d++ )
+				{
+					
+					if(weights.get(d).getBackPerceptron().getID().equals(id1) && weights.get(d).getCurrentPerceptron().getID().equals(id2) )
+					{
+						weights.get(d).setWeight(Double.parseDouble(parts[i]));
+						break;
+					}
+				}
+				i++;
+		    }
+		    
+		    for(int i =0; i<weights.size();i++)
+		    {
+		    	System.out.print(weights.get(i).getWeight()+" / ");
+		    }
+		    System.out.println();
+		} finally {
+		    br.close();
+		}
+	}
 	public ArrayList<ArrayList<Perceptron>> getLayers() {
 		return layers;
 	}

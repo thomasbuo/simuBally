@@ -16,6 +16,7 @@ import objects.Floor;
 import objects.Joint;
 import objects.Target;
 
+import java.io.IOException;
 import java.sql.Time;
 import java.util.*;
 
@@ -23,7 +24,7 @@ import java.util.*;
 public class Simulation {
 	
 	private boolean paint = false;
-	
+	private boolean load = true;
 	private int targetX = 200;
 	private int targetY ;
 	private boolean is_running = false;
@@ -123,6 +124,12 @@ public class Simulation {
 				joints.get(0).setTargetAngle(-(int)(maxRotation1/2) + angles.get(0)*maxRotation1);
 				joints.get(1).setTargetAngle(-(int)(maxRotation2/2)  + angles.get(1)*maxRotation2);	
 					
+//				try {
+//					nc.getNeuralNetwork().load("neural5.txt");
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
 				while (this.is_running) {
 					start_time = System.nanoTime();
 	
@@ -189,6 +196,7 @@ public class Simulation {
 							
 							
 						//this is for genetic	
+						
 							nc.setError(error);
 							nc.getPopulation().get(population_counter).setScore(score);
 							nc.getPopulation().get(population_counter).setError(error+nc.getPopulation().get(population_counter).getError());
@@ -247,6 +255,7 @@ public class Simulation {
 										generation++;
 										generated = true;
 										nc.trainOnPreviousBest(nc.getPopulation());
+										
 										target.setX(180);
 									}
 									target.setX(target.getX()+20);	
