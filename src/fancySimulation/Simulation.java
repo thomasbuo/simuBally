@@ -92,7 +92,7 @@ public class Simulation extends JPanel{
         //diff between the angles of the resulting velocities of the ball and the end effector of the robot
         double diff = Math.abs(a-b);
 
-        System.out.println("this is diff : " + diff);
+//        System.out.println("this is diff : " + diff);
         //check if the angles are misaligned
         if(currentTrajectory!=null && diff > 0.75 && diff < 1.00) {
             //remember to change this method so that it does not multiply by magnitude

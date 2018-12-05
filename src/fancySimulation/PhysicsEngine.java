@@ -81,11 +81,12 @@ public class PhysicsEngine extends Thread{
 //        System.out.println("THIS IS THE START ANGLE 1 VALUE IN THE RUN METHOD :" + startAngle1Value);
 //        System.out.println("THIS IS THE START ANGLE 2 VALUE IN THE RUN METHOD :" + startAngle2Value);
         this.ball = new Ball(sim, arm3.getEndPos().getX(), arm3.getEndPos().getY(), 0, 0);
-
+        this.finalDistance = 0;
         arm2.setSelfAngle(startAngle1Value);
         arm3.setSelfAngle(startAngle2Value);
         //System.out.println("THIS IS SELF ANGLE OF ARM 3 IN THE RUN METHOD : " + arm3.getSelfAngle());
         this.BIAS = 0.5;
+        sim.repaint();
         while(Main.isRunning){
             //System.out.println("WE ARE IN THE LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 //            if(timeCounter == 0 ){
@@ -107,7 +108,9 @@ public class PhysicsEngine extends Thread{
             calcDistance();
             sim.updateSim();
             BIAS -= 0.025;
-
+            if(finalDistance != 0){
+                break;
+            }
 
             //updateTime(time);
             currentTrajectory = new Trajectory(getRealCurrentVelocity(),arm3.getEndPos(),arm3.getRealEndPos(), target, ball);
@@ -115,7 +118,7 @@ public class PhysicsEngine extends Thread{
 
 
 
-
+            sim.repaint();
 
 
             try{
@@ -198,8 +201,8 @@ public class PhysicsEngine extends Thread{
                 if(newY >= -0.005){
                     this.finalDistance = newX-0.25;
                     System.out.println("THIS IS THE FINAL DISTANCE !!!!!!!!!!! : " + finalDistance);
-                    System.out.println("THIS IS THE TARGET DISTANCE: " + targetDistance);
-                    System.out.println("THIS IS THE TARGET WIDTH : " + targetWidth);
+//                    System.out.println("THIS IS THE TARGET DISTANCE: " + targetDistance);
+//                    System.out.println("THIS IS THE TARGET WIDTH : " + targetWidth);
                     if(finalDistance >= (targetDistance/1000)){
                         if((targetDistance/1000) + (targetWidth/1000) >= finalDistance){
                             targetReached = true;
@@ -208,6 +211,7 @@ public class PhysicsEngine extends Thread{
                     System.out.println("HAS THE TARGET BEEN REACHED (TRUE OR FALSE) : " + targetReached);
                 }
             }
+        System.out.println("TEST");
 
             this.ballDistance = newX;
 //            System.out.println("THIS IS THE FINAL DISTANCE OF THE BALL WHEN IT HITS THE GROUND : " + ballDistance);
