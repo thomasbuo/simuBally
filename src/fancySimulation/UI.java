@@ -211,6 +211,8 @@ public class UI {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                physicsEngine.stop();
+
                 int startAngle1Value =  Integer.parseInt(startAngle1.getText())+CORRECT;
                 int startAngle2Value =  -(Integer.parseInt(startAngle2.getText())-CORRECT);
                 int endAngle1Value =  Integer.parseInt(endAngle1.getText())+CORRECT;
