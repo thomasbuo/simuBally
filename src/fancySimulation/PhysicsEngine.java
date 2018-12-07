@@ -1,6 +1,7 @@
 package fancySimulation;
 
 import java.util.ArrayList;
+import java.lang.Math;
 
 import static java.lang.Thread.sleep;
 
@@ -98,23 +99,100 @@ public class PhysicsEngine extends Thread{
             timeCounter++;
             updateTime();
             //double proportion = ((triggerAngle+90)/(Math.abs(endAngle1Value-startAngle1Value)));
+//            arm3.selfAngle >= (startAngle2Value + (0.33*Math.abs(endAngle2Value-startAngle2Value)))
+//            arm2.selfAngle >= triggerAngle + 0.05*Math.abs(endAngle1Value-startAngle1Value)
             if(arm3.selfAngle >= (startAngle2Value + (0.33*Math.abs(endAngle2Value-startAngle2Value)))) {
                 ballLaunched = true;
+//                System.out.println("THIS IS ARM 3 SELF ANGLE : " + arm3.getSelfAngle());
+//                System.out.println("THIS IS START ANGLE 2 VALUE : " + startAngle2Value);
+//                System.out.println("THIS IS END ANGLE 2 VALUE : " + endAngle2Value);
             }
+            if(arm2.selfAngle >= 0){
+                ballLaunched = true;
+            }
+            /*if(Math.abs(endAngle1Value-startAngle1Value) <= 6){
+                this.ball = new Ball(sim, arm3.getRealEndPos().getX(), arm3.getRealEndPos().getY(), 0, 0);
+                ballLaunched = true;
+                counter++;
+            }
+            if(Math.abs(endAngle2Value-startAngle2Value) <= 4){
+                this.ball = new Ball(sim, arm3.getRealEndPos().getX(), arm3.getRealEndPos().getY(), 0, 0);
+                ballLaunched = true;
+                counter++;
+            }*/
+
+            /*if(ballLaunched == false) {
+                if (arm3.selfAngle >= endAngle2Value - 1) {
+                    this.ball = new Ball(sim, arm3.getRealEndPos().getX(), arm3.getRealEndPos().getY(),0,0);
+                    ballLaunched = true;
+                }
+                if (arm2.selfAngle >= endAngle1Value - 1) {
+                    this.ball = new Ball(sim, arm3.getRealEndPos().getX(), arm3.getRealEndPos().getY(),0,0);
+                    ballLaunched = true;
+                }
+            }*/
+//            System.out.println(" THIS IS ARM 1 END POS X COMPONENT : " + arm1.getRealEndPos().getX());
+//            System.out.println(" THIS IS ARM 1 END POS Y COMPONENT : " + arm1.getRealEndPos().getY());
+//            System.out.println(" THIS IS ARM 2 END POS X COMPONENT : " + arm2.getRealEndPos().getX());
+//            System.out.println(" THIS IS ARM 2 END POS Y COMPONENT : " + arm2.getRealEndPos().getY());
+//            System.out.println(" THIS IS ARM 3 END POS X COMPONENT : " + arm3.getRealEndPos().getX());
+//            System.out.println(" THIS IS ARM 3 END POS Y COMPONENT : " + arm3.getRealEndPos().getY());
+//            System.out.println("THIS IS ARM 2 SELF ANGLE : " + arm2.selfAngle);
+//            System.out.println("THIS IS ARM 3 SELF ANGLE : " + arm3.selfAngle);
+//            System.out.println("THIS IS THE NEW X COMPONENT OF THE TOOL TIP OF THE ARM : " + tipVel.getX());
+//            System.out.println("THIS IS THE NEW Y COMPONENT OF THE TOOL TIP OF THE ARM : " + tipVel.getY());
+            /*if(tipVel.getX() == Double.NaN){
+              if(tipVel.getY() == Double.NaN){
+                  ballLaunched = true;
+              }
+            }
+              if(triggerAngle >= endAngle1Value-2){
+                if(arm2.selfAngle >= triggerAngle-1){
+                    ballLaunched = true;
+                }
+            }
+            if(arm2.selfAngle >= 5){
+                ballLaunched = true;
+            }
+
+            if(arm2.selfAngle >= triggerAngle - 0.5){
+                ballLaunched = true;
+            }*/
+            if(arm2.selfAngle>= endAngle1Value-1){
+                ballLaunched = true;
+            }
+
+
             if(ballLaunched) {
+                if(this.counter==0){
+                    if(Math.abs(endAngle1Value-startAngle1Value) <= 10){
+                        this.ball = new Ball(sim, arm3.getRealEndPos().getX(), arm3.getRealEndPos().getY(), 0, 0);
+                    } else {
+                        this.ball = new Ball(sim, arm3.getRealEndPos().getX(), arm3.getRealEndPos().getY(), tipVel.getX(), tipVel.getY());
+                    }
+
+                    System.out.println("THIS IS THE TIP VEL X COMPONENT WHEN THE BALL IS CREATED : " + tipVel.getX());
+                    System.out.println("THIS IS THE TIP VEL Y COMPONENT WHEN THE BALL IS CREATED : " + tipVel.getY());
+                    System.out.println("THIS IS THE BALL VELOCITY X COMPONENT WHEN IT IS CREATED : " + ball.getVx());
+                    System.out.println("THIS IS THE BALL VELOCITY Y COMPONENT WHEN IT IS CREATED : " + ball.getVy());
+
+                }
+                this.counter++;
                 resolveConstantForces();
                 resolveForces();
                 moveBall();
+
             }
             calcCurrentVelocity();
             updateArm(timeCounter);
+
             calcDistance();
             sim.updateSim();
             BIAS -= 0.025;
-            this.counter = 0;
             if(finalDistance != 0){
                 break;
             }
+
 
             //updateTime(time);
             currentTrajectory = new Trajectory(getRealCurrentVelocity(),arm3.getEndPos(),arm3.getRealEndPos(), target, ball);
@@ -170,8 +248,8 @@ public class PhysicsEngine extends Thread{
         Vector2D a = ball.sumAccelerations();
         Vector2D d = ball.calcDrag();
 
-        double vx = ball.getVx() - (a.getX() * timeFraction) - (d.getX()*timeFraction);
-        double vy = ball.getVy() - (a.getY() * timeFraction) - (d.getY()*timeFraction);
+        double vx = ball.getVx() - (d.getX()*timeFraction);
+        double vy = ball.getVy() - (a.getY() * timeFraction) + (d.getY()*timeFraction);
 //        System.out.println("THIS IS THE X COMPONENT OF ACCELERATION : " + a.getX());
 //        System.out.println("THIS IS THE Y COMPONENT OF ACCELERATION : " + a.getY());
 //        System.out.println("THIS IS THE UPDATED BALL VX : " + vx);
@@ -188,18 +266,18 @@ public class PhysicsEngine extends Thread{
 
     private synchronized void moveBall(){
 
-        double previousX = ball.getX();
-        double previousY = ball.getY();
+        double previousX = this.ball.getX();
+        double previousY = this.ball.getY();
 
-        System.out.println("THIS IS THE BALL's CURRENT X POSITION : " + ball.getX());
-        System.out.println("THIS IS THE BALL's CURRENT Y POSITION : " + ball.getY());
+//        System.out.println("THIS IS THE BALL's CURRENT X POSITION : " + this.ball.getX());
+//        System.out.println("THIS IS THE BALL's CURRENT Y POSITION : " + this.ball.getY());
 
-        double newX = previousX + (ball.getVx()*timeFraction);
-        double newY = previousY + (ball.getVy()*timeFraction);
+        double newX = previousX + (this.ball.getVx()*timeFraction);
+        double newY = previousY + (this.ball.getVy()*timeFraction);
 
 //        System.out.println("THIS IS THE BALL's NEW X POSITION : " + ball);
 
-        ball.updatePosition(newX,newY);
+        this.ball.updatePosition(newX,newY);
 
             if(newY<= 0.02){
                 if(newY >= -0.02){
@@ -226,21 +304,20 @@ public class PhysicsEngine extends Thread{
 
     public void calcCurrentVelocity(){
 
-        double y = (-arm2.getRealLen()*Math.toRadians(arm2.getAngularVelocity()*timeFraction)*Math.sin(Math.toRadians(arm2.getSelfAngle())) - arm3.getRealLen()*((Math.toRadians(arm2.getAngularVelocity()*timeFraction+arm3.getAngularVelocity()*timeFraction)))*Math.sin(Math.toRadians(arm2.getSelfAngle()+arm3.getSelfAngle())));
+        //double y = (-arm2.getRealLen()*Math.toRadians(arm2.getAngularVelocity()*timeFraction)*Math.sin(Math.toRadians(arm2.getSelfAngle())) - arm3.getRealLen()*((Math.toRadians((arm2.getAngularVelocity()*timeFraction)+(arm3.getAngularVelocity()*timeFraction))))*Math.sin(Math.toRadians(arm2.getSelfAngle()+arm3.getSelfAngle())));
 //        System.out.println("THIS IS ARM 2 GET REAL LEN : " + arm2.getRealLen());
 //        System.out.println("THIS IS ARM 2 GET REAL ANGULAR VELOCITY : " + arm2.getRealAngularVelocity());
 //        System.out.println("THIS IS ARM 2 GET SELF ANGLE : " + arm2.getSelfAngle());
 //        System.out.println("THIS IS ARM 3 GET REAL LEN : " + arm3.getRealLen());
 //        System.out.println("THIS IS ARM 3 GET REAL ANGULAR VELOCITY : " + arm3.getRealAngularVelocity());
 //        System.out.println("THIS IS ARM 3 GET SELF ANGLE : " + arm3.getSelfAngle());
+        double x =  (arm2.getRealLen() * Math.toRadians(arm2.getAngularVelocity() * timeFraction) * Math.cos(Math.toRadians(arm2.selfAngle))) + (arm3.getRealLen() * Math.toRadians( (arm2.getAngularVelocity() * timeFraction) + (arm3.getAngularVelocity() * timeFraction) ) * Math.cos(Math.toRadians(arm2.selfAngle + arm3.selfAngle)));
 
+        //double x = (arm2.getRealLen()*Math.toRadians(arm2.getAngularVelocity()*timeFraction)*Math.cos(Math.toRadians(arm2.getSelfAngle())) + arm3.getRealLen()*(Math.toRadians((arm2.getAngularVelocity()*timeFraction)+(arm3.getAngularVelocity()*timeFraction)))*Math.cos(Math.toRadians(arm2.getSelfAngle()+arm3.getSelfAngle())));
 
-        double x = (arm2.getRealLen()*Math.toRadians(arm2.getAngularVelocity()*timeFraction)*Math.cos(Math.toRadians(arm2.getSelfAngle())) + arm3.getRealLen()*(Math.toRadians((arm2.getAngularVelocity()*timeFraction)+(arm3.getAngularVelocity()*timeFraction)))*Math.cos(Math.toRadians(arm2.getSelfAngle()+arm3.getSelfAngle())));
-
+        double y = -(arm2.getRealLen() * Math.toRadians(arm2.getAngularVelocity()*timeFraction) * Math.sin(Math.toRadians(arm2.selfAngle))) - (arm2.getRealLen() * Math.toRadians((arm2.getAngularVelocity() * timeFraction) + (arm3.getAngularVelocity() * timeFraction))* Math.sin(Math.toRadians(arm2.selfAngle+arm3.selfAngle)));
         tipVel.setX(x/timeFraction);
         tipVel.setY(y/timeFraction);
-//        System.out.println("THIS IS THE NEW X COMPONENT OF THE TOOL TIP OF THE ARM : " + tipVel.getX());
-//        System.out.println("THIS IS THE NEW Y COMPONENT OF THE TOOL TIP OF THE ARM : " + tipVel.getY());
 
 
     }
@@ -329,7 +406,7 @@ public class PhysicsEngine extends Thread{
                 } else {
 
                     arm2.setAngularVel(jump/delay);
-                    if(arm2.getSelfAngle()>= -90+(0.7*(Math.abs(endAngle1Value-startAngle1Value)))){
+                    /*if(arm2.getSelfAngle()>= -90+(0.7*(Math.abs(endAngle1Value-startAngle1Value)))){
                         arm2.setAngularVel(jump/delay/2);
                     }
                     if(arm2.getSelfAngle()>= -90+(0.8*(Math.abs(endAngle1Value-startAngle1Value)))){
@@ -337,7 +414,7 @@ public class PhysicsEngine extends Thread{
                     }
                     if(arm2.getSelfAngle()>= -90+(0.9*(Math.abs(endAngle1Value-startAngle1Value)))){
                         arm2.setAngularVel(jump/delay/8);
-                    }
+                    }*/
                     performTimeStep(arm2);
                 }
 
@@ -349,7 +426,7 @@ public class PhysicsEngine extends Thread{
                 if((arm3.getSelfAngle() >= realAngle2)) {
                     b = true;
                     arm3.setAngularVel(0);
-                }else if(arm2.getSelfAngle() >= triggerAngle-1){
+                }else if(arm2.getSelfAngle() >= triggerAngle-0.5){
                     arm3.setAngularVel(Math.abs(endAngle2Value-startAngle2Value)/delay);
                     performTimeStep(arm3);
                 }
@@ -370,10 +447,7 @@ public class PhysicsEngine extends Thread{
 
 
         if(ballLaunched){
-            if(counter==0){
-                this.ball = new Ball(sim, arm3.getRealEndPos().getX(), arm3.getRealEndPos().getY(), tipVel.getX(), tipVel.getY());
-            }
-            counter++;
+
             double v = Math.sqrt(Math.pow(vX,2)+Math.pow(vY,2));
 
             double d = (Math.pow(v,2)*Math.sin(2*Math.atan(vX/vY)))/GRAVITY;

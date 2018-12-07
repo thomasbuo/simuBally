@@ -62,8 +62,8 @@ public class Ball {
     public Vector2D calcDrag(){
         Vector2D drag = new Vector2D(0,0);
 
-        drag.setX((0.5 * DENSITY * Math.pow(vx,2)*Cd*Math.PI* (Math.pow(0.022,2)/4))/M);
-        drag.setY((0.5 * DENSITY * Math.pow(vy,2)*Cd*Math.PI* (Math.pow(0.022,2)/4))/M);
+        drag.setX((0.5 * DENSITY * Math.pow(vx,2)*Cd*Math.PI* (Math.pow(0.011,2)))/M);
+        drag.setY((0.5 * DENSITY * Math.pow(vy,2)*Cd*Math.PI* (Math.pow(0.011,2)))/M);
 //        System.out.println("THIS IS THE MAGNITUDE OF THE VELOCITY OF THE BALL : " + magnitude);
 //        System.out.println("DRAG HAS BEEN CALCULATED AD IT'S X COMPONENT VALUE IS : " + drag.getX());
 //        System.out.println("DRAG HAS BEEN CALCULATED AD IT'S Y COMPONENT VALUE IS : " + drag.getY());
