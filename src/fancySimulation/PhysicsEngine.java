@@ -43,6 +43,7 @@ public class PhysicsEngine extends Thread{
     private ArrayList<Vector2D> constantForces = new ArrayList<Vector2D>();
     private double ballDistance;
 
+
     private static final int startX = 250;
     //from bottom up
     private Arm arm1 = new Arm(startX,0,220,90);
@@ -291,8 +292,8 @@ public class PhysicsEngine extends Thread{
                         }
                     }
                     System.out.println("HAS THE TARGET BEEN REACHED (TRUE OR FALSE) : " + targetReached);
-                    double error =(finalDistance - (targetDistance/1000 + targetWidth/2000))*((finalDistance - (targetDistance/1000 + targetWidth/2000)));
-					double score = Math.abs((targetDistance/1000 + targetWidth/2000)*(targetDistance/1000 + targetWidth/2000) - error);
+                    this.error =(finalDistance - (targetDistance/1000 + targetWidth/2000))*((finalDistance - (targetDistance/1000 + targetWidth/2000)));
+					this.score = Math.abs((targetDistance/1000 + targetWidth/2000)*(targetDistance/1000 + targetWidth/2000) - error);
                 }
             }
  //       System.out.println("TEST");
@@ -311,13 +312,13 @@ public class PhysicsEngine extends Thread{
 //        System.out.println("THIS IS ARM 3 GET REAL LEN : " + arm3.getRealLen());
 //        System.out.println("THIS IS ARM 3 GET REAL ANGULAR VELOCITY : " + arm3.getRealAngularVelocity());
 //        System.out.println("THIS IS ARM 3 GET SELF ANGLE : " + arm3.getSelfAngle());
-        double x =  (arm2.getRealLen() * Math.toRadians(arm2.getAngularVelocity() * timeFraction) * Math.cos(Math.toRadians(arm2.selfAngle))) + (arm3.getRealLen() * Math.toRadians( (arm2.getAngularVelocity() * timeFraction) + (arm3.getAngularVelocity() * timeFraction) ) * Math.cos(Math.toRadians(arm2.selfAngle + arm3.selfAngle)));
+        double x =  (arm2.getRealLen() * Math.toRadians(arm2.getAngularVelocity()) * Math.cos(Math.toRadians(arm2.selfAngle))) + (arm3.getRealLen() * Math.toRadians( (arm2.getAngularVelocity() ) + (arm3.getAngularVelocity() ) ) * Math.cos(Math.toRadians(arm2.selfAngle + arm3.selfAngle)));
 
         //double x = (arm2.getRealLen()*Math.toRadians(arm2.getAngularVelocity()*timeFraction)*Math.cos(Math.toRadians(arm2.getSelfAngle())) + arm3.getRealLen()*(Math.toRadians((arm2.getAngularVelocity()*timeFraction)+(arm3.getAngularVelocity()*timeFraction)))*Math.cos(Math.toRadians(arm2.getSelfAngle()+arm3.getSelfAngle())));
 
-        double y = -(arm2.getRealLen() * Math.toRadians(arm2.getAngularVelocity()*timeFraction) * Math.sin(Math.toRadians(arm2.selfAngle))) - (arm2.getRealLen() * Math.toRadians((arm2.getAngularVelocity() * timeFraction) + (arm3.getAngularVelocity() * timeFraction))* Math.sin(Math.toRadians(arm2.selfAngle+arm3.selfAngle)));
-        tipVel.setX(x/timeFraction);
-        tipVel.setY(y/timeFraction);
+        double y = -(arm2.getRealLen() * Math.toRadians(arm2.getAngularVelocity()) * Math.sin(Math.toRadians(arm2.selfAngle))) - (arm2.getRealLen() * Math.toRadians((arm2.getAngularVelocity() ) + (arm3.getAngularVelocity() ))* Math.sin(Math.toRadians(arm2.selfAngle+arm3.selfAngle)));
+        tipVel.setX(x);
+        tipVel.setY(y);
 
 
     }
