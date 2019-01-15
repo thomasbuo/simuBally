@@ -38,7 +38,7 @@ public class Simulation {
 	private long total_calculation_time;
 	private double simulated_seconds_per_real_second =100 /0.01;
 	private boolean full_speed = false;
-	private int visualization_frequency = 100;
+	private int visualization_frequency = 1000;
 	private double ns_used;
 	private ArrayList<Double> speeds = new ArrayList<Double>();
 	private boolean generated = false;

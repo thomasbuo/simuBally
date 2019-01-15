@@ -293,6 +293,7 @@ public class PhysicsEngine extends Thread{
                     System.out.println("HAS THE TARGET BEEN REACHED (TRUE OR FALSE) : " + targetReached);
                     double error =(finalDistance - (targetDistance/1000 + targetWidth/2000))*((finalDistance - (targetDistance/1000 + targetWidth/2000)));
 					double score = Math.abs((targetDistance/1000 + targetWidth/2000)*(targetDistance/1000 + targetWidth/2000) - error);
+					System.out.println("score "+score);
                 }
             }
  //       System.out.println("TEST");

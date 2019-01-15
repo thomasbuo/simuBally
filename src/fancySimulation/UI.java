@@ -215,11 +215,15 @@ public class UI {
 		                physicsEngine.setTargetHeight(targetHeightValue);
 		                physicsEngine.setTargetWidth(targetWidthValue);
 		                physicsEngine.run();
+		                System.out.println("score given "+physicsEngine.getScore());
 		//                simulation.updateSim(0);
 		                physicsEngine.sim.repaint();
+		               
 		                neural.getPopulation().get(i).setScore(physicsEngine.getScore());
 		                
 	                }
+	                for(int i =0; i<neural.getPopulation().size();i++)
+	                	System.out.println(neural.getPopulation().get(i).getScore());
 	                neural.train(neural.getPopulation());
                 }
             }
