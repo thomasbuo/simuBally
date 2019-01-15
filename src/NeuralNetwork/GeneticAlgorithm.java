@@ -31,6 +31,11 @@ public class GeneticAlgorithm {
 		
 		sort(angles);
 		
+		for(int i =0;i<10;i++)
+		{
+			System.out.println("best scores: "+angles.get(i).getScore());
+		}
+		
 //		double averageScore = 0;
 //		for(int i = 0; i< angles.size();i++)
 //		{
@@ -150,7 +155,7 @@ public class GeneticAlgorithm {
 			
 			if(bestPopulations.get(i).size()>0)
 			{		
-				System.out.println(" score " + bestPopulations.get(i).get(0).getScore() );
+				//System.out.println(" object: " + bestPopulations.get(i).get(0)+" score "+bestPopulations.get(i).get(0).getScore() );
 //				Angle ang = new Angle(0.0,0.0,1,2,20,4);
 //				ang.setNN(bestPopulations.get(i).get(0).getNN());
 				newPopulation.add(bestPopulations.get(i).get(0));
@@ -306,9 +311,6 @@ public class GeneticAlgorithm {
 	public Angle breed(Angle p1, Angle p2)
 	{
 		
-		System.out.println("p1: "+p1);
-		System.out.println(" p2: "+p2);
-		System.out.println(" p1nn: "+p1.getNN());
 		Angle child = new Angle(0.0,0.0,1,3,20,4);
 		
 		ArrayList<Weight> weightP1 = p1.getNN().getWeights();

@@ -63,6 +63,8 @@ public class Arm {
 
     public void calcEndPos(){
 
+
+
             double dx = len * Math.cos(Math.toRadians(angle));
             double dy = len * Math.sin(Math.toRadians(angle));
 
@@ -102,6 +104,7 @@ public class Arm {
     public void setStartPos(Vector2D startPos) {
         this.startPos = startPos;
         this.realStartPos = new Vector2D(startPos.getX()/1000, startPos.getY()/1000);
+        this.angle = selfAngle + this.parent.angle;
         calcEndPos();
     }
 
@@ -120,7 +123,7 @@ public class Arm {
     public void update(){
         startPos = parent.endPos.cloneVector();
         realStartPos = new Vector2D(parent.endPos.getX()/1000, parent.endPos.getY()/1000);
-        angle = selfAngle + parent.angle;
+        angle = selfAngle + parent.selfAngle;
         calcEndPos();
     }
 

@@ -3,29 +3,26 @@ package NeuralNetwork;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+
 
 
 public class NeuralNetwork {
 
 	private ArrayList<ArrayList<Perceptron>> layers = new ArrayList<ArrayList<Perceptron>>();
 	private ArrayList<Weight> weights = new ArrayList<Weight>();
-	private int correctPercent = 0;
-	private int attempts = 0;
+	
 
 	private int inputNodes;
 	private int outputNodes;
 	private int hiddenNodes;
 	private int hiddenLayers;
 
-	private static Random r = new Random();
+	
 	private final double LEARNING_RATE = 0.5;
 	
 	public NeuralNetwork(int inputNodes, int outputNodes, int hiddenNodes, int hiddenLayers) {
@@ -148,10 +145,6 @@ public class NeuralNetwork {
 	}
 
 	public void train(List<Double> input, List<Double> target) {
-		ArrayList<Double> guess = guess(input);
-
-		attempts++;
-
 		backprop(input, target);
 	}
 	
@@ -240,7 +233,7 @@ public class NeuralNetwork {
 			int count = 1;
 			while (f.exists() && !f.isDirectory()) {
 				count++;
-				f = new File("./neural" + count + ".txt");
+				f = new File("./neural" +count+".txt");
 			}
 
 			fw = new FileWriter(f);
@@ -249,7 +242,7 @@ public class NeuralNetwork {
 			bw.close();
 			fw.close();
 
-			System.out.println("saved: " + "./neural" + count + ".txt");
+			System.out.println("saved: " + "./neural"+count+".txt");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

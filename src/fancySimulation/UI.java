@@ -17,11 +17,11 @@ import java.awt.event.ActionListener;
 //import java.util.DoubleSummaryStatistics;
 import java.util.ArrayList;
 
-public class UI {
+public class UI extends JFrame{
 
     // create JFrame
     private static JFrame frame;
-
+    private JFrame closeFrame = new JFrame();
 
     public PhysicsEngine physicsEngine;
     // create sliders
@@ -66,6 +66,8 @@ public class UI {
     private final int CORRECT = 0;
 
     public UI(Simulation sim){
+    	
+    	
     	this.sim = sim;
         //Create labels
         angleLabel1 = new JLabel("Initial and final angles lower: ");
@@ -156,7 +158,27 @@ public class UI {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
+      
+        int pop = 20;
+        NeuralCore neural = new NeuralCore(pop);
+        
+        this.addWindowListener(new java.awt.event.WindowAdapter() 
+		{
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) 
+		    {
+		        if (JOptionPane.showConfirmDialog(closeFrame, 
+		            "Would you like to Save?", "save?", 
+		            JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION)
+		        {
+		        	neural.getPopulation().get(0).getNN().saveToFile("neuralNetwork");
+		        }
+		        System.exit(0);
+		    }
+		});
+        
+        
         //simulate button functionality
         simulateButton.addActionListener(new ActionListener() {
             @Override
@@ -168,31 +190,39 @@ public class UI {
                 int endAngle1Value =  Integer.parseInt(endAngle1.getText());
                 int endAngle2Value =  -Integer.parseInt(endAngle2.getText());
                 int triggerAngleValue = Integer.parseInt(triggerAngle.getText());
-                double targetDistanceValue = Double.parseDouble(targetDistance.getText())*1000;
-                double targetHeightValue = Double.parseDouble(targetHeight.getText())*1000;
-                double targetWidthValue = Double.parseDouble(targetWidth.getText())*1000;
+                double targetDistanceValue = Double.parseDouble(targetDistance.getText());
+                double targetHeightValue = Double.parseDouble(targetHeight.getText());
+                double targetWidthValue = Double.parseDouble(targetWidth.getText());
 
                 
-                System.out.println("THIS IS SIM TARGET WIDTH" + sim.getTargetWidth());
-                int pop = 10;
-                NeuralCore neural = new NeuralCore(pop);
-                for(int j = 0; j < 10; j++)
+//                System.out.println("THIS IS SIM TARGET WIDTH" + sim.getTargetWidth());
+                
+               
+                
+                ArrayList<Double> target = new ArrayList<Double>();
+                
+                for(int j = 0; j < 100; j++)
                 {
-                	System.out.println("new gen");
+                	target.clear();
+                	target.add(targetDistanceValue);
+//                	System.out.println("new gen");
 	                for(int i = 0; i < pop; i++)
 	                {
-	                	System.out.println("die "+i);
-	                	ArrayList<Double> target = new ArrayList<Double>();
-	                	target.add(targetDistanceValue/1000);
+//	                	System.out.println("die "+i);
+	                	
+	                	
 	                	ArrayList<Double> angles = neural.getPopulation().get(i).getNN().guess(target);
-	                	System.out.println("die2");
+//	                	System.out.println("die2");
 	                	
 	                	int endAngle1ValueTemp = (int)Math.round(angles.get(0)*179-89);
 	                	int endAngle2ValueTemp = (int)Math.round(angles.get(1)*39-19);
 	                	int triggerAngleValueTemp = - 89 + (int)(Math.round(angles.get(2)*(endAngle1ValueTemp+89)));
+	                	System.out.println("ANGLE1 "+endAngle1ValueTemp+" ANGLE2 "+triggerAngleValue+"ANGLE3 "+endAngle2ValueTemp);
+	                	System.out.println("THIS IS THE GENERATION : " + j +" INDIVIDUAL: "+i);
 	                	System.out.println("THIS IS THE END ANGLE 1 VALUE : " + endAngle1ValueTemp);
 	                	System.out.println("THIS IS THE END ANGLE 2 VALUE : " + endAngle2ValueTemp);
 	                	System.out.println("THIS IS THE TRIGGER ANGLE VALUE : " + triggerAngleValueTemp);
+	                	System.out.println();
 
 	                	
 	                	sim.setStartAngle1Value(startAngle1Value);
@@ -210,21 +240,93 @@ public class UI {
 		                physicsEngine.setEndAngle1Value(endAngle1ValueTemp); //toLearn
 		                physicsEngine.setEndAngle2Value(endAngle2ValueTemp); //toLearn
 		                physicsEngine.setTriggerAngle(triggerAngleValueTemp); //toLearn
-		                System.out.println("die3 "+angles);
+//		                System.out.println("die3 "+angles);
 		                physicsEngine.setTargetDistance(targetDistanceValue);
 		                physicsEngine.setTargetHeight(targetHeightValue);
 		                physicsEngine.setTargetWidth(targetWidthValue);
 		                physicsEngine.run();
-		                System.out.println("score given "+physicsEngine.getScore());
 		//                simulation.updateSim(0);
 		                physicsEngine.sim.repaint();
-		               
 		                neural.getPopulation().get(i).setScore(physicsEngine.getScore());
 		                
 	                }
-	                for(int i =0; i<neural.getPopulation().size();i++)
-	                	System.out.println(neural.getPopulation().get(i).getScore());
+	                double maxScore = 0;
+	                if(targetDistanceValue>=0.80)
+	                {
+	                	
+	                	
+	                	for(int i=0 ;i< (int)(neural.getPopulation().size()*0.1);i++)
+	                	{
+	                		targetDistanceValue = 0.20;
+	                		System.out.println("run "+i+" tdv "+targetDistanceValue);
+	                		
+	                		
+	                    	
+	                		while(targetDistanceValue <0.8 )
+	                		{ 			
+	                			target.clear();
+		                    	target.add(targetDistanceValue);
+	    	                	ArrayList<Double> angles = neural.getPopulation().get(i).getNN().guess(target);
+//	    	                	System.out.println("die2");
+	    	                	
+	    	                	int endAngle1ValueTemp = (int)Math.round(angles.get(0)*179-89);
+	    	                	int endAngle2ValueTemp = (int)Math.round(angles.get(1)*39-19);
+	    	                	int triggerAngleValueTemp = - 89 + (int)(Math.round(angles.get(2)*(endAngle1ValueTemp+89)));
+	    	                	    	                	
+	    	                	
+	    	                    sim.setEndAngle1Value(endAngle1ValueTemp);
+	    	                    sim.setEndAngle2Value(endAngle2ValueTemp);
+	    	                    sim.setTriggerAngle(triggerAngleValueTemp);
+	    	                    sim.setTargetDistance(targetDistanceValue);
+	    	          
+	    	                    
+	    		                physicsEngine = new PhysicsEngine(sim);
+	    		                physicsEngine.setStartAngle1Value(startAngle1Value);
+	    		                physicsEngine.setStartAngle2Value(startAngle2Value);
+	    		                physicsEngine.setEndAngle1Value(endAngle1ValueTemp); //toLearn
+	    		                physicsEngine.setEndAngle2Value(endAngle2ValueTemp); //toLearn
+	    		                physicsEngine.setTriggerAngle(triggerAngleValueTemp); //toLearn
+
+	    		                physicsEngine.setTargetDistance(targetDistanceValue);
+	    		                physicsEngine.setTargetHeight(targetHeightValue);
+	    		                physicsEngine.setTargetWidth(targetWidthValue);
+	    		                physicsEngine.run();
+	    		
+	    		                physicsEngine.sim.repaint();
+	    		                neural.getPopulation().get(i).setScore( neural.getPopulation().get(i).getScore()+physicsEngine.getScore());
+	                			if(i == (int)(neural.getPopulation().size()*0.1)-1) 
+	                			{
+	                				System.out.println("addscore");
+		                			maxScore+=Math.abs((targetDistanceValue + targetWidthValue/2)*(targetDistanceValue+ targetWidthValue/2));
+	                			}
+	                			targetDistanceValue+=0.05;
+	                		}
+	                		
+	                		
+	                	}
+	                	System.out.println("maxScore: "+maxScore);
+		                	for(int i=0 ;i< (int)(neural.getPopulation().size()*0.1);i++)
+		                	{
+		                		System.out.println("individual " + i + ": " +neural.getPopulation().get(i).getScore());
+		                	}
+		                	
+		                	for(int i=0 ;i< (int)(neural.getPopulation().size()*0.1);i++)
+		                	{
+		                		neural.getPopulation().get(i).setScore(0);
+		                		System.out.println("reset");
+		                	}
+		                targetDistanceValue = 0.20;
+		                target.clear();
+                    	target.add(targetDistanceValue);
+	                }                
+	                else
+	                {
+	                	System.out.println("increase");
+	                	targetDistanceValue+=0.05;
+	                }
+	                neural.getPopulation().get(0).getNN().saveToFile("neural");
 	                neural.train(neural.getPopulation());
+	                System.out.println("nextgen");
                 }
             }
         });
