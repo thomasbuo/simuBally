@@ -70,5 +70,17 @@ public class NeuralCore {
 	{
 		this.population = population;
 	}
+	public void refresh(int popSize)
+	{
+		population.clear();
+		for(int i = 0; i < popSize; i++)
+		{
+			population.add(new Angle(0.0,0.0, 1, 3, 20, 4));
+		}
+	}
+	public void sort()
+	{
+		gn.sort(population);
+	}
 	
 }
