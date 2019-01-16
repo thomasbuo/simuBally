@@ -1,75 +1,83 @@
-package core;
+package Core;
 
+import NeuralNetwork.NeuralNetwork;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-
-import objects.ArmPart;
-import objects.Ball;
-import objects.Floor;
-import objects.Joint;
-import objects.Target;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.stream.IntStream;
 
 public class Core {
-	
-	
-	
-	@SuppressWarnings("deprecation")
-	public static void main(String[] args)
-	{
-		int i = 0;
-		Floor floor = new Floor(430);
-		
-		ArrayList<Joint> joints = new ArrayList();
-		
-		joints.add(new Joint(-90));
-		joints.add(new Joint(-20));
-		
-		ArmPart part1 = new ArmPart(joints,40,100,430);
-		
-		if(i == 0)
-		{
-			i=1;
-		}
-		
-		ArmPart part2 = new ArmPart(joints,40,part1.getPosX2(),part1.getPosY2());
-		
-		part2.setPosX2(2);
-		part2.setPosY2(2);
-	
-		while(i == 1)
-		{
-			i = 2;
-		}
-		
-		if(i != 0)
-		{
-			i = (int) 0.00;
-		}
-		
-		ArmPart part3 = new ArmPart(joints,40,part2.getPosX2(),part2.getPosY2());
-		//part3.setPosX1(3);
-		//part3.setPosY1(3);
-		part3.setPosX2(3);
-		part3.setPosY2(3);
-				
-		Ball ball = new Ball(5, 10,part3.getPosX2(),part3.getPosY2()); //size in pixels weight in grams
-		
-		Target target = new Target();
-		
-		Panel panel = new Panel(joints.get(0),joints.get(1),part1,part2,part3,ball,floor, target);
-		panel.setBounds(10, 11, 834, 453);
-		Simulation simulation = new Simulation(joints,part1,part2,part3,ball, floor, target);
-		
-		Drawing mainFrame = new Drawing(panel, simulation);
-		simulation.setDrawing(mainFrame);
-		
-		mainFrame.show();
-		
-		if(i != 0)
-		{
-			i = (int) 0.00;
-		}
-		
-		
-	}
 
+	private static Random r = new Random();
+	public static void main(String[] args) throws IOException
+	{
+		NeuralNetwork nn = new NeuralNetwork(1, 3, 6 ,2);
+		String path2 = "LookupTable.txt";
+		ArrayList<Double> input = new ArrayList();
+		ArrayList<ArrayList<Double>> label = new ArrayList();
+
+		try (BufferedReader br = new BufferedReader(new FileReader(path2))) {
+
+			String line = br.readLine();
+			String[] parts = line.split(";");
+			for (int i = 0; i < parts.length; i += 4) {
+				label.add(new ArrayList<>());
+				input.add(Double.parseDouble(parts[i]));
+				double percent1 = 0.0;
+				double percent2 = 0.0;
+				double percent3 = 0.0;
+				if (Double.parseDouble(parts[i + 1]) >= 0) {
+
+					percent1 = (90 + Double.parseDouble(parts[i + 1])) / 180;
+
+					if (Double.parseDouble(parts[i + 2]) >= 0) {
+						percent2 = (Double.parseDouble(parts[i + 2]) + 90) / (Double.parseDouble(parts[i + 1]) + 90);
+					} else {
+						percent2 = (90 + Double.parseDouble(parts[i + 2])) / (Double.parseDouble(parts[i + 1]) + 90);
+					}
+				} else {
+
+					percent1 = (90 + Double.parseDouble(parts[i + 1])) / 180;
+
+					percent2 = (90 + Double.parseDouble(parts[i + 2])) / (90 + Double.parseDouble(parts[i + 1]));
+
+
+				}
+				if (Double.parseDouble(parts[i + 3]) >= 0) {
+
+					percent3 = (45 - Double.parseDouble(parts[i + 3])) / 90;
+				} else {
+					percent3 = (45 - Double.parseDouble(parts[i + 3])) / 90;
+				}
+				System.out.println("percent1 " + percent1 + " percent2 " + percent2 + " percent3 " + percent3 + " angle1 " + parts[i + 1] + " angle2 " + parts[i + 2] + " angle3 " + parts[i + 3]);
+				label.get(label.size() - 1).add(percent1);
+				label.get(label.size() - 1).add(percent2);
+				label.get(label.size() - 1).add(percent3);
+
+			}
+
+		}
+		for(int i =0; i < 2000; i++)
+		{
+			for(int j = 0; j< input.size();j++)
+			{
+				nn.backprop(Arrays.asList(input.get(j)/90.0), label.get(j));
+			}
+			System.out.println("interation "+i);
+		}
+
+
+		for(int j = 0; j< input.size();j++)
+		{
+			System.out.println(nn.guess(Arrays.asList(input.get(j)/90.0))+" label "+label.get(j));
+//			System.out.printf("%s:%s\n", input.get(j), label.get(j));
+		}
+
+		nn.saveToFile("network");
+	}
 }

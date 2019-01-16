@@ -7,8 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
+import java.util.Random;
 
 
 public class NeuralNetwork {
@@ -23,7 +24,7 @@ public class NeuralNetwork {
 	private int hiddenLayers;
 
 	
-	private final double LEARNING_RATE = 0.5;
+	private final double LEARNING_RATE = 0.2;
 	
 	public NeuralNetwork(int inputNodes, int outputNodes, int hiddenNodes, int hiddenLayers) {
 
@@ -184,22 +185,22 @@ public class NeuralNetwork {
 			weight.setWeight(weight.getWeight()+delta);
 		}
 	}
-	
-//  XOR test
-//	public static void main(String[] args) {
-//		NeuralNetwork x = new NeuralNetwork(2, 2, 3, 1);
-//
-//		for (int i=0; i<100000; i++) {
-//////			x.backprop(Arrays.asList(0.0, 0.0), Arrays.asList(0.0));
-//////			x.backprop(Arrays.asList(1.0, 0.0), Arrays.asList(1.0));
-//////			x.backprop(Arrays.asList(0.0, 1.0), Arrays.asList(1.0));
-//////			x.backprop(Arrays.asList(1.0, 1.0), Arrays.asList(0.0));
-////			
+
+	public static void main(String[] args) {
+		NeuralNetwork x = new NeuralNetwork(2, 1, 3, 1);
+		Random r = new Random();
+
+		for (int i=0; i<100000; i++) {
+			x.backprop(Arrays.asList(0.0, 0.0), Arrays.asList(0.0));
+			x.backprop(Arrays.asList(1.0, 0.0), Arrays.asList(1.0));
+			x.backprop(Arrays.asList(0.0, 1.0), Arrays.asList(1.0));
+			x.backprop(Arrays.asList(1.0, 1.0), Arrays.asList(0.0));
+////
 //			ArrayList<Double> input = new ArrayList();
 //			ArrayList<Double> label = new ArrayList();
 //			double k = r.nextDouble();
 //			double l = r.nextDouble();
-//			
+//
 //			input.add(k);
 //			input.add(l);
 //			if(k<l)
@@ -207,21 +208,21 @@ public class NeuralNetwork {
 //				label.add(1.0);
 //				label.add(0.0);
 //			}
-//			else 
+//			else
 //			{
 //				label.add(0.0);
 //				label.add(1.0);
 //			}
 //			x.backprop(input, label);
 //			System.out.println(x.guess(input)+" "+label+" k: "+k +" l: "+l);
-//			
-//		}
-////
-//////		System.out.println(x.guess(Arrays.asList(0.0, 0.0)));
-//////		System.out.println(x.guess(Arrays.asList(1.0, 0.0)));
-//////		System.out.println(x.guess(Arrays.asList(0.0, 1.0)));
-//////		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
-//	}
+
+		}
+//
+		System.out.println(x.guess(Arrays.asList(0.0, 0.0)));
+		System.out.println(x.guess(Arrays.asList(1.0, 0.0)));
+		System.out.println(x.guess(Arrays.asList(0.0, 1.0)));
+		System.out.println(x.guess(Arrays.asList(1.0, 1.0)));
+	}
 
 	public void saveToFile(String fileName)
 	{
