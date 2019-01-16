@@ -192,7 +192,12 @@ public class PhysicsEngine extends Thread{
 //                    System.out.println("THIS IS START ANGLE 1 VALUE : " + startAngle1Value);
 //                    System.out.println("THIS IS END ANGLE 1 VALUE : " + endAngle1Value);
 
-
+                	if(Math.abs(endAngle2Value-startAngle2Value)<=10) {
+                		if(Math.abs(endAngle1Value-startAngle1Value)<= 25) {
+                			tipVel.setX(0.2);
+                			tipVel.setY(0.2);
+                		}
+                	}
 
                     if(abnormal){
                         this.ball = new Ball(sim, -0.12, 0.05, 0, 0);
@@ -303,10 +308,11 @@ public class PhysicsEngine extends Thread{
                             targetReached = true;
                         }
                     }
-
-                    this.error =(finalDistance - (targetDistance + targetWidth/2))*((finalDistance - (targetDistance + targetWidth/2)));
-					this.score = (targetDistance + targetWidth/2)*(targetDistance + targetWidth/2) - error;
-					System.out.println("distance "+targetDistance+" max score PH: "+ Math.abs((targetDistance + targetWidth/2)*(targetDistance + targetWidth/2)));
+                    double score2 = Math.pow(((targetDistance + targetWidth/2)*1000),2);
+                    this.error =Math.pow(((finalDistance - (targetDistance + targetWidth/2))*1000),2);
+					this.score = Math.pow(((targetDistance + targetWidth/2)*1000),2) - error;
+					System.out.println("error "+error+" score "+score+" score2 "+score2);
+					System.out.println("distance "+targetDistance+" max score PH: "+ (this.score+this.error));
                 }
             }
 

@@ -201,12 +201,12 @@ public class UI extends JFrame{
                 
                 ArrayList<Double> target = new ArrayList<Double>();
                 
-                for(int j = 0; j < 100; j++)
+                for(int j = 0; j < 1000; j++)
                 {
                 	target.clear();
                 	target.add(targetDistanceValue);
 //                	System.out.println("new gen");
-                	for(int p =0 ;p <5;p++) 
+                	for(int p =0 ;p <3;p++) 
                 	{
 		                for(int i = 0; i < pop; i++)
 		                {
@@ -219,7 +219,7 @@ public class UI extends JFrame{
 		                	int endAngle1ValueTemp = (int)Math.round(angles.get(0)*179-89);
 		                	int endAngle2ValueTemp = (int)Math.round(angles.get(1)*39-19);
 		                	int triggerAngleValueTemp = - 89 + (int)(Math.round(angles.get(2)*(endAngle1ValueTemp+89)));
-		                	System.out.println("ANGLE1 "+endAngle1ValueTemp+" ANGLE2 "+triggerAngleValue+"ANGLE3 "+endAngle2ValueTemp);
+		                	System.out.println("ANGLE1 "+endAngle1ValueTemp+" ANGLE2 "+triggerAngleValueTemp+" ANGLE3 "+endAngle2ValueTemp);
 		                	System.out.println("THIS IS THE GENERATION : " + j +" INDIVIDUAL: "+i+" run "+p);
 		                	System.out.println("THIS IS THE END ANGLE 1 VALUE : " + endAngle1ValueTemp);
 		                	System.out.println("THIS IS THE END ANGLE 2 VALUE : " + endAngle2ValueTemp);
@@ -314,7 +314,7 @@ public class UI extends JFrame{
 	                			if(i == (int)(neural.getPopulation().size()*0.1)-1) 
 	                			{
 	                				System.out.println("addscore");
-		                			maxScore+=Math.abs((targetDistanceValue + targetWidthValue/2)*(targetDistanceValue+ targetWidthValue/2));
+		                			maxScore+=Math.pow(((targetDistanceValue + targetWidthValue/2)*1000),2);
 	                			}
 	                			targetDistanceValue+=0.05;
 	                		}
