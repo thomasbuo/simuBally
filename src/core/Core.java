@@ -1,4 +1,4 @@
-package Core;
+package core;
 
 import NeuralNetwork.NeuralNetwork;
 
@@ -62,7 +62,7 @@ public class Core {
 			}
 
 		}
-		for(int i =0; i < 2000; i++)
+		for(int i =0; i < 3000; i++)
 		{
 			for(int j = 0; j< input.size();j++)
 			{
