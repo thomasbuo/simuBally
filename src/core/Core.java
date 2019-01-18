@@ -71,10 +71,16 @@ public class Core {
 			System.out.println("interation "+i);
 		}
 
-
+		double total = 0;
 		for(int j = 0; j< input.size();j++)
 		{
 			System.out.println(nn.guess(Arrays.asList(input.get(j)/90.0))+" label "+label.get(j));
+			for(int i = 0; i < 3; i++)
+			{
+				total+=Math.abs(label.get(j).get(i)-nn.guess(Arrays.asList(input.get(j)/90.0)).get(i));
+			}
+			System.out.println("Total: " + total);
+			total = 0;
 //			System.out.printf("%s:%s\n", input.get(j), label.get(j));
 		}
 
