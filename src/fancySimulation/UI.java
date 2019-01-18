@@ -196,7 +196,29 @@ public class UI extends JFrame{
 
                 
 //                System.out.println("THIS IS SIM TARGET WIDTH" + sim.getTargetWidth());
-                
+
+               /* sim.setStartAngle1Value(startAngle1Value);
+                sim.setStartAngle2Value(startAngle2Value);
+                sim.setEndAngle1Value(endAngle1Value);
+                sim.setEndAngle2Value(endAngle2Value);
+                sim.setTriggerAngle(triggerAngleValue);
+                sim.setTargetDistance(targetDistanceValue);
+                sim.setTargetHeight(targetHeightValue);
+                sim.setTargetWidth(targetWidthValue);
+
+                physicsEngine = new PhysicsEngine(sim);
+                physicsEngine.setStartAngle1Value(startAngle1Value);
+                physicsEngine.setStartAngle2Value(startAngle2Value);
+                physicsEngine.setEndAngle1Value(endAngle1Value); //toLearn
+                physicsEngine.setEndAngle2Value(endAngle2Value); //toLearn
+                physicsEngine.setTriggerAngle(triggerAngleValue); //toLearn
+                //		                System.out.println("die3 "+angles);
+                physicsEngine.setTargetDistance(targetDistanceValue);
+                physicsEngine.setTargetHeight(targetHeightValue);
+                physicsEngine.setTargetWidth(targetWidthValue);
+                physicsEngine.run();
+                //                simulation.updateSim(0);
+                physicsEngine.sim.repaint();*/
                
                 
                 ArrayList<Double> target = new ArrayList<Double>();
@@ -216,9 +238,10 @@ public class UI extends JFrame{
 		                	ArrayList<Double> angles = neural.getPopulation().get(i).getNN().guess(target);
 	//	                	System.out.println("die2");
 		                	
-		                	int endAngle1ValueTemp = (int)Math.round(angles.get(0)*179-89);
-		                	int endAngle2ValueTemp = (int)Math.round(angles.get(1)*39-19);
-		                	int triggerAngleValueTemp = - 89 + (int)(Math.round(angles.get(2)*(endAngle1ValueTemp+89)));
+		      		                	
+		                	int endAngle1ValueTemp = (int)(180 * angles.get(0)) - 90;
+		                	int endAngle2ValueTemp = (int)((40 * angles.get(2)) - 20)*-1;
+		                	int triggerAngleValueTemp = (int)(-90 + (90 + endAngle1ValueTemp) * angles.get(1));
 		                	System.out.println("ANGLE1 "+endAngle1ValueTemp+" ANGLE2 "+triggerAngleValueTemp+" ANGLE3 "+endAngle2ValueTemp);
 		                	System.out.println("THIS IS THE GENERATION : " + j +" INDIVIDUAL: "+i+" run "+p);
 		                	System.out.println("THIS IS THE END ANGLE 1 VALUE : " + endAngle1ValueTemp);
@@ -254,6 +277,7 @@ public class UI extends JFrame{
 			                
 		                }
 		                neural.train(neural.getPopulation());
+		                
 	                
 	               
                 	}

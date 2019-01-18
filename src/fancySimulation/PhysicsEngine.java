@@ -55,8 +55,8 @@ public class PhysicsEngine extends Thread{
     
     private double error;
     private double score;
-    private int armspeed1 = 300;
-    private int armspeed2 = 300;
+    private int armspeed1 = 500;
+    private int armspeed2 = 0;
 
     public PhysicsEngine(Simulation sim){
 
@@ -83,6 +83,45 @@ public class PhysicsEngine extends Thread{
         this.BIAS = 0.5;
         sim.repaint();
         while(Main.isRunning){
+
+
+//            PRINTS
+//            System.out.println("X COMPONENT OF VELOCITY:" + tipVel.getX());
+//            System.out.println("Y COMPONENT OF VELOCITY:" + tipVel.getY());
+//            System.out.println("ARM 2 SELF ANGLE:"+ arm2.selfAngle);
+//            System.out.println("ARM 3 SELF ANGLE:"+ arm3.selfAngle);
+//            System.out.println();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //            if(timeCounter == 0 ){
 //            }
 
@@ -91,16 +130,32 @@ public class PhysicsEngine extends Thread{
             //double proportion = ((triggerAngle+90)/(Math.abs(endAngle1Value-startAngle1Value)));
 //            arm3.selfAngle >= (startAngle2Value + (0.33*Math.abs(endAngle2Value-startAngle2Value)))
 //            arm2.selfAngle >= triggerAngle + 0.05*Math.abs(endAngle1Value-startAngle1Value)
-            if(arm3.selfAngle >= endAngle2Value-3) {
+
+
+
+          /*  if(Math.abs(endAngle2Value-startAngle2Value) <=10)
+            {
+                if (arm3.selfAngle >= endAngle2Value - 3) {
+                    ballLaunched = true;
+
+                }
+            }
+            if(Math.abs(endAngle2Value-startAngle2Value) >10){
+                if(arm3.selfAngle >= startAngle2Value + 0.5*Math.abs(endAngle2Value-startAngle2Value)){
+                    ballLaunched = true;
+                }
+            }*/
+            if(arm2.selfAngle >= 40){
                 ballLaunched = true;
+            }
+            if(arm2.selfAngle >= triggerAngle){
+                
+                    ballLaunched = true;
 
             }
-            if(arm2.selfAngle >= -5){
-                ballLaunched = true;
-            }
-            if(arm2.selfAngle >= triggerAngle+5){
-                ballLaunched = true;
-            }
+
+
+
 //            if(arm2.selfAngle>= triggerAngle+0.2*(Math.abs(endAngle1Value-startAngle1Value))){
 //                ballLaunched = true;
 //            }
@@ -192,17 +247,24 @@ public class PhysicsEngine extends Thread{
 //                    System.out.println("THIS IS START ANGLE 1 VALUE : " + startAngle1Value);
 //                    System.out.println("THIS IS END ANGLE 1 VALUE : " + endAngle1Value);
 
-                	if(Math.abs(endAngle2Value-startAngle2Value)<=10) {
+                	/*if(Math.abs(endAngle2Value-startAngle2Value)<=10) {
                 		if(Math.abs(endAngle1Value-startAngle1Value)<= 25) {
-                			tipVel.setX(0.2);
-                			tipVel.setY(0.2);
+                			tipVel.setX(0.01);
+                			tipVel.setY(0.01);
                 		}
-                	}
+                	}*/
+
+                	/*if(Math.abs(startAngle1Value-triggerAngle)<= 30){
+                	    tipVel.setX(0.01);
+                	    tipVel.setX(0.01);
+                    }*/
 
                     if(abnormal){
                         this.ball = new Ball(sim, -0.12, 0.05, 0, 0);
                     } else{
                         this.ball = new Ball(sim, arm3.getRealEndPos().getX(), arm3.getRealEndPos().getY(), tipVel.getX(), tipVel.getY());
+                                    System.out.println("X COMPONENT OF VELOCITY:" + tipVel.getX());
+                                    System.out.println("Y COMPONENT OF VELOCITY:" + tipVel.getY());
 
                     }
 
@@ -324,11 +386,11 @@ public class PhysicsEngine extends Thread{
 
         //double y = (-arm2.getRealLen()*Math.toRadians(arm2.getAngularVelocity()*timeFraction)*Math.sin(Math.toRadians(arm2.getSelfAngle())) - arm3.getRealLen()*((Math.toRadians((arm2.getAngularVelocity()*timeFraction)+(arm3.getAngularVelocity()*timeFraction))))*Math.sin(Math.toRadians(arm2.getSelfAngle()+arm3.getSelfAngle())));
 
-        double x =  (arm2.getRealLen() * Math.toRadians(armspeed1) * Math.cos(Math.toRadians(arm2.selfAngle))) + (arm3.getRealLen() * Math.toRadians( (armspeed1 ) + (armspeed2 ) ) * Math.cos(Math.toRadians(arm2.selfAngle + arm3.selfAngle)));
+        double x =   ((arm2.getRealLen() * Math.toRadians(armspeed1) * Math.cos(Math.toRadians(arm2.selfAngle))) + (arm3.getRealLen() * Math.toRadians( (armspeed1 ) + (armspeed2 ) ) * Math.cos(Math.toRadians(arm2.selfAngle + arm3.selfAngle))));
 
         //double x = (arm2.getRealLen()*Math.toRadians(arm2.getAngularVelocity()*timeFraction)*Math.cos(Math.toRadians(arm2.getSelfAngle())) + arm3.getRealLen()*(Math.toRadians((arm2.getAngularVelocity()*timeFraction)+(arm3.getAngularVelocity()*timeFraction)))*Math.cos(Math.toRadians(arm2.getSelfAngle()+arm3.getSelfAngle())));
 
-        double y = -(arm2.getRealLen() * Math.toRadians(armspeed1) * Math.sin(Math.toRadians(arm2.selfAngle))) - (arm2.getRealLen() * Math.toRadians((armspeed1 ) + (armspeed2 ))* Math.sin(Math.toRadians(arm2.selfAngle+arm3.selfAngle)));
+        double y = -((arm2.getRealLen() * Math.toRadians(armspeed2) * Math.sin(Math.toRadians(arm2.selfAngle))) + (arm2.getRealLen() * Math.toRadians((armspeed1 ) + (armspeed2 ))* Math.sin(Math.toRadians(arm2.selfAngle+arm3.selfAngle ))));
         tipVel.setX(x);
         tipVel.setY(y);
         if(!Double.isFinite(x)){
@@ -339,7 +401,6 @@ public class PhysicsEngine extends Thread{
         if(!Double.isFinite(y)){
             tipVel.setY(0);
             ballLaunched = true;
-
         }
 
 
@@ -362,7 +423,7 @@ public class PhysicsEngine extends Thread{
     private void performTimeStep(Arm arm){
 
 
-        arm.selfAngle =  arm.selfAngle + (arm.getAngularVelocity()*timeFraction);
+        arm.selfAngle =  arm.selfAngle + (armspeed1*timeFraction);
         arm.update();
         this.armAngle = Math.atan(tipVel.getY()/tipVel.getX());
         this.ballAngle = Math.atan(ball.getVy()/ball.getVx());
@@ -394,7 +455,35 @@ public class PhysicsEngine extends Thread{
                     arm2.setAngularVel(0);
                 } else {
 
-                    arm2.setAngularVel(300);
+                    if(Math.abs(endAngle2Value-startAngle2Value)<= 10){
+
+                    }
+                    arm2.setAngularVel(500);
+
+
+
+                    /*if(Math.abs(endAngle1Value-startAngle1Value)<=90){
+                        arm2.setAngularVel(225);
+                    }
+                    if(Math.abs(endAngle1Value-startAngle1Value)<=60){
+                        arm2.setAngularVel(200);
+                    }
+                    if(Math.abs(endAngle1Value-startAngle1Value)<=45){
+                        arm2.setAngularVel(175);
+                    }
+                    if(Math.abs(endAngle1Value-startAngle1Value)<= 20){
+                        arm2.setAngularVel(150);
+                    }
+                    if(Math.abs(endAngle1Value-startAngle1Value)<= 10){
+                        arm2.setAngularVel(125);
+                    }
+                    if(Math.abs(endAngle1Value-startAngle1Value)<= 5){
+                        arm2.setAngularVel(10);
+                    }*/
+
+
+
+
                     /*if(arm2.getSelfAngle()>= -90+(0.7*(Math.abs(endAngle1Value-startAngle1Value)))){
                         arm2.setAngularVel(jump/delay/2);
                     }
@@ -404,12 +493,7 @@ public class PhysicsEngine extends Thread{
                     if(arm2.getSelfAngle()>= -90+(0.9*(Math.abs(endAngle1Value-startAngle1Value)))){
                         arm2.setAngularVel(jump/delay/8);
                     }*/
-                    if(Math.abs(endAngle1Value-startAngle1Value)<= 10){
-                        arm2.setAngularVel(1);
-                        if(Math.abs(endAngle1Value-startAngle1Value) <= 3){
-                            arm2.setAngularVel(0.75);
-                        }
-                    }
+
                     performTimeStep(arm2);
                 }
 
@@ -418,11 +502,27 @@ public class PhysicsEngine extends Thread{
                 if((arm3.getSelfAngle() >= realAngle2)) {
                     b = true;
                     arm3.setAngularVel(0);
-                }else if(arm2.getSelfAngle() >= triggerAngle-0.5){
-                    arm3.setAngularVel(300);
-                    if(Math.abs(endAngle2Value-startAngle2Value)<= 5){
-                        arm3.setAngularVel(1);
+                }
+
+                if(arm2.getSelfAngle() >= triggerAngle-1){
+                    arm3.setAngularVel(500);
+
+                    /*if(Math.abs(endAngle2Value-startAngle2Value)<=40){
+                        arm3.setAngularVel(225);
                     }
+                    if(Math.abs(endAngle2Value-startAngle2Value)<=30){
+                        arm3.setAngularVel(200);
+                    }
+                    if(Math.abs(endAngle2Value-startAngle2Value)<=20){
+                        arm3.setAngularVel(175);
+                    }
+                    if(Math.abs(endAngle2Value-startAngle2Value)<=10){
+                        arm3.setAngularVel(150);
+                    }
+                    if(Math.abs(endAngle2Value-startAngle2Value)<= 5){
+                        arm3.setAngularVel(10);
+                    }*/
+
                     performTimeStep(arm3);
                 }
 
